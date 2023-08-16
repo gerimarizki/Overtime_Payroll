@@ -1,4 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using Overtime_Payroll.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Add DbContext to the container
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<OvertimeDbContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
 
