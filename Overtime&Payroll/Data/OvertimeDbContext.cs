@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Overtime_Payroll.Models;
+using System.Reflection.Emit;
 using System.Security.Principal;
 
 namespace Overtime_Payroll.Data
@@ -12,39 +13,69 @@ namespace Overtime_Payroll.Data
         }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountRole> AccountRoles { get; set; }
-        public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<EmployeeLevel> EmployeeLevels { get; set; }
+        public DbSet<HistoryOvertime> Histories { get; set; }
         public DbSet<Overtime> Overtimes { get; set; }
         public DbSet<Payroll> Payrolls { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        //Fluent API
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
-            builder.Entity<Employee>().HasIndex(e => new { e.NIK, e.Email, e.PhoneNumber }).IsUnique();
+            //Unique
+            modelBuilder.Entity<Employee>()
+                        .HasIndex(e => new
+                        {
+                            e.NIK,
+                            e.PhoneNumber
+                        }).IsUnique();
 
-            builder.Entity<Overtime>().HasOne(u => u.Employee).WithMany(e => e.Overtimes)
-                .HasForeignKey(e => e.EmployeeId);
+            modelBuilder.Entity<Employee>()
+                .HasKey(e => e.Guid);
 
-            builder.Entity<Payroll>().HasOne(u => u.Employee).WithMany(e => e.Payrolls)
-                .HasForeignKey(e => e.EmployeeId);
+            modelBuilder.Entity<Account>()
+                        .HasIndex(a => new
+                        {
+                            a.Email,
+                        }).IsUnique();
 
-            builder.Entity<Department>().HasMany(u => u.Employee).WithOne(e => e.Department)
-                .HasForeignKey(e => e.DepartmentId);
+            modelBuilder.Entity<Overtime>()
+                        .HasIndex(o => new
+                        {
+                            o.OvertimeId,
+                        }).IsUnique();
 
-            builder.Entity<EmployeeLevel>().HasMany(u => u.Employees).WithOne(e => e.EmployeeLevel)
-                .HasForeignKey(e => e.EmployeeLevelId);
+            // All Relationship
+               
+            // Emp - Acc
+            modelBuilder.Entity<Account>().HasOne(account => account.Employee).WithOne(employee => employee.Account)
+                        .HasForeignKey<Account>(account => account.Guid);
 
-            builder.Entity<Role>().HasMany(u => u.AccountRoles).WithOne(e => e.Role)
-                .HasForeignKey(e => e.RoleGuid);
+            // Acc - AccRole 
+            modelBuilder.Entity<Account>().HasMany(account => account.AccountRoles).WithOne(accountRole => accountRole.Account)
+                        .HasForeignKey(accountRole => accountRole.AccountGuid);
 
-            builder.Entity<AccountRole>().HasOne(u => u.Account).WithMany(e => e.AccountRoles)
-                .HasForeignKey(e => e.AccountGuid);
+            // Emp - Ovt
+            modelBuilder.Entity<Employee>().HasMany(employee => employee.Overtimes).WithOne(overtime => overtime.Employee)
+                        .HasForeignKey(overtime => overtime.EmployeeGuid);
 
-            builder.Entity<Account>().HasOne(u => u.Employee).WithOne(e => e.Account)
-                .HasForeignKey<Account>(e => e.EmployeeId);
+            // Hty - Ovt
+            modelBuilder.Entity<HistoryOvertime>().HasOne(history => history.Overtime).WithMany(overtime => overtime.Histories)
+                        .HasForeignKey(history => history.OvertimeGuid);
+
+            // Payroll - Emp
+            modelBuilder.Entity<Payroll>().HasOne(payslip => payslip.Employee).WithOne(employee => employee.Payroll)
+                        .HasForeignKey<Payroll>(payslip => payslip.EmployeeGuid);
+
+            // AccRole - Role
+            modelBuilder.Entity<Role>().HasMany(role => role.AccountRoles).WithOne(accountRole => accountRole.Role)
+                        .HasForeignKey(AccountRole => AccountRole.RoleGuid);
+
+            // Emp - self relation
+            modelBuilder.Entity<Employee>().HasOne(employee => employee.Manager).WithMany(employee => employee.Employees).HasForeignKey(employee => employee.ManagerGuid)
+                        .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

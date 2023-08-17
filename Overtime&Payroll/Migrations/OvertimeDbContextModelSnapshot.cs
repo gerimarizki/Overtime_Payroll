@@ -25,27 +25,35 @@ namespace Overtime_Payroll.Migrations
             modelBuilder.Entity("Overtime_Payroll.Models.Account", b =>
                 {
                     b.Property<Guid>("Guid")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("guid");
 
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("employee_id");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("email");
 
                     b.Property<DateTime?>("ExpiredTime")
                         .HasColumnType("datetime2")
                         .HasColumnName("expired_time");
 
-                    b.Property<bool?>("IsUsed")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_active");
+
+                    b.Property<bool>("IsUsed")
                         .HasColumnType("bit")
                         .HasColumnName("is_used");
 
-                    b.Property<bool>("Isdeleted")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_deleted");
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
 
-                    b.Property<int>("OTP")
+                    b.Property<int?>("OTP")
                         .HasColumnType("int")
                         .HasColumnName("otp");
 
@@ -56,7 +64,7 @@ namespace Overtime_Payroll.Migrations
 
                     b.HasKey("Guid");
 
-                    b.HasIndex("EmployeeId")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("tb_m_accounts");
@@ -73,6 +81,14 @@ namespace Overtime_Payroll.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("account_guid");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
+
                     b.Property<Guid>("RoleGuid")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("role_guid");
@@ -86,23 +102,6 @@ namespace Overtime_Payroll.Migrations
                     b.ToTable("tb_tr_account_roles");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Department", b =>
-                {
-                    b.Property<Guid>("Guid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("guid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Guid");
-
-                    b.ToTable("tb_tr_departments");
-                });
-
             modelBuilder.Entity("Overtime_Payroll.Models.Employee", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -114,27 +113,17 @@ namespace Overtime_Payroll.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("birth_date");
 
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("department_id");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("email");
-
-                    b.Property<Guid>("EmployeeLevelId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("employee_level_id");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_date");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("first_name");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("char(1)")
+                    b.Property<int>("Gender")
+                        .HasColumnType("int")
                         .HasColumnName("gender");
 
                     b.Property<DateTime>("HiringDate")
@@ -142,67 +131,61 @@ namespace Overtime_Payroll.Migrations
                         .HasColumnName("hiring_date");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("last_name");
+
+                    b.Property<Guid?>("ManagerGuid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("manager_guid");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
 
                     b.Property<string>("NIK")
                         .IsRequired()
                         .HasColumnType("nchar(6)")
                         .HasColumnName("nik");
 
-                    b.Property<Guid>("OvertimeId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("overtime_id");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("phone_number");
 
-                    b.Property<Guid?>("ReportTo")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("report_to");
-
                     b.HasKey("Guid");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("ManagerGuid");
 
-                    b.HasIndex("EmployeeLevelId");
-
-                    b.HasIndex("NIK", "Email", "PhoneNumber")
+                    b.HasIndex("NIK", "PhoneNumber")
                         .IsUnique();
 
                     b.ToTable("tb_m_employees");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.EmployeeLevel", b =>
+            modelBuilder.Entity("Overtime_Payroll.Models.HistoryOvertime", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("guid");
 
-                    b.Property<int>("Allowance")
-                        .HasColumnType("int")
-                        .HasColumnName("allowance");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_date");
 
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("level");
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
 
-                    b.Property<int>("Salary")
-                        .HasColumnType("int")
-                        .HasColumnName("salary");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("title");
+                    b.Property<Guid>("OvertimeGuid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("overtime_guid");
 
                     b.HasKey("Guid");
 
-                    b.ToTable("tb_tr_employee_levels");
+                    b.HasIndex("OvertimeGuid");
+
+                    b.ToTable("tb_tr_histories_overtimes");
                 });
 
             modelBuilder.Entity("Overtime_Payroll.Models.Overtime", b =>
@@ -212,38 +195,54 @@ namespace Overtime_Payroll.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("guid");
 
-                    b.Property<string>("Deskripsi")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("deskripsi");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_date");
 
-                    b.Property<Guid>("EmployeeId")
+                    b.Property<Guid>("EmployeeGuid")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("employee_id");
+                        .HasColumnName("employee_guid");
 
-                    b.Property<DateTime>("EndOvertime")
+                    b.Property<DateTime>("EndOvertimeDate")
                         .HasColumnType("datetime2")
-                        .HasColumnName("endOvertime");
+                        .HasColumnName("end_overtime_date");
 
-                    b.Property<int>("Paid")
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
+
+                    b.Property<string>("OvertimeId")
+                        .IsRequired()
+                        .HasColumnType("nchar(8)")
+                        .HasColumnName("overtime_Id");
+
+                    b.Property<int>("OvertimeRemaining")
                         .HasColumnType("int")
-                        .HasColumnName("Paid");
+                        .HasColumnName("overtime_remaining");
 
-                    b.Property<DateTime>("StartOvertime")
+                    b.Property<double>("PaidOvertime")
+                        .HasColumnType("float")
+                        .HasColumnName("paid");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("remarks");
+
+                    b.Property<DateTime>("StartOvertimeDate")
                         .HasColumnType("datetime2")
-                        .HasColumnName("startOvertime");
+                        .HasColumnName("start_overtime_date");
 
                     b.Property<int>("Status")
                         .HasColumnType("int")
                         .HasColumnName("status");
 
-                    b.Property<DateTime>("SubmitDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("submitDate");
-
                     b.HasKey("Guid");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeGuid");
+
+                    b.HasIndex("OvertimeId")
+                        .IsUnique();
 
                     b.ToTable("tb_m_overtimes");
                 });
@@ -255,25 +254,34 @@ namespace Overtime_Payroll.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("guid");
 
-                    b.Property<Guid>("EmployeeId")
+                    b.Property<double>("Allowance")
+                        .HasColumnType("float")
+                        .HasColumnName("allowance");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_date");
+
+                    b.Property<Guid>("EmployeeGuid")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("employee_id");
+                        .HasColumnName("employee_guid");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
 
                     b.Property<DateTime>("PayDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("pay_date");
 
-                    b.Property<int>("PayrollCut")
-                        .HasColumnType("int")
-                        .HasColumnName("payroll_cut");
-
-                    b.Property<int>("TotalSalary")
-                        .HasColumnType("int")
-                        .HasColumnName("total_salary");
+                    b.Property<double>("Salary")
+                        .HasColumnType("float")
+                        .HasColumnName("salary");
 
                     b.HasKey("Guid");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeGuid")
+                        .IsUnique();
 
                     b.ToTable("tb_tr_payrolls");
                 });
@@ -284,6 +292,14 @@ namespace Overtime_Payroll.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("guid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -299,7 +315,7 @@ namespace Overtime_Payroll.Migrations
                 {
                     b.HasOne("Overtime_Payroll.Models.Employee", "Employee")
                         .WithOne("Account")
-                        .HasForeignKey("Overtime_Payroll.Models.Account", "EmployeeId")
+                        .HasForeignKey("Overtime_Payroll.Models.Account", "Guid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -327,28 +343,30 @@ namespace Overtime_Payroll.Migrations
 
             modelBuilder.Entity("Overtime_Payroll.Models.Employee", b =>
                 {
-                    b.HasOne("Overtime_Payroll.Models.Department", "Department")
-                        .WithMany("Employee")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Overtime_Payroll.Models.EmployeeLevel", "EmployeeLevel")
+                    b.HasOne("Overtime_Payroll.Models.Employee", "Manager")
                         .WithMany("Employees")
-                        .HasForeignKey("EmployeeLevelId")
+                        .HasForeignKey("ManagerGuid")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("Overtime_Payroll.Models.HistoryOvertime", b =>
+                {
+                    b.HasOne("Overtime_Payroll.Models.Overtime", "Overtime")
+                        .WithMany("Histories")
+                        .HasForeignKey("OvertimeGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Department");
-
-                    b.Navigation("EmployeeLevel");
+                    b.Navigation("Overtime");
                 });
 
             modelBuilder.Entity("Overtime_Payroll.Models.Overtime", b =>
                 {
                     b.HasOne("Overtime_Payroll.Models.Employee", "Employee")
                         .WithMany("Overtimes")
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("EmployeeGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -358,8 +376,8 @@ namespace Overtime_Payroll.Migrations
             modelBuilder.Entity("Overtime_Payroll.Models.Payroll", b =>
                 {
                     b.HasOne("Overtime_Payroll.Models.Employee", "Employee")
-                        .WithMany("Payrolls")
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("Payroll")
+                        .HasForeignKey("Overtime_Payroll.Models.Payroll", "EmployeeGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -371,23 +389,20 @@ namespace Overtime_Payroll.Migrations
                     b.Navigation("AccountRoles");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Department", b =>
-                {
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("Overtime_Payroll.Models.Employee", b =>
                 {
                     b.Navigation("Account");
 
+                    b.Navigation("Employees");
+
                     b.Navigation("Overtimes");
 
-                    b.Navigation("Payrolls");
+                    b.Navigation("Payroll");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.EmployeeLevel", b =>
+            modelBuilder.Entity("Overtime_Payroll.Models.Overtime", b =>
                 {
-                    b.Navigation("Employees");
+                    b.Navigation("Histories");
                 });
 
             modelBuilder.Entity("Overtime_Payroll.Models.Role", b =>

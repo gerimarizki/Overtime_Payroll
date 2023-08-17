@@ -7,22 +7,34 @@ namespace Overtime_Payroll.Models
     [Table("tb_m_overtimes")]
     public class Overtime : BaseEntity
     {
-        [Column("startOvertime")]
-        public DateTime StartOvertime { get; set; }
-        [Column("endOvertime")]
-        public DateTime EndOvertime { get; set; }
-        [Column("submitDate")]
-        public DateTime SubmitDate { get; set; }
-        [Column("deskripsi", TypeName = "varchar(100)")]
-        public string Deskripsi { get; set; }
-        [Column("Paid")]
-        public int Paid { get; set; }
+        [Column("overtime_Id", TypeName = "nchar(8)")]
+        public string OvertimeId { get; set; }
+
+        [Column("start_overtime_date")]
+        public DateTime StartOvertimeDate { get; set; }
+
+        [Column("end_overtime_date")]
+        public DateTime EndOvertimeDate { get; set; }
+
+        [Column("remarks", TypeName = "nvarchar(255)")]
+        public string Remarks { get; set; }
+
+        [Column("paid")]
+        public double PaidOvertime { get; set; }
+
+        [Column("overtime_remaining")]
+        public int OvertimeRemaining { get; set; }
+
+
         [Column("status")]
         public StatusLevel Status { get; set; }
-        [Column("employee_id")]
-        public Guid EmployeeId { get; set; }
 
-        //kardinalitas overtime
-        public Employee Employee { get; set; }
+        [Column("employee_guid")]
+        public Guid EmployeeGuid { get; set; }
+
+
+        // Kardinalitas Overtime
+        public Employee? Employee { get; set; }
+        public ICollection<HistoryOvertime>? Histories { get; set; }
     }
 }

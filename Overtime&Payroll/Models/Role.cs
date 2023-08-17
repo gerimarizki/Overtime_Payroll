@@ -8,7 +8,7 @@ namespace Overtime_Payroll.Models
         [Column("name", TypeName = "nvarchar(50)")]
         public string Name { get; set; }
 
-        //kardinalitas role
-        public ICollection<AccountRole> AccountRoles { get; set; }
+        // Kardinalitas Role
+        public ICollection<AccountRole>? AccountRoles { get; set; }
     }
 }

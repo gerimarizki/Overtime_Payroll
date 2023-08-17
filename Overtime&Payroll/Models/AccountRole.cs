@@ -11,8 +11,10 @@ namespace Overtime_Payroll.Models
         [Column("role_guid")]
         public Guid RoleGuid { get; set; }
 
-        //kardinalitas accountrole
+        // Kardinalitas AccountRole
         public Role? Role { get; set; }
         public Account? Account { get; set; }
+
+  
     }
 }
