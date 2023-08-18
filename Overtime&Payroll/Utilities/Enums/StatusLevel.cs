@@ -2,10 +2,8 @@
 {
     public enum StatusLevel
     {
-        Approval,
-        Approved,
-        Pending,
-        Rejected
-
+        Accepted,
+        Rejected,
+        Waiting
     }
 }

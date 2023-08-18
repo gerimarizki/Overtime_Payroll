@@ -1,0 +1,6 @@
+﻿namespace Overtime_Payroll.Controllers
+{
+    public class RoleController
+    {
+    }
+}
