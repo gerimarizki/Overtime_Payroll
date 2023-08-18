@@ -28,7 +28,7 @@ namespace Overtime_Payroll.Models
         public ICollection<AccountRole>? AccountRoles { get; set; }
         public Employee? Employee { get; set; }
 
-   
+
 
     }
 }

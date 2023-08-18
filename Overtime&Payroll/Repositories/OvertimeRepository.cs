@@ -8,8 +8,5 @@ namespace Overtime_Payroll.Repositories
     public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeRepository
     {
         public OvertimeRepository(OvertimeDbContext context) : base(context) { }
-   
-
-        }
     }
 }

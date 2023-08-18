@@ -13,3 +13,4 @@ namespace Overtime_Payroll.Repositories
             return _context.Set<Role>().FirstOrDefault(r => r.Name == name);
         }
     }
+}

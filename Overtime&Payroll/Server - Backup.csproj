@@ -19,8 +19,12 @@
 
   <ItemGroup>
     <Folder Include="Contracts\" />
+    <Folder Include="DTOs\AccountRoles\" />
+    <Folder Include="DTOs\Accounts\" />
+    <Folder Include="DTOs\HistoriesOvertime\" />
+    <Folder Include="DTOs\Roles\" />
+    <Folder Include="DTOs\Payrolls\" />
     <Folder Include="Repositories\" />
-    <Folder Include="Services\" />
     <Folder Include="Utilities\Handlers\" />
   </ItemGroup>
 

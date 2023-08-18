@@ -15,6 +15,6 @@ namespace Overtime_Payroll.Models
         public Role? Role { get; set; }
         public Account? Account { get; set; }
 
-  
+
     }
 }

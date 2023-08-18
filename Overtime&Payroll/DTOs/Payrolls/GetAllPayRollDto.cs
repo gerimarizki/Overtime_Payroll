@@ -2,17 +2,18 @@
 
 namespace Overtime_Payroll.DTOs.Payrolls
 {
-    public class GetPayrollDto
+    public class GetAllPayrollDto
     {
         public Guid Guid { get; set; }
         public DateTime PayDate { get; set; }
         public double Salary { get; set; }
-        public double Allowace { get; set; }
+        public double Allowance { get; set; }
+        public double PaidOvertime { get; set; }
+        public double TotalSalary { get; set; }
         public Guid EmployeeGuid { get; set; }
-        public string EmployeeName { get; set; }
+        public string FullName { get; set; }
 
-
-        public static implicit operator Payroll(GetPayrollDto payrollDto)
+        public static implicit operator Payroll(GetAllPayrollDto payrollDto)
         {
             return new()
             {
@@ -24,16 +25,18 @@ namespace Overtime_Payroll.DTOs.Payrolls
             };
         }
 
-        public static explicit operator GetPayrollDto(Payroll payroll)
+        public static explicit operator GetAllPayrollDto(Payroll payroll)
         {
             return new()
             {
                 Guid = payroll.Guid,
                 PayDate = DateTime.Now,
                 Salary = payroll.Salary,
-                Allowace = payroll.Salary * 3 / 100,
+                Allowance = payroll.Salary * 3 / 100,
                 EmployeeGuid = payroll.EmployeeGuid,
             };
         }
+
+
     }
 }
