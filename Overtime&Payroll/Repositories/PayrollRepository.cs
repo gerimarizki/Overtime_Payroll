@@ -4,8 +4,8 @@ using Overtime_Payroll.Models;
 
 namespace Overtime_Payroll.Repositories
 {
-    public class PayslipRepository : GeneralRepository<Payroll>, IPayrollRepository
+    public class PayrollRepository : GeneralRepository<Payroll>, IPayrollRepository
     {
-        public PayslipRepository(OvertimeDbContext context) : base(context) { }
+        public PayrollRepository(OvertimeDbContext context) : base(context) { }
     }
 }

@@ -19,10 +19,10 @@ namespace Overtime_Payroll.Repositories
             return manager;
         }
 
-        //public string? GetLastEmployeeNik()
-        //{
-        //    return _context.Set<Employee>().ToList().Select(e => e.NIK).LastOrDefault();
-        //}
+        public string? GetLastEmployeeNIK()
+        {
+            return _context.Set<Employee>().ToList().Select(e => e.NIK).LastOrDefault();
+        }
 
         public bool IsDuplicateValue(string value)
         {

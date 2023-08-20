@@ -8,7 +8,7 @@ namespace Overtime_Payroll.DTOs.Accounts
         public string Email { get; set; }
         public string Password { get; set; }
         public bool IsActive { get; set; }
-        public int? Otp { get; set; }
+        public int? OTP { get; set; }
         public bool IsUsed { get; set; }
         public DateTime? ExpiredTime { get; set; }
 
@@ -20,7 +20,7 @@ namespace Overtime_Payroll.DTOs.Accounts
                 Email = updateAccountDto.Email,
                 Password = updateAccountDto.Password,
                 IsActive = updateAccountDto.IsActive,
-                Otp = updateAccountDto.Otp,
+                OTP = updateAccountDto.OTP,
                 IsUsed = updateAccountDto.IsUsed,
                 ExpiredTime = updateAccountDto.ExpiredTime,
                 ModifiedDate = DateTime.UtcNow
@@ -35,7 +35,7 @@ namespace Overtime_Payroll.DTOs.Accounts
                 Email = account.Email,
                 Password = account.Password,
                 IsActive = account.IsActive,
-                Otp = account.Otp,
+                OTP = account.OTP,
                 IsUsed = account.IsUsed,
                 ExpiredTime = account.ExpiredTime
             };

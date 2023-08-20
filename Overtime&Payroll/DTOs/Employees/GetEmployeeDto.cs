@@ -23,7 +23,7 @@ namespace Overtime_Payroll.DTOs.Employees
             return new()
             {
                 Guid = updateemployeeDto.Guid,
-                NIK = updateemployeeDto.Nik,
+                NIK = updateemployeeDto.NIK,
                 FirstName = updateemployeeDto.FirstName,
                 LastName = updateemployeeDto.LastName,
                 BirthDate = updateemployeeDto.BirthDate,
@@ -39,7 +39,7 @@ namespace Overtime_Payroll.DTOs.Employees
             return new()
             {
                 Guid = employee.Guid,
-                Nik = employee.NIK,
+                NIK = employee.NIK,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 BirthDate = employee.BirthDate,

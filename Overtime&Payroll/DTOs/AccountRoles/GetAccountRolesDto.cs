@@ -2,7 +2,7 @@
 
 namespace Overtime_Payroll.DTOs.AccountRoles
 {
-    public class GetAccountRoles
+    public class GetAccountRolesDto
     {
         public Guid Guid { get; set; }
 
@@ -10,7 +10,7 @@ namespace Overtime_Payroll.DTOs.AccountRoles
 
         public Guid RoleGuid { get; set; }
 
-        public static implicit operator AccountRole(GetAccountRoles getAccountRoleDto)
+        public static implicit operator AccountRole(GetAccountRolesDto getAccountRoleDto)
         {
             return new()
             {
@@ -20,7 +20,7 @@ namespace Overtime_Payroll.DTOs.AccountRoles
             };
         }
 
-        public static explicit operator GetAccountRoles(AccountRole accountRole)
+        public static explicit operator GetAccountRolesDto(AccountRole accountRole)
         {
             return new()
             {

@@ -5,8 +5,8 @@ using Overtime_Payroll.Models;
 
 namespace Overtime_Payroll.Repositories
 {
-    public class HistoryRepository : GeneralRepository<HistoryOvertime>, IHistoryOvertimeRepository
+    public class HistoryOvertimeRepository : GeneralRepository<HistoryOvertime>, IHistoryOvertimeRepository
     {
-        public HistoryRepository(OvertimeDbContext context) : base(context) { }
+        public HistoryOvertimeRepository(OvertimeDbContext context) : base(context) { }
     }
 }
