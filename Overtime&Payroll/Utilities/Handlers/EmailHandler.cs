@@ -4,19 +4,17 @@ using Overtime_Payroll.Contracts;
 
 namespace Overtime_Payroll.Utilities.Handlers
 {
-    public class HandlerForEmail : IEmailHandler
+    public class EmailHandler : IEmailHandler
     {
         private readonly string _smtpServer;
         private readonly int _smtpPort;
         private readonly string _fromEmailAddress;
-        private readonly string _fromEmailPassword;
 
-        public HandlerForEmail(string smtpServer, int smtpPort, string fromEmailAddress, string fromEmailPassword)
+        public EmailHandler(string smtpServer, int smtpPort, string fromEmailAddress)
         {
             _smtpServer = smtpServer;
             _smtpPort = smtpPort;
             _fromEmailAddress = fromEmailAddress;
-            _fromEmailPassword = fromEmailPassword;
         }
 
         public void SendEmail(string toEmail, string subject, string htmlMessage)
@@ -28,17 +26,9 @@ namespace Overtime_Payroll.Utilities.Handlers
                 Body = htmlMessage,
                 IsBodyHtml = true
             };
-
             message.To.Add(new MailAddress(toEmail));
 
-            /* using var client = new SmtpClient(_smtpServer, _smtpPort);*/
-            var client = new SmtpClient(_smtpServer)
-            {
-                Port = _smtpPort,
-                //UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(_fromEmailAddress, _fromEmailPassword),
-                EnableSsl = true,
-            };
+            using var client = new SmtpClient(_smtpServer, _smtpPort);
             client.Send(message);
         }
     }

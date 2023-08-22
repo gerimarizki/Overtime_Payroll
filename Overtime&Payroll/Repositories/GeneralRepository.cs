@@ -73,5 +73,10 @@ namespace Overtime_Payroll.Repositories
         {
             return GetByGuid(guid) is not null;
         }
+
+        public void Clear()
+        {
+            _context.ChangeTracker.Clear();
+        }
     }
 }

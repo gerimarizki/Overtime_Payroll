@@ -19,7 +19,5 @@ namespace Overtime_Payroll.Repositories
         {
             return _context.Set<Account>().FirstOrDefault(e => e.Email == email);
         }
-
-
     }
 }

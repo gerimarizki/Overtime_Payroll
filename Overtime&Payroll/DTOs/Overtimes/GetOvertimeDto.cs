@@ -28,6 +28,7 @@ namespace Overtime_Payroll.DTOs.Overtimes
                 Remarks = getOvertime.Remarks,
                 Status = getOvertime.Status,
                 EmployeeGuid = getOvertime.EmployeeGuid,
+                
             };
         }
 

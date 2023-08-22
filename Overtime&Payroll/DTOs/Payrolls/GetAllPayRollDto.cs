@@ -22,6 +22,7 @@ namespace Overtime_Payroll.DTOs.Payrolls
                 Salary = payrollDto.Salary,
                 Allowance = payrollDto.Salary * 3 / 100,
                 EmployeeGuid = payrollDto.EmployeeGuid,
+                
             };
         }
 

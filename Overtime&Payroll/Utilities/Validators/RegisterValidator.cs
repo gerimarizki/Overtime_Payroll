@@ -41,16 +41,12 @@ namespace Overtime_Payroll.Utilities.Validators
                .Matches(@"^\+[1-9]\d{1,20}$").WithMessage("Invalid phone number format.");
 
             RuleFor(p => p.Password)
-               .NotEmpty().WithMessage("Password is required.")
-               .MinimumLength(8).WithMessage("Password must be at least 8 characters long.")
-               .Matches("[A-Z]").WithMessage("Password must contain at least one uppercase letter.")
-               .Matches("[a-z]").WithMessage("Password must contain at least one lowercase letter.")
-               .Matches("[0-9]").WithMessage("Password must contain at least one digit.")
-               .Matches("[^a-zA-Z0-9]").WithMessage("Password must contain at least one special character.");
+                .NotEmpty()
+                .Matches(@"^(?=.*[0-9])(?=.*[A-Z]).{8,}$").WithMessage("Password invalid! Passwords must have at least 1 upper case and 1 number and 8 Digits");
 
             RuleFor(p => p.ConfirmPassword)
               .NotEmpty()
-              .Equal(model => model.Password).WithMessage("Password and Confirm Password do not match.");
+              .Equal(p => p.Password).WithMessage("Password and Confirm Password do not match.");
         }
 
         private bool BeUniqueProperty(string property)

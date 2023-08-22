@@ -7,4 +7,6 @@
         bool Update(TEntity entity);
         bool Delete(TEntity entity);
         bool IsExist(Guid guid);
-    }
+        void Clear();
+
+}

@@ -17,7 +17,7 @@
         {
             if (OvertimeId is null)
             {
-                return "00000000";
+                return "11111111";
             }
 
             var generateNumber = Convert.ToInt32(OvertimeId) + 1;
