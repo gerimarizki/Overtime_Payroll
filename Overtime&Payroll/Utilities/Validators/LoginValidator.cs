@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Overtime_Payroll.DTOs.Accounts;
+using server.DTOs.Accounts;
 
-namespace Overtime_Payroll.Utilities.Validators
+namespace server.Utilities.Validators
 {
 
     public class LoginValidator : AbstractValidator<LoginAccountDto>

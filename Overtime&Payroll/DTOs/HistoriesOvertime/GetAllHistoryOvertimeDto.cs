@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Utilities.Enums;
+﻿using server.Utilities.Enums;
 
-namespace Overtime_Payroll.DTOs.HistoriesOvertime
+namespace server.DTOs.HistoriesOvertime
 {
     public class GetAllHistoryOvertimeDto
     {

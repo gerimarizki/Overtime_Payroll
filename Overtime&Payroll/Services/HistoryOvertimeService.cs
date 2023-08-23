@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Overtime_Payroll.Contracts;
-using Overtime_Payroll.DTOs.HistoriesOvertime;
+using server.Contracts;
+using server.DTOs.HistoriesOvertime;
 
-namespace Overtime_Payroll.Services
+namespace server.Services
 {
     public class HistoryOvertimeService
     {

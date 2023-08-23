@@ -1,8 +1,8 @@
 ﻿using System.Net.Mail;
 using System.Net;
-using Overtime_Payroll.Contracts;
+using server.Contracts;
 
-namespace Overtime_Payroll.Utilities.Handlers
+namespace server.Utilities.Handlers
 {
     public class EmailHandler : IEmailHandler
     {

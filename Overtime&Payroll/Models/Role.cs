@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Overtime_Payroll.Models
+namespace server.Models
 {
     [Table("tb_m_roles")]
     public class Role : BaseEntity

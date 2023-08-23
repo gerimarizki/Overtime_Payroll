@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using Overtime_Payroll.Contracts;
-using Overtime_Payroll.DTOs.Accounts;
+using server.Contracts;
+using server.DTOs.Accounts;
 
-namespace Overtime_Payroll.Utilities.Validators
+namespace server.Utilities.Validators
 {
 
     public class RegisterValidation : AbstractValidator<RegisterAccountDto>

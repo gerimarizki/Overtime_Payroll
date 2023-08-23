@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
 
-namespace Overtime_Payroll.DTOs.Payrolls
+namespace server.DTOs.Payrolls
 {
     public class UpdatePayrollDto
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Overtime_Payroll.Utilities.Enums;
+using server.Utilities.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Overtime_Payroll.Models
+namespace server.Models
 {
     [Table("tb_m_employees")]
     public class Employee : BaseEntity

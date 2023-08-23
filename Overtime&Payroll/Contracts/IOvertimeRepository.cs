@@ -1,7 +1,7 @@
-﻿using Overtime_Payroll.DTOs.Overtimes;
-using Overtime_Payroll.Models;
+﻿using server.DTOs.Overtimes;
+using server.Models;
 
-namespace Overtime_Payroll.Contracts
+namespace server.Contracts
 {
 
     public interface IOvertimeRepository : IGeneralRepository<Overtime>

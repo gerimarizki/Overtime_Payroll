@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Overtime_Payroll.Models
+namespace server.Models
 {
     [Table("tb_tr_histories_overtimes")]
     public class HistoryOvertime : BaseEntity

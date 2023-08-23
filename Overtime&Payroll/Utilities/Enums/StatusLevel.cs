@@ -1,4 +1,4 @@
-﻿namespace Overtime_Payroll.Utilities.Enums
+﻿namespace server.Utilities.Enums
 {
     public enum StatusLevel
     {

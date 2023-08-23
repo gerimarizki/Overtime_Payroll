@@ -1,7 +1,7 @@
-﻿using Overtime_Payroll.Models;
-using Overtime_Payroll.Utilities.Enums;
+﻿using server.Models;
+using server.Utilities.Enums;
 
-namespace Overtime_Payroll.DTOs.Employees
+namespace server.DTOs.Employees
 {
     public class UpdateEmployeeDto
     {
@@ -12,10 +12,10 @@ namespace Overtime_Payroll.DTOs.Employees
         public DateTime BirthDate { get; set; }
         public GenderLevel Gender { get; set; }
         public DateTime HiringDate { get; set; }
-        public string Email { get; set; }
+        //public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public Guid? ManagerGuid { get; set; }
-        public Guid RoleGuid { get; set; }
+        //public Guid RoleGuid { get; set; }
 
 
         public static implicit operator Employee(UpdateEmployeeDto updateemployeeDto)

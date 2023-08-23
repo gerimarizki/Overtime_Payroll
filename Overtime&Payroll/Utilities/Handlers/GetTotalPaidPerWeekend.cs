@@ -1,4 +1,4 @@
-﻿namespace Overtime_Payroll.Utilities.Handlers
+﻿namespace server.Utilities.Handlers
 {
     public class GetTotalPaidPerWeekend
     {

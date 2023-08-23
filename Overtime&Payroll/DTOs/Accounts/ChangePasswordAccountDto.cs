@@ -1,4 +1,4 @@
-﻿namespace Overtime_Payroll.DTOs.Accounts
+﻿namespace server.DTOs.Accounts
 {
     public class ChangePasswordAccountDto
     {

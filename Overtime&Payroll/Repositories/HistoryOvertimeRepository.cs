@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Overtime_Payroll.Contracts;
-using Overtime_Payroll.Data;
-using Overtime_Payroll.Models;
+using server.Contracts;
+using server.Data;
+using server.Models;
 
-namespace Overtime_Payroll.Repositories
+namespace server.Repositories
 {
     public class HistoryOvertimeRepository : GeneralRepository<HistoryOvertime>, IHistoryOvertimeRepository
     {

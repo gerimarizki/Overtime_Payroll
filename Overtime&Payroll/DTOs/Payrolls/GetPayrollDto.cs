@@ -1,13 +1,13 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
 
-namespace Overtime_Payroll.DTOs.Payrolls
+namespace server.DTOs.Payrolls
 {
     public class GetPayrollDto
     {
         public Guid Guid { get; set; }
         public DateTime PayDate { get; set; }
         public double Salary { get; set; }
-        public double Allowace { get; set; }
+        public double Allowance { get; set; }
         public Guid EmployeeGuid { get; set; }
         public string EmployeeName { get; set; }
 
@@ -31,7 +31,7 @@ namespace Overtime_Payroll.DTOs.Payrolls
                 Guid = payroll.Guid,
                 PayDate = DateTime.Now,
                 Salary = payroll.Salary,
-                Allowace = payroll.Salary * 3 / 100,
+                Allowance = payroll.Salary * 3 / 100,
                 EmployeeGuid = payroll.EmployeeGuid,
             };
         }

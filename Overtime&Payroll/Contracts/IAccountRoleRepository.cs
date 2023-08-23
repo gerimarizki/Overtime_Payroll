@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
 
-namespace Overtime_Payroll.Contracts
+namespace server.Contracts
 {
     public interface IAccountRoleRepository : IGeneralRepository<AccountRole>
     {

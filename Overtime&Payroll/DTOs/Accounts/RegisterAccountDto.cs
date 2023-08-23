@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Utilities.Enums;
+﻿using server.Utilities.Enums;
 
-namespace Overtime_Payroll.DTOs.Accounts
+namespace server.DTOs.Accounts
 {
     public class RegisterAccountDto
     {

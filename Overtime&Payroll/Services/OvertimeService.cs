@@ -1,10 +1,11 @@
-﻿using Overtime_Payroll.Contracts;
-using Overtime_Payroll.DTOs.Overtimes;
-using Overtime_Payroll.Migrations;
-using Overtime_Payroll.Models;
-using Overtime_Payroll.Utilities.Handlers;
+﻿using server.Contracts;
+using server.DTOs.Overtimes;
+using server.DTOs.Payrolls;
+using server.Migrations;
+using server.Models;
+using server.Utilities.Handlers;
 
-namespace Overtime_Payroll.Services
+namespace server.Services
 {
     public class OvertimeService
     {
@@ -19,16 +20,38 @@ namespace Overtime_Payroll.Services
 
         public IEnumerable<GetOvertimeDto> GetOvertime()
         {
-            var overtime = _overtimeRepository.GetAll().ToList();
-            if (!overtime.Any()) return Enumerable.Empty<GetOvertimeDto>();
-            List<GetOvertimeDto> overtimeDTO = new();
+            var overtime = (from e in _employeeRepository.GetAll()
+                            join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
+                            where e.Guid == o.EmployeeGuid
+                            select new GetOvertimeDto
+                            {
+                                Guid = e.Guid,
+                                OvertimeId = o.OvertimeId,
+                                StartOvertimeDate = DateTime.Now,
+                                EndOvertimeDate= DateTime.Now,
+                                Remarks = o.Remarks,
+                                Status = o.Status,
+                                EmployeeGuid = o.EmployeeGuid,
+                                FullName = e.FirstName+ " "+e.LastName,
+                                Remaining = o.OvertimeRemaining,
+                                Paid = o.PaidOvertime,
+                                CreatedDate = DateTime.Now,
+                            }).ToList();
+            //var overtime = _overtimeRepository.GetAll().ToList();
+            //if (!overtime.Any()) return Enumerable.Empty<GetOvertimeDto>();
+            //List<GetOvertimeDto> overtimeDTO = new();
 
-            foreach (var over in overtime)
+                            //foreach (var over in overtime)
+                            //{
+                            //    overtimeDTO.Add((GetOvertimeDto)over);
+                            //}
+
+                            //return overtimeDTO;
+             if (!overtime.Any())
             {
-                overtimeDTO.Add((GetOvertimeDto)over);
+                return Enumerable.Empty<GetOvertimeDto>();
             }
-
-            return overtimeDTO;
+            return overtime;
         }
 
         public GetOvertimeDto? GetOvertimeByGuid(Guid guid)
@@ -40,6 +63,16 @@ namespace Overtime_Payroll.Services
         }
 
 
+        //public GetOvertimeDto? CreateOvertime(CreateOvertimeDto newOvertime)
+        //{
+        //    Models.Overtime overtime = newOvertime;
+        //    overtime.OvertimeId = HandlerGenerator.OvertimeId(_overtimeRepository.GetLastOvertimeId());
+        //    var createdOvertime = _overtimeRepository.Create(overtime);
+        //    if (createdOvertime is null) return null;
+
+        //    return (GetOvertimeDto)createdOvertime;
+        //}
+
         public GetOvertimeDto? CreateOvertime(CreateOvertimeDto newOvertime)
         {
             Models.Overtime overtime = newOvertime;
@@ -47,8 +80,27 @@ namespace Overtime_Payroll.Services
             var createdOvertime = _overtimeRepository.Create(overtime);
             if (createdOvertime is null) return null;
 
-            return (GetOvertimeDto)createdOvertime;
+            var overtimeDetails = (from e in _employeeRepository.GetAll()
+                                   join o in _overtimeRepository.GetAll() on e.Guid equals createdOvertime.EmployeeGuid
+                                   where e.Guid == createdOvertime.EmployeeGuid
+                                   select new GetOvertimeDto
+                                   {
+                                       Guid = e.Guid,
+                                       OvertimeId = createdOvertime.OvertimeId,
+                                       StartOvertimeDate = createdOvertime.StartOvertimeDate,
+                                       EndOvertimeDate = createdOvertime.EndOvertimeDate,
+                                       Remarks = createdOvertime.Remarks,
+                                       Status = createdOvertime.Status,
+                                       EmployeeGuid = createdOvertime.EmployeeGuid,
+                                       FullName = e.FirstName + " " + e.LastName,
+                                       Remaining = createdOvertime.OvertimeRemaining,
+                                       Paid = createdOvertime.PaidOvertime,
+                                       CreatedDate = createdOvertime.CreatedDate
+                                   }).FirstOrDefault();
+
+            return overtimeDetails;
         }
+
 
         public int UpdateOvertime(UpdateOvertimeDto updateOvertime)
         {

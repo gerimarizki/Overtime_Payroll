@@ -1,8 +1,9 @@
-﻿using Overtime_Payroll.Contracts;
-using Overtime_Payroll.DTOs.Payrolls;
-using Overtime_Payroll.Models;
+﻿using server.Contracts;
+using server.DTOs.Payrolls;
+using server.Models;
+using server.Repositories;
 
-namespace Overtime_Payroll.Services
+namespace server.Services
 {
     public class PayrollService
     {
@@ -27,7 +28,7 @@ namespace Overtime_Payroll.Services
                                Guid = p.Guid,
                                PayDate = DateTime.Now,
                                EmployeeGuid = e.Guid,
-                               Allowace = p.Allowance,
+                               Allowance = p.Allowance,
                                Salary = p.Salary,
                                EmployeeName = e.FirstName + " " + e.LastName
                            }).ToList();
@@ -161,16 +162,17 @@ namespace Overtime_Payroll.Services
 
             var employee = (from p in _PayrollRepository.GetAll()
                             join e in _employeeRepository.GetAll() on p.EmployeeGuid equals e.Guid
-                            join pay in Payrolls on p.EmployeeGuid equals pay.EmployeeGuid
+                            join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
+                            //join pay in Payrolls on p.EmployeeGuid equals pay.EmployeeGuid
                             select new GetAllPayrollDto
                             {
                                 Guid = p.Guid,
                                 Salary = p.Salary,
                                 Allowance = p.Allowance,
                                 PayDate = DateTime.Now,
-                                PaidOvertime = pay.PaidOvertime,
-                                TotalSalary = p.Salary + pay.TotalSalary - p.Allowance,
-                                EmployeeGuid = pay.EmployeeGuid,
+                                PaidOvertime = o.PaidOvertime,
+                                TotalSalary = p.Salary + o.PaidOvertime + p.Allowance,
+                                EmployeeGuid = e.Guid,
                                 FullName = e.FirstName + " " + e.LastName,
                             }).ToList();
             return employee;
@@ -188,7 +190,7 @@ namespace Overtime_Payroll.Services
                                 Allowance = p.Allowance,
                                 PayDate = p.PayDate,
                                 PaidOvertime = pay.PaidOvertime,
-                                TotalSalary = p.Salary + pay.TotalSalary - p.Allowance,
+                                TotalSalary = p.Salary + pay.PaidOvertime + p.Allowance,
                                 EmployeeGuid = pay.EmployeeGuid,
                             }).ToList();
             return employee;
@@ -206,29 +208,41 @@ namespace Overtime_Payroll.Services
                                 Allowance = p.Allowance,
                                 PayDate = pay.PayDate,
                                 PaidOvertime = pay.PaidOvertime,
-                                TotalSalary = p.Salary + pay.TotalSalary - p.Allowance,
+                                TotalSalary = p.Salary + pay.PaidOvertime + p.Allowance,
                                 EmployeeGuid = pay.EmployeeGuid,
-                                FullName= pay.FullName
-
-
+                                FullName = pay.FullName,
+                                TotalPaidOvertime = GetTotalOvertime(pay.EmployeeGuid) // Menghitung total paid overtime
                             }).ToList();
             return employee;
+
         }
 
-        public double GetTotalSalaryExpense()
+        //public double GetTotalSalary()
+        //{
+        //    var Payrolls = _PayrollRepository.GetAll();
+
+
+        //    double totalExpense = Payrolls.Sum(p => p.Salary + p.Allowance);
+
+        //    return totalExpense;
+        //}
+
+        public double GetTotalSalary(Guid employeeGuid)
         {
-            var Payrolls = _PayrollRepository.GetAll();
+            var payrolls = GetAllPayrollOverbyEmpGuid(employeeGuid);
 
-            // Calculate total salary expense by summing up all salaries
-            double totalExpense = Payrolls.Sum(p => p.Salary);
+            double totalSalary = payrolls.Sum(p => p.Salary + p.Allowance);
 
-            return totalExpense;
+            return totalSalary;
         }
+
+
         public double GetTotalOvertime(Guid guid)
         {
             var Payrolls = GetAllPayrollOverbyEmpGuid(guid);
             double totalOvertime = Payrolls.Sum(p => p.PaidOvertime);
             return totalOvertime;
         }
+
     }
 }

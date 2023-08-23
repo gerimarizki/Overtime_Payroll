@@ -1,12 +1,12 @@
-﻿using Overtime_Payroll.Contracts;
-using Overtime_Payroll.DTOs.AccountRoles;
-using Overtime_Payroll.DTOs.Accounts;
-using Overtime_Payroll.DTOs.Employees;
-using Overtime_Payroll.Models;
-using Overtime_Payroll.Repositories;
-using Overtime_Payroll.Utilities.Handlers;
+﻿using server.Contracts;
+using server.DTOs.AccountRoles;
+using server.DTOs.Accounts;
+using server.DTOs.Employees;
+using server.Models;
+using server.Repositories;
+using server.Utilities.Handlers;
 
-namespace Overtime_Payroll.Services
+namespace server.Services
 {
     public class EmployeeService
     {
@@ -140,7 +140,19 @@ namespace Overtime_Payroll.Services
             return (GetEmployeeDto)createdEmployee; // berhasil
         }
 
-        public int UpdateEmployee(UpdateEmployeeDto employeeDto)
+        public int Update(UpdateEmployeeDto employeeDto )
+        {
+            var getEmployee = _employeeRepository.GetByGuid(employeeDto.Guid);
+
+            if(getEmployee is null) return 0;
+            Employee update = employeeDto;
+            //update.NIK = getEmployee.NIK;
+            update.CreatedDate = getEmployee.CreatedDate; 
+            var updateEmployee = _employeeRepository.Update(update);
+            return updateEmployee? 1 : -1;
+        }
+
+        public int UpdateEmployee(UpdateAllEmployeeDto employeeDto)
         {
             var getEmployee = _employeeRepository.GetByGuid(employeeDto.Guid);
 

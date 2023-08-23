@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Utilities.Enums;
+﻿using server.Utilities.Enums;
 
-namespace Overtime_Payroll.DTOs.Overtimes
+namespace server.DTOs.Overtimes
 {
     public class UpdateOvertimeStatus
     {

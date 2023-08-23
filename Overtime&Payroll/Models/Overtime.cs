@@ -1,8 +1,8 @@
-﻿using Overtime_Payroll.Utilities.Enums;
+﻿using server.Utilities.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Overtime_Payroll.Models
+namespace server.Models
 {
     [Table("tb_m_overtimes")]
     public class Overtime : BaseEntity

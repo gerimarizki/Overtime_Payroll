@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Overtime_Payroll.DTOs.Employees;
-using Overtime_Payroll.Services;
-using Overtime_Payroll.Utilities.Handlers;
+using server.DTOs.Employees;
+using server.Services;
+using server.Utilities.Handlers;
 using System.Net;
 
-namespace Overtime_Payroll.Controllers
+namespace server.Controllers
 {
 
     [ApiController]
@@ -111,7 +111,7 @@ namespace Overtime_Payroll.Controllers
             });
         }
 
-        [HttpGet("get-employee/{guid}")]
+        [HttpGet("{guid}")]
         public IActionResult GetByGuid(Guid guid)
         {
             var employee = _service.GetEmployeeByGuid(guid);
@@ -153,10 +153,38 @@ namespace Overtime_Payroll.Controllers
             });
         }
 
+        [HttpPut("update-employee")]
+        public IActionResult UpdateEmployee(UpdateAllEmployeeDto updateEmployeeDto)
+        {
+            var update = _service.UpdateEmployee(updateEmployeeDto);
+            if (update is -1)
+                return NotFound(new HandlerForResponse<UpdateEmployeeDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "ID not found"
+                });
+
+            if (update is 0)
+                return StatusCode(StatusCodes.Status500InternalServerError, new HandlerForResponse<UpdateEmployeeDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Error retrieving data from the database"
+                });
+
+            return Ok(new HandlerForResponse<UpdateEmployeeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Successfully updated"
+            });
+        }
+
         [HttpPut]
         public IActionResult Update(UpdateEmployeeDto updateEmployeeDto)
         {
-            var update = _service.UpdateEmployee(updateEmployeeDto);
+            var update = _service.Update(updateEmployeeDto);
             if (update is -1)
                 return NotFound(new HandlerForResponse<UpdateEmployeeDto>
                 {

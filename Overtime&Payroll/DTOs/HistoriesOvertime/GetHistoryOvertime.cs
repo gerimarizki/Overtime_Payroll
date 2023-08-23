@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
 
-namespace Overtime_Payroll.DTOs.HistoriesOvertime
+namespace server.DTOs.HistoriesOvertime
 {
     public class GetHistoryOvertime
     {

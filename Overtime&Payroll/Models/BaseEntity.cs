@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Overtime_Payroll.Models
+namespace server.Models
 {
     public abstract class BaseEntity
     {

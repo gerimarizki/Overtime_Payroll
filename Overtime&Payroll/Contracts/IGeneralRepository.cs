@@ -1,4 +1,4 @@
-﻿namespace Overtime_Payroll.Contracts;
+﻿namespace server.Contracts;
     public interface IGeneralRepository<TEntity>
     {
         ICollection<TEntity> GetAll();

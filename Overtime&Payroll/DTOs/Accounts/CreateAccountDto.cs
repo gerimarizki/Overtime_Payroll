@@ -1,6 +1,7 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
+using server.Utilities.Handlers;
 
-namespace Overtime_Payroll.DTOs.Accounts
+namespace server.DTOs.Accounts
 {
     public class CreateAccountDto
     {
@@ -19,7 +20,7 @@ namespace Overtime_Payroll.DTOs.Accounts
             {
                 Guid = newAccountDto.Guid,
                 Email = newAccountDto.Email,
-                Password = newAccountDto.Password,
+                Password = HandlerForHashing.Hash(newAccountDto.Password),
                 IsActive = newAccountDto.IsActive,
                 OTP = newAccountDto.Otp,
                 IsUsed = newAccountDto.IsUsed,

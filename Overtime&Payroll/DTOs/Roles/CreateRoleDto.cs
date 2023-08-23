@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
 
-namespace Overtime_Payroll.DTOs.Roles
+namespace server.DTOs.Roles
 {
     public class CreateRoleDto
     {

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Overtime_Payroll.Data;
+using server.Data;
 
 #nullable disable
 
-namespace Overtime_Payroll.Migrations
+namespace server.Migrations
 {
     [DbContext(typeof(OvertimeDbContext))]
     [Migration("20230817151918_Revisi")]

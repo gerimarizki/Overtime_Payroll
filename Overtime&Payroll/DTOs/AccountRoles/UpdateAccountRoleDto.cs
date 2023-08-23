@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
 
-namespace Overtime_Payroll.DTOs.AccountRoles
+namespace server.DTOs.AccountRoles
 {
     public class UpdateAccountRoleDto
     {

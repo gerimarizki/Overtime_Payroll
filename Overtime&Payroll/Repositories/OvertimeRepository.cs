@@ -1,11 +1,11 @@
-﻿using Overtime_Payroll.Contracts;
-using Overtime_Payroll.Data;
-using Overtime_Payroll.DTOs.Overtimes;
-using Overtime_Payroll.Models;
-using Overtime_Payroll.Utilities;
-using Overtime_Payroll.Utilities.Handlers;
+﻿using server.Contracts;
+using server.Data;
+using server.DTOs.Overtimes;
+using server.Models;
+using server.Utilities;
+using server.Utilities.Handlers;
 
-namespace Overtime_Payroll.Repositories
+namespace server.Repositories
 {
     public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeRepository
     {
@@ -79,7 +79,7 @@ namespace Overtime_Payroll.Repositories
         public IEnumerable<AllRemainingOvertimeDto> RemainingOvertimeList()
         {
             var today = DateTime.Today;
-            var targetDate = new DateTime(today.Year, 9, 25);
+            var targetDate = new DateTime(today.Year, 8, 25);
             var endDate = targetDate.AddDays(-30);
             var overtimeRemaining = (from c in _context.Overtimes
                            join emp in _context.Employees on c.EmployeeGuid equals emp.Guid
@@ -99,7 +99,7 @@ namespace Overtime_Payroll.Repositories
         public IEnumerable<AllRemainingOvertimeDto> RemainingOvertimeList(Guid guid)
         {
             var today = DateTime.Today;
-            var targetDate = new DateTime(today.Year, 9, 25);
+            var targetDate = new DateTime(today.Year, 8, 25);
             var endDate = targetDate.AddDays(-30);
             var overtimeRemaining = (from c in _context.Overtimes
                            join emp in _context.Employees on c.EmployeeGuid equals emp.Guid
@@ -168,6 +168,7 @@ namespace Overtime_Payroll.Repositories
             {
                 return null;
             }
+
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
+using server.Utilities.Handlers;
 
-namespace Overtime_Payroll.DTOs.Accounts
+namespace server.DTOs.Accounts
 {
     public class UpdateAccountDto
     {
@@ -18,7 +19,7 @@ namespace Overtime_Payroll.DTOs.Accounts
             {
                 Guid = updateAccountDto.Guid,
                 Email = updateAccountDto.Email,
-                Password = updateAccountDto.Password,
+                Password = HandlerForHashing.Hash(updateAccountDto.Password),
                 IsActive = updateAccountDto.IsActive,
                 OTP = updateAccountDto.OTP,
                 IsUsed = updateAccountDto.IsUsed,

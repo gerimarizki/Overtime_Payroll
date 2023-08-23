@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
 
-namespace Overtime_Payroll.DTOs.Payrolls
+namespace server.DTOs.Payrolls
 {
     public class GetAllPayrollDto
     {
@@ -10,6 +10,7 @@ namespace Overtime_Payroll.DTOs.Payrolls
         public double Allowance { get; set; }
         public double PaidOvertime { get; set; }
         public double TotalSalary { get; set; }
+        public double TotalPaidOvertime { get; set; }
         public Guid EmployeeGuid { get; set; }
         public string FullName { get; set; }
 

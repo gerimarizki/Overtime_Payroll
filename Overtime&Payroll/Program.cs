@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TokenHandler = Overtime_Payroll.Utilities.Handlers.TokenHandler;
+using TokenHandler = server.Utilities.Handlers.TokenHandler;
 using Microsoft.OpenApi.Models;
-using Overtime_Payroll.Contracts;
-using Overtime_Payroll.Repositories;
-using Overtime_Payroll.Services;
-using Overtime_Payroll.Utilities.Handlers;
-using Overtime_Payroll.Data;
-using Overtime_Payroll.Utilities.Validators;
+using server.Contracts;
+using server.Repositories;
+using server.Services;
+using server.Utilities.Handlers;
+using server.Data;
+using server.Utilities.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 

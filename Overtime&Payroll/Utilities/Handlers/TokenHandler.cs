@@ -1,10 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Overtime_Payroll.Contracts;
+using server.Contracts;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Overtime_Payroll.Utilities.Handlers
+namespace server.Utilities.Handlers
 {
     public class TokenHandler : ITokenHandler
     {

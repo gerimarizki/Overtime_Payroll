@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Overtime_Payroll.DTOs.HistoriesOvertime;
-using Overtime_Payroll.Services;
-using Overtime_Payroll.Utilities.Handlers;
+using server.DTOs.HistoriesOvertime;
+using server.Services;
+using server.Utilities.Handlers;
 using System.Net;
 
-namespace Overtime_Payroll.Controllers
+namespace server.Controllers
 {
     [ApiController]
     [Route("api/historiesOvertime")]

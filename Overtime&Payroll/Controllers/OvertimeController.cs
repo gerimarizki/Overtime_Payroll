@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Overtime_Payroll.DTOs.Overtimes;
-using Overtime_Payroll.Services;
-using Overtime_Payroll.Utilities.Handlers;
+using server.DTOs.AccountRoles;
+using server.DTOs.Overtimes;
+using server.Services;
+using server.Utilities.Handlers;
 using System.Net;
 
-namespace Overtime_Payroll.Controllers
+namespace server.Controllers
 {
     [ApiController]
     [Route("api/overtimes")]
@@ -129,7 +130,28 @@ namespace Overtime_Payroll.Controllers
 
         }
 
-        [HttpGet("employee-overtime/{guid}")]
+        [HttpGet("{guid}")]
+        public IActionResult GetOvertimeByGuid(Guid guid)
+        {
+            var getOvertimeByGuid = _service.GetOvertimeByGuid(guid);
+            if (getOvertimeByGuid is null)
+                return NotFound(new HandlerForResponse<GetOvertimeDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+
+            return Ok(new HandlerForResponse<GetOvertimeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = getOvertimeByGuid
+            });
+        }
+
+        [HttpGet("employee-overtime{guid}")]
         public IActionResult GetAllByGuidEmp(Guid guid)
         {
             var over = _service.GetAllByGuidEmp(guid);

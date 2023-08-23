@@ -1,7 +1,7 @@
-﻿using Overtime_Payroll.Models;
-using Overtime_Payroll.Utilities.Enums;
+﻿using server.Models;
+using server.Utilities.Enums;
 
-namespace Overtime_Payroll.DTOs.Overtimes
+namespace server.DTOs.Overtimes
 {
 
     public class CreateOvertimeDto

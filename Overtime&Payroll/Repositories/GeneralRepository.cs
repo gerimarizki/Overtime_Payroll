@@ -1,7 +1,7 @@
-﻿using Overtime_Payroll.Contracts;
-using Overtime_Payroll.Data;
+﻿using server.Contracts;
+using server.Data;
 
-namespace Overtime_Payroll.Repositories
+namespace server.Repositories
 {
     public abstract class GeneralRepository<TEntity> : IGeneralRepository<TEntity>
        where TEntity : class

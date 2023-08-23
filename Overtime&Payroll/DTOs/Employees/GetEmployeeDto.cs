@@ -1,7 +1,7 @@
-﻿using Overtime_Payroll.Models;
-using Overtime_Payroll.Utilities.Enums;
+﻿using server.Models;
+using server.Utilities.Enums;
 
-namespace Overtime_Payroll.DTOs.Employees
+namespace server.DTOs.Employees
 {
 
     public class GetEmployeeDto

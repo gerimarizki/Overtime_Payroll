@@ -1,6 +1,6 @@
-﻿using Overtime_Payroll.Models;
+﻿using server.Models;
 
-namespace Overtime_Payroll.DTOs.Accounts
+namespace server.DTOs.Accounts
 {
     public class GetAccountDto
     {

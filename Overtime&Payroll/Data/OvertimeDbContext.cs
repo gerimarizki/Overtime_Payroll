@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Overtime_Payroll.Models;
+using server.Models;
 using System.Reflection.Emit;
 using System.Security.Principal;
 
-namespace Overtime_Payroll.Data
+namespace server.Data
 {
     public class OvertimeDbContext : DbContext
     {

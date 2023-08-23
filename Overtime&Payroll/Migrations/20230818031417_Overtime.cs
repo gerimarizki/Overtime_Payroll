@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Overtime_Payroll.Migrations
+namespace server.Migrations
 {
     public partial class Overtime : Migration
     {

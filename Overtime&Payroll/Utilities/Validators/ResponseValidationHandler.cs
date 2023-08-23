@@ -1,4 +1,4 @@
-﻿namespace Overtime_Payroll.Utilities.Validators
+﻿namespace server.Utilities.Validators
 {
     public class ResponseValidationHandler
     {

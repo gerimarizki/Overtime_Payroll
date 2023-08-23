@@ -1,7 +1,7 @@
-﻿using Overtime_Payroll.Contracts;
-using Overtime_Payroll.DTOs.AccountRoles;
+﻿using server.Contracts;
+using server.DTOs.AccountRoles;
 
-namespace Overtime_Payroll.Services
+namespace server.Services
 {
     public class AccountRoleService
     {
@@ -49,8 +49,7 @@ namespace Overtime_Payroll.Services
             if (getAccountRole is null) return -1;
 
             var isUpdate = _accountRoleRepository.Update(updateAccountRoleDto);
-            return !isUpdate ? 0 :
-                1;
+            return !isUpdate ? 0 : 1;
         }
 
         public int DeleteAccountRole(Guid guid)
