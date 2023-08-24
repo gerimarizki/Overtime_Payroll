@@ -88,7 +88,7 @@ namespace server.Services
                 };
                 _payrollRepository.Create(payroll);
 
-                var roleId = Guid.Parse("d45a2669-59da-4998-69f2-08db92586f59");
+                var roleId = Guid.Parse("34fccb76-f14f-41c5-a07a-08dba403d7e5");
 
                 var accountRoleGuid = Guid.NewGuid();//untuk nampung Guid di Variabel
                 var accountRole = new AccountRole

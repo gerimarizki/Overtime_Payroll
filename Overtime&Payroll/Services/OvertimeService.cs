@@ -1,8 +1,5 @@
 ﻿using server.Contracts;
 using server.DTOs.Overtimes;
-using server.DTOs.Payrolls;
-using server.Migrations;
-using server.Models;
 using server.Utilities.Handlers;
 
 namespace server.Services
@@ -25,7 +22,7 @@ namespace server.Services
                             where e.Guid == o.EmployeeGuid
                             select new GetOvertimeDto
                             {
-                                Guid = e.Guid,
+                                Guid = o.Guid,
                                 OvertimeId = o.OvertimeId,
                                 StartOvertimeDate = DateTime.Now,
                                 EndOvertimeDate= DateTime.Now,
@@ -54,6 +51,45 @@ namespace server.Services
             return overtime;
         }
 
+        //tambahan baru 24/08/2023
+        public AllRemainingOvertimeDto? CreateOvertimeToEmployee(TestOvertimeDto ovt)
+        {
+            Models.Overtime overtime = ovt;
+            overtime.OvertimeId = HandlerGenerator.OvertimeId(_overtimeRepository.GetLastOvertimeId());
+            overtime.StartOvertimeDate = ovt.StartOvertimeDate;
+            overtime.EndOvertimeDate = ovt.EndOvertimeDate;
+            var createdOver = _overtimeRepository.CreateOvertime(overtime);
+            if (createdOver is null) return null;
+
+            return (AllRemainingOvertimeDto)createdOver;
+        }
+
+        public IEnumerable<AllRemainingOvertimeDto>? GetAllTestOvertimeToEmployee()
+        {
+
+            var master = (from o in _overtimeRepository.GetAll()
+                          join e in _employeeRepository.GetAll() on o.EmployeeGuid equals e.Guid
+                          select new AllRemainingOvertimeDto
+                          {
+                              Guid = o.Guid,
+                              FullName = e.FirstName + " " + e.LastName,
+                              EmployeeGuid = e.Guid,
+                              EndOvertimeDate = o.EndOvertimeDate,
+                              OvertimeId = o.OvertimeId,
+                              PaidOvertime = o.PaidOvertime,
+                              OvertimeRemaining = o.OvertimeRemaining,
+                              Remarks = o.Remarks,
+                              StartOvertimeDate = o.StartOvertimeDate,
+                              Status = o.Status,
+                              CreatedDate = o.StartOvertimeDate,
+                          }).ToList();
+            return master;
+
+        }
+
+        //tutup
+
+
         public GetOvertimeDto? GetOvertimeByGuid(Guid guid)
         {
             var overtime = _overtimeRepository.GetByGuid(guid);
@@ -77,15 +113,17 @@ namespace server.Services
         {
             Models.Overtime overtime = newOvertime;
             overtime.OvertimeId = HandlerGenerator.OvertimeId(_overtimeRepository.GetLastOvertimeId());
+            overtime.Guid = new Guid();
             var createdOvertime = _overtimeRepository.Create(overtime);
             if (createdOvertime is null) return null;
 
+            
             var overtimeDetails = (from e in _employeeRepository.GetAll()
                                    join o in _overtimeRepository.GetAll() on e.Guid equals createdOvertime.EmployeeGuid
                                    where e.Guid == createdOvertime.EmployeeGuid
                                    select new GetOvertimeDto
                                    {
-                                       Guid = e.Guid,
+                                       Guid = o.Guid,
                                        OvertimeId = createdOvertime.OvertimeId,
                                        StartOvertimeDate = createdOvertime.StartOvertimeDate,
                                        EndOvertimeDate = createdOvertime.EndOvertimeDate,
@@ -113,7 +151,7 @@ namespace server.Services
         public int DeleteOvertime(Guid guid)
         {
             var overtime = _overtimeRepository.GetByGuid(guid);
-            if (overtime is null) return -1;
+            if (overtime == null) { return -1; }
 
             var isDelete = _overtimeRepository.Delete(overtime);
             return !isDelete ? 0 : 1;
@@ -154,8 +192,5 @@ namespace server.Services
             return !isUpdate ? 0 : 1;
 
         }
-
-
-
     }
 }

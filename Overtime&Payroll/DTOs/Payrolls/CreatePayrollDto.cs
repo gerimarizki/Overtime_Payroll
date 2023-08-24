@@ -5,7 +5,7 @@ namespace server.DTOs.Payrolls
     public class CreatePayrollDto
     {
         public double Salary { get; set; }
-        public double Allowace { get; set; }
+        public double Allowance { get; set; }
         public Guid EmployeeGuid { get; set; }
 
         public static implicit operator Payroll(CreatePayrollDto newPayrolls)
@@ -14,7 +14,7 @@ namespace server.DTOs.Payrolls
             {
                 Guid = new Guid(),
                 Salary = newPayrolls.Salary,
-                Allowance = newPayrolls.Allowace,
+                Allowance = newPayrolls.Allowance,
                 EmployeeGuid = newPayrolls.EmployeeGuid,
             };
         }
@@ -23,7 +23,7 @@ namespace server.DTOs.Payrolls
         {
             return new()
             {
-                Allowace = payroll.Allowance,
+                Allowance = payroll.Allowance,
                 Salary = payroll.Salary,
                 EmployeeGuid = payroll.EmployeeGuid
             };

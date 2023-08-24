@@ -3,43 +3,51 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace server.Migrations
+namespace Overtime_Payroll.Migrations
 {
-    public partial class Revisi : Migration
+    public partial class Password : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "email",
-                table: "tb_m_employees");
+            migrationBuilder.CreateTable(
+                name: "tb_m_employees",
+                columns: table => new
+                {
+                    guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    nik = table.Column<string>(type: "nchar(6)", nullable: false),
+                    first_name = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    last_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    birth_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    gender = table.Column<int>(type: "int", nullable: false),
+                    hiring_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    phone_number = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    manager_guid = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_m_employees", x => x.guid);
+                    table.ForeignKey(
+                        name: "FK_tb_m_employees_tb_m_employees_manager_guid",
+                        column: x => x.manager_guid,
+                        principalTable: "tb_m_employees",
+                        principalColumn: "guid");
+                });
 
-            migrationBuilder.AlterColumn<string>(
-                name: "last_name",
-                table: "tb_m_employees",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nchar(50)");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "created_date",
-                table: "tb_m_employees",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "manager_guid",
-                table: "tb_m_employees",
-                type: "uniqueidentifier",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "modified_date",
-                table: "tb_m_employees",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+            migrationBuilder.CreateTable(
+                name: "tb_m_roles",
+                columns: table => new
+                {
+                    guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_m_roles", x => x.guid);
+                });
 
             migrationBuilder.CreateTable(
                 name: "tb_m_accounts",
@@ -47,7 +55,7 @@ namespace server.Migrations
                 {
                     guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     email = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(30)", nullable: false),
+                    password = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     otp = table.Column<int>(type: "int", nullable: true),
                     is_used = table.Column<bool>(type: "bit", nullable: false),
                     is_active = table.Column<bool>(type: "bit", nullable: false),
@@ -94,20 +102,6 @@ namespace server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tb_m_roles",
-                columns: table => new
-                {
-                    guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    modified_date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tb_m_roles", x => x.guid);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "tb_tr_payrolls",
                 columns: table => new
                 {
@@ -126,26 +120,6 @@ namespace server.Migrations
                         name: "FK_tb_tr_payrolls_tb_m_employees_employee_guid",
                         column: x => x.employee_guid,
                         principalTable: "tb_m_employees",
-                        principalColumn: "guid",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tb_tr_histories_overtimes",
-                columns: table => new
-                {
-                    guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    overtime_guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    modified_date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tb_tr_histories_overtimes", x => x.guid);
-                    table.ForeignKey(
-                        name: "FK_tb_tr_histories_overtimes_tb_m_overtimes_overtime_guid",
-                        column: x => x.overtime_guid,
-                        principalTable: "tb_m_overtimes",
                         principalColumn: "guid",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -177,6 +151,32 @@ namespace server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "tb_tr_histories_overtimes",
+                columns: table => new
+                {
+                    guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    overtime_guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_tr_histories_overtimes", x => x.guid);
+                    table.ForeignKey(
+                        name: "FK_tb_tr_histories_overtimes_tb_m_overtimes_overtime_guid",
+                        column: x => x.overtime_guid,
+                        principalTable: "tb_m_overtimes",
+                        principalColumn: "guid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_m_accounts_email",
+                table: "tb_m_accounts",
+                column: "email",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_tb_m_employees_manager_guid",
                 table: "tb_m_employees",
@@ -186,12 +186,6 @@ namespace server.Migrations
                 name: "IX_tb_m_employees_nik_phone_number",
                 table: "tb_m_employees",
                 columns: new[] { "nik", "phone_number" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_tb_m_accounts_email",
-                table: "tb_m_accounts",
-                column: "email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -225,21 +219,10 @@ namespace server.Migrations
                 table: "tb_tr_payrolls",
                 column: "employee_guid",
                 unique: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_tb_m_employees_tb_m_employees_manager_guid",
-                table: "tb_m_employees",
-                column: "manager_guid",
-                principalTable: "tb_m_employees",
-                principalColumn: "guid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_tb_m_employees_tb_m_employees_manager_guid",
-                table: "tb_m_employees");
-
             migrationBuilder.DropTable(
                 name: "tb_tr_account_roles");
 
@@ -258,42 +241,8 @@ namespace server.Migrations
             migrationBuilder.DropTable(
                 name: "tb_m_overtimes");
 
-            migrationBuilder.DropIndex(
-                name: "IX_tb_m_employees_manager_guid",
-                table: "tb_m_employees");
-
-            migrationBuilder.DropIndex(
-                name: "IX_tb_m_employees_nik_phone_number",
-                table: "tb_m_employees");
-
-            migrationBuilder.DropColumn(
-                name: "created_date",
-                table: "tb_m_employees");
-
-            migrationBuilder.DropColumn(
-                name: "manager_guid",
-                table: "tb_m_employees");
-
-            migrationBuilder.DropColumn(
-                name: "modified_date",
-                table: "tb_m_employees");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "last_name",
-                table: "tb_m_employees",
-                type: "nchar(50)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "email",
-                table: "tb_m_employees",
-                type: "nvarchar(50)",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.DropTable(
+                name: "tb_m_employees");
         }
     }
 }

@@ -21,11 +21,11 @@ namespace server.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var over = _service.GetOvertime();
+            var over = _service.GetAllTestOvertimeToEmployee(); // ini dirubah dari GetOvertime
 
             if (!over.Any())
             {
-                return NotFound(new HandlerForResponse<GetOvertimeDto>
+                return NotFound(new HandlerForResponse<AllRemainingOvertimeDto> //dari GetOvertimeDto
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
@@ -33,7 +33,7 @@ namespace server.Controllers
                 });
             }
 
-            return Ok(new HandlerForResponse<IEnumerable<GetOvertimeDto>>
+            return Ok(new HandlerForResponse<IEnumerable<AllRemainingOvertimeDto>>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
@@ -228,5 +228,55 @@ namespace server.Controllers
             }
 
         }
+
+        //Tambahan baru 24/08/2023
+        [HttpGet("get-all-overtime-employee")]
+        public IActionResult GetAllOvertimeEmployee()
+        {
+            var over = _service.GetAllTestOvertimeToEmployee();
+
+            if (!over.Any())
+            {
+                return NotFound(new HandlerForResponse<AllRemainingOvertimeDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+
+            return Ok(new HandlerForResponse<IEnumerable<AllRemainingOvertimeDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = over
+            });
+        }
+
+        [HttpPost("create-overtime-to-employee-testing")]
+        public IActionResult CreateOvertimeEmployeeTesting(TestOvertimeDto newOvertime)
+        {
+
+            var over = _service.CreateOvertimeToEmployee(newOvertime);
+            if (over is null)
+            {
+                return BadRequest(new HandlerForResponse<AllRemainingOvertimeDto>
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Unsuccesful to Create"
+                });
+            }
+
+            return Ok(new HandlerForResponse<AllRemainingOvertimeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Successfull to Create",
+                Data = over
+            });
+        }
+        //tutup
     }
 }

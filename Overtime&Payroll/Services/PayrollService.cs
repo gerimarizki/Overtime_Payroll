@@ -171,7 +171,7 @@ namespace server.Services
                                 Allowance = p.Allowance,
                                 PayDate = DateTime.Now,
                                 PaidOvertime = o.PaidOvertime,
-                                TotalSalary = p.Salary + o.PaidOvertime + p.Allowance,
+                                TotalSalary = p.Salary + o.PaidOvertime - p.Allowance,
                                 EmployeeGuid = e.Guid,
                                 FullName = e.FirstName + " " + e.LastName,
                             }).ToList();
@@ -190,7 +190,7 @@ namespace server.Services
                                 Allowance = p.Allowance,
                                 PayDate = p.PayDate,
                                 PaidOvertime = pay.PaidOvertime,
-                                TotalSalary = p.Salary + pay.PaidOvertime + p.Allowance,
+                                TotalSalary = p.Salary + pay.PaidOvertime - p.Allowance,
                                 EmployeeGuid = pay.EmployeeGuid,
                             }).ToList();
             return employee;
@@ -208,10 +208,10 @@ namespace server.Services
                                 Allowance = p.Allowance,
                                 PayDate = pay.PayDate,
                                 PaidOvertime = pay.PaidOvertime,
-                                TotalSalary = p.Salary + pay.PaidOvertime + p.Allowance,
+                                TotalSalary = p.Salary + pay.PaidOvertime - p.Allowance,
                                 EmployeeGuid = pay.EmployeeGuid,
                                 FullName = pay.FullName,
-                                TotalPaidOvertime = GetTotalOvertime(pay.EmployeeGuid) // Menghitung total paid overtime
+                                //TotalPaidOvertime = GetTotalOvertime(pay.EmployeeGuid) // Menghitung total paid overtime
                             }).ToList();
             return employee;
 
@@ -222,7 +222,7 @@ namespace server.Services
         //    var Payrolls = _PayrollRepository.GetAll();
 
 
-        //    double totalExpense = Payrolls.Sum(p => p.Salary + p.Allowance);
+        //    double totalExpense = Payrolls.Sum(p => p.Salary - p.Allowance);
 
         //    return totalExpense;
         //}
@@ -230,8 +230,9 @@ namespace server.Services
         public double GetTotalSalary(Guid employeeGuid)
         {
             var payrolls = GetAllPayrollOverbyEmpGuid(employeeGuid);
+            var paidOvertime = GetAllMasterOverbyGuid(employeeGuid);
 
-            double totalSalary = payrolls.Sum(p => p.Salary + p.Allowance);
+            double totalSalary = payrolls.Sum(p => p.Salary + p.PaidOvertime - p.Allowance);
 
             return totalSalary;
         }

@@ -8,7 +8,7 @@ namespace server.Models
         [Column("email", TypeName = "nvarchar(50)")]
         public string Email { get; set; }
 
-        [Column("password", TypeName = "nvarchar(30)")]
+        [Column("password", TypeName = "nvarchar(255)")]
         public string Password { get; set; }
 
         [Column("otp")]

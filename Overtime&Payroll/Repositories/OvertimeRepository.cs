@@ -15,14 +15,15 @@ namespace server.Repositories
         {
             return _context.Set<Overtime>().ToList().Select(over => over.OvertimeId).LastOrDefault();
         }
-  
+
+
         public Overtime? CreateOvertime(Overtime overtime)
         {
             try
             {
                 var remainingOvertime = RemainingOvertimeByEmployeeGuid(overtime.EmployeeGuid);
                 var exitingOvertime = _context.Overtimes.FirstOrDefault(o => o.StartOvertimeDate.Day == overtime.StartOvertimeDate.Day);
-                if (remainingOvertime.OvertimeRemaining > 0 && remainingOvertime.EndOvertimeDate <= remainingOvertime.StartOvertimeDate)
+               if (remainingOvertime.OvertimeRemaining > 0 && remainingOvertime.EndOvertimeDate <= remainingOvertime.StartOvertimeDate)
                 {
                     var emp = _context.Employees.Where(e => e.Guid == overtime.EmployeeGuid)
                         .Join(_context.Payrolls, e => e.Guid, p => p.EmployeeGuid, (e, p) => new
@@ -30,6 +31,7 @@ namespace server.Repositories
                             Employee = e,
                             Payroll = p,
                         }).FirstOrDefault();
+
                     var salaryPerHours = emp.Payroll.Salary * 1 / 173;
                     var totalHours = Convert.ToInt32((overtime.EndOvertimeDate - overtime.StartOvertimeDate).TotalHours);
                     var today = overtime.StartOvertimeDate.DayOfWeek;
@@ -113,7 +115,7 @@ namespace server.Repositories
                                StartOvertimeDate = c.StartOvertimeDate,
                                FullName = emp.FirstName + " " + emp.LastName,
                                OvertimeId = c.OvertimeId,
-                               Paid = c.PaidOvertime,
+                               PaidOvertime = c.PaidOvertime,
                                OvertimeRemaining = c.OvertimeRemaining,
                                Remarks = c.Remarks,
                                Status = c.Status,
@@ -153,7 +155,7 @@ namespace server.Repositories
                                   EndOvertimeDate = o.EndOvertimeDate,
                                   FullName = m.FirstName + " " + m.LastName,
                                   OvertimeId = o.OvertimeId,
-                                  Paid = o.PaidOvertime,
+                                  PaidOvertime = o.PaidOvertime,
                                   OvertimeRemaining = o.OvertimeRemaining,
                                   Remarks = o.Remarks,
                                   Status = o.Status,

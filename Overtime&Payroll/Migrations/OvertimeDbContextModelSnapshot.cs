@@ -8,7 +8,7 @@ using server.Data;
 
 #nullable disable
 
-namespace server.Migrations
+namespace Overtime_Payroll.Migrations
 {
     [DbContext(typeof(OvertimeDbContext))]
     partial class OvertimeDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Account", b =>
+            modelBuilder.Entity("server.Models.Account", b =>
                 {
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier")
@@ -59,7 +59,7 @@ namespace server.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("password");
 
                     b.HasKey("Guid");
@@ -70,7 +70,7 @@ namespace server.Migrations
                     b.ToTable("tb_m_accounts");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.AccountRole", b =>
+            modelBuilder.Entity("server.Models.AccountRole", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -102,7 +102,7 @@ namespace server.Migrations
                     b.ToTable("tb_tr_account_roles");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Employee", b =>
+            modelBuilder.Entity("server.Models.Employee", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -162,7 +162,7 @@ namespace server.Migrations
                     b.ToTable("tb_m_employees");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.HistoryOvertime", b =>
+            modelBuilder.Entity("server.Models.HistoryOvertime", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -188,7 +188,7 @@ namespace server.Migrations
                     b.ToTable("tb_tr_histories_overtimes");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Overtime", b =>
+            modelBuilder.Entity("server.Models.Overtime", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -247,7 +247,7 @@ namespace server.Migrations
                     b.ToTable("tb_m_overtimes");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Payroll", b =>
+            modelBuilder.Entity("server.Models.Payroll", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -286,7 +286,7 @@ namespace server.Migrations
                     b.ToTable("tb_tr_payrolls");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Role", b =>
+            modelBuilder.Entity("server.Models.Role", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -311,26 +311,26 @@ namespace server.Migrations
                     b.ToTable("tb_m_roles");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Account", b =>
+            modelBuilder.Entity("server.Models.Account", b =>
                 {
-                    b.HasOne("Overtime_Payroll.Models.Employee", "Employee")
+                    b.HasOne("server.Models.Employee", "Employee")
                         .WithOne("Account")
-                        .HasForeignKey("Overtime_Payroll.Models.Account", "Guid")
+                        .HasForeignKey("server.Models.Account", "Guid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.AccountRole", b =>
+            modelBuilder.Entity("server.Models.AccountRole", b =>
                 {
-                    b.HasOne("Overtime_Payroll.Models.Account", "Account")
+                    b.HasOne("server.Models.Account", "Account")
                         .WithMany("AccountRoles")
                         .HasForeignKey("AccountGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Overtime_Payroll.Models.Role", "Role")
+                    b.HasOne("server.Models.Role", "Role")
                         .WithMany("AccountRoles")
                         .HasForeignKey("RoleGuid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -341,9 +341,9 @@ namespace server.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Employee", b =>
+            modelBuilder.Entity("server.Models.Employee", b =>
                 {
-                    b.HasOne("Overtime_Payroll.Models.Employee", "Manager")
+                    b.HasOne("server.Models.Employee", "Manager")
                         .WithMany("Employees")
                         .HasForeignKey("ManagerGuid")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -351,9 +351,9 @@ namespace server.Migrations
                     b.Navigation("Manager");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.HistoryOvertime", b =>
+            modelBuilder.Entity("server.Models.HistoryOvertime", b =>
                 {
-                    b.HasOne("Overtime_Payroll.Models.Overtime", "Overtime")
+                    b.HasOne("server.Models.Overtime", "Overtime")
                         .WithMany("Histories")
                         .HasForeignKey("OvertimeGuid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -362,9 +362,9 @@ namespace server.Migrations
                     b.Navigation("Overtime");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Overtime", b =>
+            modelBuilder.Entity("server.Models.Overtime", b =>
                 {
-                    b.HasOne("Overtime_Payroll.Models.Employee", "Employee")
+                    b.HasOne("server.Models.Employee", "Employee")
                         .WithMany("Overtimes")
                         .HasForeignKey("EmployeeGuid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -373,23 +373,23 @@ namespace server.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Payroll", b =>
+            modelBuilder.Entity("server.Models.Payroll", b =>
                 {
-                    b.HasOne("Overtime_Payroll.Models.Employee", "Employee")
+                    b.HasOne("server.Models.Employee", "Employee")
                         .WithOne("Payroll")
-                        .HasForeignKey("Overtime_Payroll.Models.Payroll", "EmployeeGuid")
+                        .HasForeignKey("server.Models.Payroll", "EmployeeGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Account", b =>
+            modelBuilder.Entity("server.Models.Account", b =>
                 {
                     b.Navigation("AccountRoles");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Employee", b =>
+            modelBuilder.Entity("server.Models.Employee", b =>
                 {
                     b.Navigation("Account");
 
@@ -400,12 +400,12 @@ namespace server.Migrations
                     b.Navigation("Payroll");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Overtime", b =>
+            modelBuilder.Entity("server.Models.Overtime", b =>
                 {
                     b.Navigation("Histories");
                 });
 
-            modelBuilder.Entity("Overtime_Payroll.Models.Role", b =>
+            modelBuilder.Entity("server.Models.Role", b =>
                 {
                     b.Navigation("AccountRoles");
                 });

@@ -10,7 +10,7 @@ namespace server.DTOs.Payrolls
         public double Allowance { get; set; }
         public double PaidOvertime { get; set; }
         public double TotalSalary { get; set; }
-        public double TotalPaidOvertime { get; set; }
+        //public double TotalPaidOvertime { get; set; }
         public Guid EmployeeGuid { get; set; }
         public string FullName { get; set; }
 
@@ -38,6 +38,8 @@ namespace server.DTOs.Payrolls
                 EmployeeGuid = payroll.EmployeeGuid,
             };
         }
+
+
 
 
     }

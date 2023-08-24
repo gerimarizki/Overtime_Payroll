@@ -25,7 +25,6 @@ namespace server.Models
         [Column("overtime_remaining")]
         public int OvertimeRemaining { get; set; }
 
-
         [Column("status")]
         public StatusLevel Status { get; set; }
 
