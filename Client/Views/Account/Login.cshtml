@@ -7,7 +7,7 @@
 <div class="col-lg-6 d-flex align-items-center justify-content-center">
     <div class="auth-form-transparent text-left p-3">
         <div class="brand-logo">
-            <img src="../../images/logo.svg" alt="logo">
+            <img src="~/Layout/images/logo.svg" alt="logo">
         </div>
         <h4>Welcome back!</h4>
         <h6 class="font-weight-light">Happy to see you again!</h6>
@@ -43,22 +43,25 @@
                         Keep me signed in
                     </label>
                 </div>
-                <a href="#" class="auth-link text-black">Forgot password?</a>
+                <a data-bs-toggle="modal" data-bs-target="#modalForgot" style="cursor: pointer" class="text-primary">Forgot Password?</a>
             </div>
             <div class="my-3">
 				<button class="btn btn-primary" type="submit">Login</button>
             </div>
-            <div class="mb-2 d-flex">
+            @*<div class="mb-2 d-flex">
                 <button type="button" class="btn btn-facebook auth-form-btn flex-grow mr-1">
                     <i class="mdi mdi-facebook mr-2"></i>Facebook
                 </button>
                 <button type="button" class="btn btn-google auth-form-btn flex-grow ml-1">
                     <i class="mdi mdi-google mr-2"></i>Google
                 </button>
-            </div>
+            </div>*@
             <div class="text-center mt-4 font-weight-light">
-                Don't have an account? <a href="register-2.html" class="text-primary">Create</a>
+                Don't have an account? <a data-bs-toggle="modal" data-bs-target="#modalRegister" style="cursor: pointer" class="text-primary">Register</a>
             </div>
+           @* <div class="text-center mt-4 font-weight-light">
+                Forget Password? <a href="register-2.html" class="text-primary">Forgot Password</a>
+            </div>*@
         </form>
     </div>
 </div>
@@ -69,3 +72,320 @@
 @*@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }*@
+
+
+@*----------------------------------------
+MODAL UNTUK REGISTER
+----------------------------------------*@
+
+<div class="modal" tabindex="-1" role="dialog" id="modalRegister">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registration Form</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="pt-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-lg" id="firstName" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-lg" id="lastName" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="datetime-local" class="form-control form-control-lg" id="birthDate" placeholder="Birth Date">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control form-control-lg" id="gender">
+                            <option value="0">Female</option>
+                            <option value="1">Male</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="datetime-local" class="form-control form-control-lg" id="hiringDate" placeholder="Hiring Date">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control form-control-lg" id="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control form-control-lg" id="managerGuid" placeholder="Manager Guid">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control form-control-lg" id="password" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control form-control-lg" id="confirmPassword" placeholder="Confirm Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control form-control-lg" id="salary" placeholder="Salary">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="register()" class="btn btn-primary" data-bs-dismiss="modal">Register</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*----------------------------------------
+MODAL UNTUK FORGOT PASSWORD
+----------------------------------------*@
+
+<div class="modal" tabindex="-1" role="dialog" id="modalForgot">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registration Form</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="pt-3">
+                    <div class="form-group">
+                        <input type="email" class="form-control form-control-lg" id="forgotEmail" placeholder="Email">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="forgotPassword()" class="btn btn-primary" data-bs-dismiss="modal">Forgot Password</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*----------------------------------------
+MODAL UNTUK CHANGE PASSWORD
+----------------------------------------*@
+
+<div class="modal" tabindex="-1" role="dialog" id="modalChange">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registration Form</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="pt-3">
+                    <div class="form-group">
+                        <input type="email" class="form-control form-control-lg" id="changeEmail" placeholder="Email">
+                        <input type="number" class="form-control form-control-lg" id="changeOTP" placeholder="OTP">
+                        <input type="password" class="form-control form-control-lg" id="changeNewPassword" placeholder="New Password">
+                        <input type="password" class="form-control form-control-lg" id="changeConfirmPassword" placeholder="Confirm Password">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="changePassword()" class="btn btn-primary" data-bs-dismiss="modal">Change Password</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script>
+        @*----------------------------------------
+        AJAX UNTUK REGISTER
+        ----------------------------------------*@
+        function register() {
+            var registerData = {
+                firstName: $("#firstName").val(),
+                lastName: $("#lastName").val(),
+                birthDate: $("#birthDate").val(),
+                gender: parseInt($("#gender").val()),
+                hiringDate: $("#hiringDate").val(),
+                email: $("#email").val(),
+                managerGuid: $("#managerGuid").val(),
+                password: $("#password").val(),
+                confirmPassword: $("#confirmPassword").val(),
+                salary: parseInt($("#salary").val())
+            };
+
+            $.ajax({
+                url: "https://localhost:7128/api/accounts/Register",
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(registerData),
+                success: function (result) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Data has been registered',
+                        icon: 'success'
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (error) {
+                    Swal.fire({
+                        title: 'Oops',
+                        text: 'Failed to register. Please try again.',
+                        icon: 'error'
+                    });
+                    console.log(error);
+                }
+            });
+        }
+
+        @*----------------------------------------
+        AJAX UNTUK FORGOT PASSWORD
+        ----------------------------------------*@
+        //function forgotPassword() {
+        //    var forgotPassword = {
+        //        email: $("#forgotEmail").val(),
+        //    };
+
+        //    $.ajax({
+        //        url: "https://localhost:7128/api/accounts/forgot-password",
+        //        type: "POST",
+        //        headers: {
+        //            'Content-Type': 'application/json'
+        //        },
+        //        data: JSON.stringify(forgotPassword),
+        //        success: function (result) {
+        //            Swal.fire({
+        //                title: 'Success',
+        //                text: 'OTP Has Been Send!',
+        //                icon: 'success'
+        //            }).then(function () {
+        //                location.reload();
+        //            });
+        //        },
+        //        error: function (error) {
+        //            Swal.fire({
+        //                title: 'Oops',
+        //                text: 'Failed to send OTP. Please try again.',
+        //                icon: 'error'
+        //            });
+        //            console.log(error);
+        //        }
+        //    });
+        //}
+
+            function forgotPassword() {
+                var forgotPassword = {
+                    email: $("#forgotEmail").val(),
+                };
+
+                $.ajax({
+                    url: "https://localhost:7128/api/accounts/forgot-password",
+                    type: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify(forgotPassword),
+                    success: function (result) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'OTP Has Been Sent!',
+                            icon: 'success'
+                        }).then(function () {
+                            $('#modalForgot').modal('hide'); // menutup modal forgot password
+                            $('#modalChange').modal('show'); // membuka modal change password
+                        });
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            title: 'Oops',
+                            text: 'Failed to send OTP. Please try again.',
+                            icon: 'error'
+                        });
+                        console.log(error);
+                    }
+                });
+            }
+
+
+        @*----------------------------------------
+        AJAX UNTUK CHANGE PASSWORD
+        ----------------------------------------*@
+        //function changePassword() {
+        //    var changePassword = {
+        //        email: $("#changeEmail").val(),
+        //        otp: $("#changeOTP").val(),
+        //        newPassword: $("#changeNewPassword").val(),
+        //        confirmPassword: $("#changeConfirmPassword").val(),
+        //    };
+
+        //    $.ajax({
+        //        url: "https://localhost:7128/api/accounts/change-password",
+        //        type: "POST",
+        //        headers: {
+        //            'Content-Type': 'application/json'
+        //        },
+        //        data: JSON.stringify(changePassword),
+        //        success: function (result) {
+        //            Swal.fire({
+        //                title: 'Success',
+        //                text: 'OTP Has Been Send!',
+        //                icon: 'success'
+        //            }).then(function () {
+        //                location.reload();
+        //            });
+        //        },
+        //        error: function (error) {
+        //            Swal.fire({
+        //                title: 'Oops',
+        //                text: 'Failed to send OTP. Please try again.',
+        //                icon: 'error'
+        //            });
+        //            console.log(error);
+        //        }
+        //    });
+        //}
+
+            function changePassword() {
+                var changePassword = {
+                    email: $("#changeEmail").val(),
+                    otp: $("#changeOTP").val(),
+                    newPassword: $("#changeNewPassword").val(),
+                    confirmPassword: $("#changeConfirmPassword").val(),
+                };
+
+                $.ajax({
+                    url: "https://localhost:7128/api/accounts/change-password",
+                    type: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify(changePassword),
+                    success: function (result) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Password changed successfully!',
+                            icon: 'success'
+                        }).then(function () {
+                            $('#modalChange').modal('hide'); // menutup change password
+                            window.location.href = '/Account/Login'; // setelah itu kembalikan ke login
+                        });
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            title: 'Oops',
+                            text: 'Failed to change password. Please try again.',
+                            icon: 'error'
+                        });
+                        console.log(error);
+                    }
+                });
+            }
+
+    </script>  
+}
+
+
+

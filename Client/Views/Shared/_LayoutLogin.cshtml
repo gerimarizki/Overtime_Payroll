@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Spica Admin</title>
     <!-- base:css -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Layout/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="~/Layout/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
@@ -38,6 +39,9 @@
     <script src="~/Layout/js/off-canvas.js"></script>
     <script src="~/Layout/js/hoverable-collapse.js"></script>
     <script src="~/Layout/js/template.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @await RenderSectionAsync("Scripts", required: false)
     <!-- endinject -->
 </body>
 

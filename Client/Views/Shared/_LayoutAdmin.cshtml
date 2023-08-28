@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Spica Admin</title>
     <!-- base:css -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Layout/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="~/Layout/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
@@ -291,8 +292,8 @@
                                 Settings
                             </a>
                             <a class="dropdown-item">
-                                <i class="mdi mdi-logout text-primary"></i>
-                                Logout
+                                   <i class="mdi mdi-logout text-primary"></i>
+                                   Logout
                             </a>
                         </div>
                     </li>
@@ -355,6 +356,7 @@
 <!-- End plugin js for this page -->
 <!-- Custom js for this page-->
 <script src="~/Layout/js/dashboard.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- End custom js for this page-->
 @await RenderSectionAsync("Scripts", required: false)
 </body>

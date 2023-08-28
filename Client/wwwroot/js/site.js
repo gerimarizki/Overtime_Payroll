@@ -39,3 +39,49 @@ $(document).ready(() => {
         });
     });
 });
+
+
+$(document).ready(function () {
+    $.ajax({
+        url: "https://localhost:7128/api/employees",
+        //headers:
+        //{
+        //    "Authorization": "Bearer " + Token
+        //}
+    }).done(function (result) {
+        var totalEmployee = result.data.length;
+        $("#total-employee").text(totalEmployee);
+    }).fail(function (error) {
+        $("#total-employee").text("Failed to fetch data");
+        console.log(error)
+    });
+});
+
+$(document).ready(function () {
+    $.ajax({
+        url: "https://localhost:7128/api/overtimes",
+    }).done(function (result) {
+        var totalOvertime = result.data.length;
+        $("#total-overtime").text(totalOvertime);
+    }).fail(function (error) {
+        $("#total-overtime").text("Failed to fetch data");
+        console.log(error)
+    });
+});
+
+
+$.ajax({
+    url: "https://localhost:7128/api/payrolls"
+}).done((result) => {
+    let temp = "";
+    $("#tbodySW").html(temp);
+    $.each(result.results, (indeks, val) => {
+        temp += `
+                    <div class="pokemon-card">
+                        <h4 class="pokemon-name">${val.name}</h4>
+                        <button onclick="detailPokemon('${val.url}')" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Detail</button>
+                    </div>
+                `;
+    })
+    $("#pokemonContainer").html(temp);
+});
