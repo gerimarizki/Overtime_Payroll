@@ -45,7 +45,7 @@ namespace server.Controllers
         {
             var loginResult = _service.LoginAccount(login);
             if (loginResult == "0")
-                return NotFound(new HandlerForResponse<GetAccountDto>
+                return NotFound(new HandlerForResponse<string>
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
@@ -53,7 +53,7 @@ namespace server.Controllers
                 });
 
             if (loginResult == "-1")
-                return BadRequest(new HandlerForResponse<GetAccountDto>
+                return BadRequest(new HandlerForResponse<string>
                 {
                     Code = StatusCodes.Status400BadRequest,
                     Status = HttpStatusCode.BadRequest.ToString(),
@@ -62,7 +62,7 @@ namespace server.Controllers
 
             if (loginResult == "-2")
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new HandlerForResponse<GetAccountDto>
+                return StatusCode(StatusCodes.Status500InternalServerError, new HandlerForResponse<string>
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Status = HttpStatusCode.InternalServerError.ToString(),

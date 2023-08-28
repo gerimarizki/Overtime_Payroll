@@ -19,14 +19,14 @@ namespace Client.Repositories
             };
             this.request = request;
         }
-        public async Task<HandlerForResponse<TokenDto>> Login(LoginAccountDto entity)
+        public async Task<HandlerForResponse<string>> Login(LoginAccountDto entity)
         {
-            HandlerForResponse<TokenDto> entityVM = null;
+            HandlerForResponse<string> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
             using (var response = httpClient.PostAsync(request + "Login", content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<TokenDto>>(apiResponse);
+                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<string>>(apiResponse);
             }
             return entityVM;
         }

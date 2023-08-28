@@ -10900,16 +10900,16 @@ pre {
     .table td {
         padding: 1.25rem 0.9375rem;
         vertical-align: top;
-        border-top: 1px solid #f3f3f3;
+        border-top: 1px solid black;
     }
 
     .table thead th {
         vertical-align: bottom;
-        border-bottom: 2px solid #f3f3f3;
+        border-bottom: 2px solid black;
     }
 
     .table tbody + tbody {
-        border-top: 2px solid #f3f3f3;
+        border-top: 2px solid black;
     }
 
 .table-sm th,
@@ -10918,12 +10918,12 @@ pre {
 }
 
 .table-bordered {
-    border: 1px solid #f3f3f3;
+    border: 2px solid black;
 }
 
     .table-bordered th,
     .table-bordered td {
-        border: 1px solid #f3f3f3;
+        border: 2px solid black;
     }
 
     .table-bordered thead th,
@@ -19700,7 +19700,7 @@ a.text-dark:hover, a.text-dark:focus {
 
     .table-bordered th,
     .table-bordered td {
-        border: 1px solid #dee2e6 !important;
+        border: 2px solid black !important;
     }
 
     .table-dark {
@@ -21685,7 +21685,7 @@ dl {
         }
 
     .table.table-bordered {
-        border-top: 1px solid #f3f3f3;
+        border-top: 2px solid black;
     }
 
 /* Dropdowns */
@@ -22629,3 +22629,55 @@ dl {
 }
 
 /*# sourceMappingURL=maps/style.css.map */
+
+
+/*-------------------------------------------------*/
+/*Tambahan*/
+/*-------------------------------------------------*/
+
+
+/*Memindahkan elemen 'B' (length changing) ke kiri */
+.dataTables_length {
+    float: left;
+}
+
+/*Memindahkan elemen 'C' (colvis) ke tengah */
+.dataTables_wrapper .dt-buttons {
+    text-align: left;
+}
+
+/*Memindahkan elemen 'F' (search) ke kanan */
+.dataTables_filter {
+    float: right;
+}
+
+/* Mengatur posisi tombol "previous" dan "next" ke paling kanan */
+/*.dataTables_wrapper .dataTables_paginate {
+    float: right;
+}*/
+
+    /* Mengatur padding antara tulisan pada tombol "previous" dan "next" */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 5px 10px; /* Sesuaikan nilai padding sesuai kebutuhan */
+    }
+
+/* Mengatur tampilan "Showing x to y of z entries" menjadi blok penuh di pojok kiri */
+.dataTables_info {
+    display: block;
+    float: left;
+}
+
+/* Mengatur tampilan "Previous" dan "Next" menjadi blok terpisah di pojok kanan */
+.dataTables_paginate {
+    display: inline-block;
+    justify-content: space-between;
+    float: right;
+    align-items: center;
+}
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color : black;
+}
+
+

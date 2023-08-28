@@ -43,7 +43,7 @@ namespace Client.Controllers
             if (result is null)
             {
                 TempData["Error"] = $"Failed to Login! - {result.Message}!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
             }
             else if (result.Code == 409)
             {
@@ -54,8 +54,8 @@ namespace Client.Controllers
             else if (result.Code == 200)
             {
                 TempData["Success"] = $"Successfully Login! - {result.Data}!";
-                HttpContext.Session.SetString("JWToken", result.Data.Token);
-                return RedirectToAction("Index", "Dashboard");
+                HttpContext.Session.SetString("JWToken", result.Data);
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }

@@ -2,13 +2,6 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
-@{
-    //ViewData["Title"] = "Home Page";
-    Layout = "_LayoutAdmin";
-}
-
-
 $(document).ready(() => {
     $.ajax({
         url: "https://localhost:7128/api/employees"

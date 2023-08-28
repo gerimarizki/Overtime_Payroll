@@ -87,3 +87,22 @@
     });  
   });
 })(jQuery);
+
+
+function Insert() {
+    var obj = new Object();
+    obj.Name = $("#name").val();
+
+    $.ajax({
+        url: "https://localhost:7128/api/roles",
+        type: "POST",
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+    }).done((result) => {
+        console.log(result);
+        alert("Data inserted successfully!");
+    }).fail((xhr, status, error) => {
+        console.log(xhr);
+        alert("Failed to insert data. Error: " + xhr.responseText);
+    });
+}

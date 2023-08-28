@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="~/Layout/css/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="~/Layout/images/favicon.png" />
+    @await RenderSectionAsync("CSS", required: false)
 </head>
 <body>
 <div class="container-scroller d-flex">
@@ -344,6 +345,7 @@
 <!-- Plugin js for this page-->
 <script src="~/Layout/vendors/chart.js/Chart.min.js"></script>
 <!-- End plugin js for this page-->
+<script src="~/js/site.js" asp-append-version="true"></script>
 <!-- inject:js -->
 <script src="~/Layout/js/off-canvas.js"></script>
 <script src="~/Layout/js/hoverable-collapse.js"></script>

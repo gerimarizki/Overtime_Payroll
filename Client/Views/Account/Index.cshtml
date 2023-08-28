@@ -7,103 +7,107 @@
 <h1>Index</h1>
 
 <p>
-    <a href="Account/Create/">
-        <button type="submit" class="btn btn-xs btn-danger">
+    <a href="Account/Create/" title="Create New Account">
+        <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Create New Account">
             <i class="mdi mdi-library-plus menu-icon">Create New</i>
         </button>
     </a>
 </p>
-<table id="Table" class="table table-bordered border-info table-hover">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OTP)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsUsed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExpiredTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Guid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OTP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsUsed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpiredTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Guid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+<div class="table-responsive" style="overflow-y: hidden">
+    <table id="Table" class="table table-bordered table-hover table-sm">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Password)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OTP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsUsed)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExpiredTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Guid)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedDate)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OTP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsUsed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpiredTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
 
-                    <div class="buttonAction">
-                        <a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-primary">
-                            <i class="mdi mdi-border-color menu-icon"></i>
-                        </a>
+                        <div class="buttonAction">
+                            <a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Account">
+                                <i class="mdi mdi-border-color menu-icon"></i>
+                            </a>
 
-                      @*  <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
-                            <i class="fa fa-info-circle"></i>
-                        </a>*@
+                          @*  <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
+                                <i class="fa fa-info-circle"></i>
+                            </a>*@
 
-                        <form action="/Account/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
-                            <input type="hidden" value="@item.Guid" name="guid" />
-                            <button type="submit" class="btn btn-xs btn-danger">
-                                <i class="mdi mdi-delete menu-icon"></i>
-                            </button>
-                        </form>
-                    </div>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                            <form action="/Account/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
+                                <input type="hidden" value="@item.Guid" name="guid" />
+                                <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Data Account">
+                                    <i class="mdi mdi-delete menu-icon"></i>
+                                </button>
+                            </form>
+                        </div>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
+
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @*<link rel="stylesheet" type="text/css" href="css/site.css">*@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.colVis.min.js"></script>
@@ -114,17 +118,16 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
     <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
         $(function () {
             $('#Table').DataTable({
                 dom: "Blfrtip",
                 buttons: [
-                    {
-                        extend: 'colvis',
-                        //postfixButtons: ['colvisRestore'],
-                        collectionLayout: 'fixed two-column',
-                        className: 'btn btn-primary'
-                    },
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
                 ]
             });
         });

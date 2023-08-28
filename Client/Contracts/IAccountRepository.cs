@@ -6,6 +6,6 @@ namespace Client.Contracts
 {
     public interface IAccountRepository : IRepository<Account, Guid>
     {
-        public Task<HandlerForResponse<TokenDto>> Login(LoginAccountDto entity);
+        public Task<HandlerForResponse<string>> Login(LoginAccountDto entity);
     }
 }

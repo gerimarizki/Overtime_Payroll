@@ -8,12 +8,14 @@
 
 <p>
     <a href="HistoryOvertime/Create/">
-        <button type="submit" class="btn btn-xs btn-danger">
+        <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltoip" data-bs-placement="top" title="Create New History Overtime">
             <i class="mdi mdi-library-plus menu-icon">Create New</i>
         </button>
     </a>
 </p>
-<table id="Table" class="table table-bordered border-info table-hover">
+
+<div class="table-responsive" style="overflow-y: hidden">
+<table id="Table" class="table table-bordered table-hover table-sm">
     <thead>
         <tr>
             <th>
@@ -53,7 +55,7 @@
 
 
                     <div class="buttonAction">
-                        <a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-primary">
+                        <a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data History Overtime">
                             <i class="mdi mdi-border-color menu-icon"></i>
                         </a>
 
@@ -63,7 +65,7 @@
 
                         <form action="/HistoryOvertime/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
                             <input type="hidden" value="@item.Guid" name="guid" />
-                            <button type="submit" class="btn btn-xs btn-danger">
+                            <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Data History Overtime">
                                 <i class="mdi mdi-delete menu-icon"></i>
                             </button>
                         </form>
@@ -73,9 +75,11 @@
 }
     </tbody>
 </table>
+</div>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @*<link rel="stylesheet" type="text/css" href="css/site.css">*@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.colVis.min.js"></script>
@@ -86,17 +90,16 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
     <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
         $(function () {
             $('#Table').DataTable({
                 dom: "Blfrtip",
                 buttons: [
-                    {
-                        extend: 'colvis',
-                        //postfixButtons: ['colvisRestore'],
-                        collectionLayout: 'fixed two-column',
-                        className: 'btn btn-primary'
-                    },
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
                 ]
             });
         });

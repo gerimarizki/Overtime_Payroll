@@ -6,7 +6,7 @@ public class TestOvertimeDto
     public DateTime StartOvertimeDate { get; set; }
     public DateTime EndOvertimeDate { get; set; }
     public string? Remarks { get; set; }
-    public StatusLevel Status { get; set; }
+    //public StatusLevel Status { get; set; }
     public Guid EmployeeGuid { get; set; }
 
     public static implicit operator Overtime(TestOvertimeDto newOver)
