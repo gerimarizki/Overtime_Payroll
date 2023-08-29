@@ -13,8 +13,8 @@
         </button>
     </a>
 </p>
-<div class="table-responsive" style="overflow-y: hidden">
-    <table id="Table" class="table table-bordered table-hover table-sm">
+
+    <table id="Table" class="table-hover">
         <thead>
             <tr>
                 <th>
@@ -79,21 +79,9 @@
     }
         </tbody>
     </table>
-</div>
+</>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    @*<link rel="stylesheet" type="text/css" href="css/site.css">*@
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.colVis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-
-    <!-- ... -->
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
     <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -102,10 +90,15 @@
 
         $(function () {
             $('#Table').DataTable({
-                dom: "Blfrtip",
-                buttons: [
+                "dom":
+                    "<'row'<'col-md-8'B><'col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" + // Tabel
+                    "<'row'<'col-md-5'i><'col-md-3 mt-2 mx-auto'l><'col-md-4'p>>",
+                "buttons": [
                     'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
-                ]
+                ],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "pageLength": 25
             });
         });
     </script>

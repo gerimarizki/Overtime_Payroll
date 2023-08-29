@@ -11248,7 +11248,7 @@ pre {
     color: #495057;
     background-color: #ffffff;
     background-clip: padding-box;
-    border: 1px solid #ced4da;
+    border: 2px solid black;
     border-radius: 2px;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -12862,7 +12862,7 @@ input[type="button"].btn-block {
     text-align: center;
     white-space: nowrap;
     background-color: #e9ecef;
-    border: 1px solid #ced4da;
+    border: 2px solid black;
     border-radius: 2px;
 }
 
@@ -13915,6 +13915,7 @@ input[type="button"].btn-block {
 
 .card-text:last-child {
     margin-bottom: 0;
+    text-align:center
 }
 
 .card-link:hover {
@@ -15183,6 +15184,9 @@ a.close.disabled {
     position: relative;
     flex: 1 1 auto;
     padding: 1rem;
+    padding-bottom: 0px;
+    padding-top: 0px;
+
 }
 
 .modal-footer {
@@ -21175,7 +21179,7 @@ code {
         }
 
     .card .card-title {
-        color: #001737;
+        color: ghostwhite;
         margin-bottom: .6rem;
         text-transform: capitalize;
         font-size: 1rem;
@@ -21510,7 +21514,7 @@ code {
     }
 
 .form-control {
-    border: 1px solid #f3f3f3;
+    border: 2px solid black;
     font-weight: 400;
     font-size: 0.875rem;
 }
@@ -21819,7 +21823,7 @@ dl {
 /* === Landing screens === */
 /* Auth */
 .auth .login-half-bg {
-    background: url("../images/auth/login-bg.jpg");
+    background: url("../images/auth/register-bg.jpg");
     background-size: cover;
 }
 
@@ -21898,8 +21902,8 @@ dl {
     }
 
     .auth form .form-group .form-control {
-        background: transparent;
-        border-radius: 0;
+        background-color:white;
+        border-radius: 15px;
         font-size: .9375rem;
     }
 
@@ -22283,7 +22287,7 @@ dl {
 
         .navbar .navbar-menu-wrapper .navbar-nav .nav-item.nav-search .input-group .form-control,
         .navbar .navbar-menu-wrapper .navbar-nav .nav-item.nav-search .input-group .input-group-text {
-            background: transparent;
+            background-color: white;
             border: 0;
             color: #ffffff;
             padding: 0;

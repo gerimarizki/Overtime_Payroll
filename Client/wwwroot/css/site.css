@@ -17,5 +17,45 @@ body {
   margin-bottom: 60px;
 }
 
+/*chart*/
+.custom-card {
+    background-color: greenyellow;
+    border-radius: 15px;
+    padding: 20px;
+    height: 100%;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/*chart gender*/
+.custom-card-chart {
+    background-color: #f3f3f3;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    font-size: 15px;
+}
+
+.custom-card-header-chart {
+    background-color: #007bff;
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.custom-card-title-chart {
+    margin: auto;
+    padding: 10px;
+}
+
+.custom-card-body-chart {
+    padding: 20px;
+}
+
+
+
+
+
+
+
+
 
 

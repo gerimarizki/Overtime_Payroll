@@ -18,6 +18,31 @@ namespace server.Controllers
             _service = service;
         }
 
+
+        [HttpGet("CountStatus")]
+        public IActionResult GetAllStatus()
+        {
+            var status = _service.CountStatus(); // ini dirubah dari GetOvertime
+
+            if (status == null)
+            {
+                return NotFound(new HandlerForResponse<GetCountedStatusDto> //dari GetOvertimeDto
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+
+            return Ok(new HandlerForResponse<GetCountedStatusDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = status
+            });
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {

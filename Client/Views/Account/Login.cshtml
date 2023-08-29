@@ -6,11 +6,12 @@
 }
 <div class="col-lg-6 d-flex align-items-center justify-content-center">
     <div class="auth-form-transparent text-left p-3">
-        <div class="brand-logo">
+        @*<div class="brand-logo">
             <img src="~/Layout/images/logo.svg" alt="logo">
-        </div>
+        </div>*@
         <h4>Welcome back!</h4>
         <h6 class="font-weight-light">Happy to see you again!</h6>
+        
         <form action="/Account/Login/" method="post" class="pt-3">
             <div class="form-group">
                 <label for="exampleInputEmail">Username</label>
@@ -56,9 +57,12 @@
                     <i class="mdi mdi-google mr-2"></i>Google
                 </button>
             </div>*@
+            @if(User.IsInRole("Finance"))
+            {
             <div class="text-center mt-4 font-weight-light">
                 Don't have an account? <a data-bs-toggle="modal" data-bs-target="#modalRegister" style="cursor: pointer" class="text-primary">Register</a>
             </div>
+            }
            @* <div class="text-center mt-4 font-weight-light">
                 Forget Password? <a href="register-2.html" class="text-primary">Forgot Password</a>
             </div>*@
@@ -66,7 +70,7 @@
     </div>
 </div>
 <div class="col-lg-6 login-half-bg d-none d-lg-flex flex-row">
-    <p class="text-white font-weight-medium text-center flex-grow align-self-end">Copyright &copy; 2018  All rights reserved.</p>
+    <p class="text-white font-weight-medium text-center flex-grow align-self-end"></p>
 </div>
 
 @*@section Scripts {
@@ -74,74 +78,19 @@
 }*@
 
 
-@*----------------------------------------
-MODAL UNTUK REGISTER
-----------------------------------------*@
 
-<div class="modal" tabindex="-1" role="dialog" id="modalRegister">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Registration Form</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="pt-3">
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-lg" id="firstName" placeholder="First Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-lg" id="lastName" placeholder="Last Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="datetime-local" class="form-control form-control-lg" id="birthDate" placeholder="Birth Date">
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control form-control-lg" id="gender">
-                            <option value="0">Female</option>
-                            <option value="1">Male</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="datetime-local" class="form-control form-control-lg" id="hiringDate" placeholder="Hiring Date">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control form-control-lg" id="email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control form-control-lg" id="managerGuid" placeholder="Manager Guid">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control form-control-lg" id="password" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control form-control-lg" id="confirmPassword" placeholder="Confirm Password">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control form-control-lg" id="salary" placeholder="Salary">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="register()" class="btn btn-primary" data-bs-dismiss="modal">Register</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 @*----------------------------------------
 MODAL UNTUK FORGOT PASSWORD
 ----------------------------------------*@
 
-<div class="modal" tabindex="-1" role="dialog" id="modalForgot">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" tabindex="-1" role="dialog" id="modalForgot">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Registration Form</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Forgot Password</h5>
+                <button type="button" class="close text-white" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -161,6 +110,7 @@ MODAL UNTUK FORGOT PASSWORD
 </div>
 
 
+
 @*----------------------------------------
 MODAL UNTUK CHANGE PASSWORD
 ----------------------------------------*@
@@ -169,7 +119,7 @@ MODAL UNTUK CHANGE PASSWORD
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Registration Form</h5>
+                <h5 class="modal-title">Change Password Form</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -177,10 +127,10 @@ MODAL UNTUK CHANGE PASSWORD
             <div class="modal-body">
                 <form class="pt-3">
                     <div class="form-group">
-                        <input type="email" class="form-control form-control-lg" id="changeEmail" placeholder="Email">
-                        <input type="number" class="form-control form-control-lg" id="changeOTP" placeholder="OTP">
-                        <input type="password" class="form-control form-control-lg" id="changeNewPassword" placeholder="New Password">
-                        <input type="password" class="form-control form-control-lg" id="changeConfirmPassword" placeholder="Confirm Password">
+                        <input type="email" class="form-control mb-3 form-control-lg" id="changeEmail" placeholder="Email">
+                        <input type="number" class="form-control mb-3 form-control-lg" id="changeOTP" placeholder="OTP">
+                        <input type="password" class="form-control mb-3 form-control-lg" id="changeNewPassword" placeholder="New Password">
+                        <input type="password" class="form-control mb-3form-control-lg" id="changeConfirmPassword" placeholder="Confirm Password">
                     </div>
                 </form>
             </div>
@@ -197,6 +147,9 @@ MODAL UNTUK CHANGE PASSWORD
 
 @section Scripts{
     <script>
+        //var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        //var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        //    return new bootstrap.Tooltip(tooltipTriggerEl)
         @*----------------------------------------
         AJAX UNTUK REGISTER
         ----------------------------------------*@
@@ -208,6 +161,7 @@ MODAL UNTUK CHANGE PASSWORD
                 gender: parseInt($("#gender").val()),
                 hiringDate: $("#hiringDate").val(),
                 email: $("#email").val(),
+                phoneNumber: $("#phoneNumber").val(),
                 managerGuid: $("#managerGuid").val(),
                 password: $("#password").val(),
                 confirmPassword: $("#confirmPassword").val(),

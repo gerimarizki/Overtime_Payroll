@@ -20,9 +20,8 @@ $(document).ready(() => {
             "#b91d47",
             "#00aba9",
         ];
-
         new Chart("myChart", {
-            type: "pie",
+            type: "doughnut",  // Changed to a doughnut chart
             data: {
                 labels: xValues,
                 datasets: [{
@@ -70,18 +69,17 @@ $(document).ready(function () {
 });
 
 
-$.ajax({
-    url: "https://localhost:7128/api/payrolls"
-}).done((result) => {
-    let temp = "";
-    $("#tbodySW").html(temp);
-    $.each(result.results, (indeks, val) => {
-        temp += `
-                    <div class="pokemon-card">
-                        <h4 class="pokemon-name">${val.name}</h4>
-                        <button onclick="detailPokemon('${val.url}')" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Detail</button>
-                    </div>
-                `;
-    })
-    $("#pokemonContainer").html(temp);
-});
+
+function updateDateTime() {
+    var now = new Date();
+    var options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    var formattedDateTime = now.toLocaleString('en-US', options);
+
+    document.getElementById('currentDateTime').textContent = formattedDateTime;
+}
+
+// Memanggil fungsi updateDateTime() setiap detik
+setInterval(updateDateTime, 1000);
+
+// Memanggil fungsi untuk pertama kali
+updateDateTime();

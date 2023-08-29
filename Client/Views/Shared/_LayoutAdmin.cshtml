@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="~/Layout/css/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="~/Layout/images/favicon.png" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
     @await RenderSectionAsync("CSS", required: false)
 </head>
 <body>
@@ -168,9 +171,13 @@
                 </div>
                 <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">Welcome back, Brandon Haynes</h4>
                 <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item">
+                   @* <li class="nav-item">
                         <h4 class="mb-0 font-weight-bold d-none d-xl-block">Mar 12, 2019 - Apr 10, 2019</h4>
-                    </li>
+                    </li>*@
+                        <li class="nav-item">
+                            <h4 id="currentDateTime" class="mb-0 font-weight-bold d-none d-xl-block"> @*nyambung ke js*@
+                            </h4>
+                        </li>
                     <li class="nav-item dropdown mr-1">
                         <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
                             <i class="mdi mdi-calendar mx-0"></i>
@@ -273,18 +280,28 @@
                 </button>
             </div>
             <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
-                <ul class="navbar-nav mr-lg-2">
+                @*<ul class="navbar-nav mr-lg-2">
                     <li class="nav-item nav-search d-none d-lg-block">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search Here..." aria-label="search" aria-describedby="search">
                         </div>
                     </li>
-                </ul>
+                </ul>*@
+                    <ul class="navbar-nav mr-lg-5">
+                        <li class="nav-item nav-search d-none d-lg-block">
+                            <marquee behavior="scroll" direction="left" scrollamount="5" style="color: black;">
+                                Pengumuman!!! 
+                                Pengajuan Lembur Maksimal Setiap Tanggal 25 Dengan Ketentuan Apabila Telah Melebihi          
+                                8 jam kerja dalam 1 hari atau 40 jam kerja dalam 1 minggu untuk 5 hari kerja.
+                            </marquee>
+                        </li>
+                    </ul>
+
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="~/Layout/images/faces/face5.jpg" alt="profile" />
-                            <span class="nav-profile-name">Eleanor Richardson</span>
+                           @* <img src="~/Layout/images/faces/face5.jpg" alt="profile" />
+                            <span class="nav-profile-name">Eleanor Richardson</span>*@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item">
@@ -297,12 +314,15 @@
                             </a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link icon-link">
-                            <i class="mdi mdi-plus-circle-outline"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
+                        @if (User.IsInRole("Finance"))
+                        {
+                            <li class="nav-item">
+                                <a data-bs-toggle="modal" data-bs-target="#modalRegister" style="cursor: pointer" class="nav-link icon-link">
+                                    @*<i class="mdi mdi-account-multiple-plus"></i>*@
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
                         <a href="#" class="nav-link icon-link">
                             <i class="mdi mdi-web"></i>
                         </a>
@@ -339,6 +359,75 @@
     </div>
     <!-- page-body-wrapper ends -->
 </div>
+    @*----------------------------------------
+    MODAL UNTUK REGISTER
+    ----------------------------------------*@
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalRegister">
+        <div class="modal-dialog modal-lg modal-dialog-split" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registration Form</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-md-6 bg-info bg-opacity-50 text-black p-4">
+                        <h3 class="mb-4">Personal Information</h3>
+                        <form class="pt-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-lg" id="firstName" placeholder="First Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-lg" id="lastName" placeholder="Last Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="datetime-local" class="form-control form-control-lg" id="birthDate" placeholder="Birth Date" data-bs-toggle="tooltip" data-bs-placement="top" title="Select Employee Birth Date!">
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control form-control-lg" id="gender">
+                                    <option value="0">Female</option>
+                                    <option value="1">Male</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6 p-4">
+                        <h3 class="mb-4">Account Information</h3>
+                        <form class="pt-3">
+                            <div class="form-group">
+                                <input type="datetime-local" class="form-control form-control-lg" id="hiringDate" placeholder="Hiring Date" data-bs-toggle="tooltip" data-bs-placement="top" title="Select Employee Hiring Date!">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control form-control-lg" id="email" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" class="form-control form-control-lg" id="phoneNumber" placeholder="Phone Number">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-lg" id="managerGuid" placeholder="Manager Guid">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control form-control-lg" id="password" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control form-control-lg" id="confirmPassword" placeholder="Confirm Password">
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control form-control-lg" id="salary" placeholder="Salary">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="register()" class="btn btn-primary" data-bs-dismiss="modal">Register</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- container-scroller -->
 <!-- base:js -->
 <script src="~/Layout/vendors/js/vendor.bundle.base.js"></script>
@@ -357,6 +446,17 @@
 <!-- Custom js for this page-->
 <script src="~/Layout/js/dashboard.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+
 <!-- End custom js for this page-->
 @await RenderSectionAsync("Scripts", required: false)
 </body>

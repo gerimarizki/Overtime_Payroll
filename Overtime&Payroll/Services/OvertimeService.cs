@@ -1,5 +1,6 @@
 ﻿using server.Contracts;
 using server.DTOs.Overtimes;
+using server.Utilities.Enums;
 using server.Utilities.Handlers;
 
 namespace server.Services
@@ -14,6 +15,36 @@ namespace server.Services
             _overtimeRepository = overtimeRepository;
             _employeeRepository = employeeRepository;
         }
+
+        //----------------------------
+        //Tambahan data 29/08/2023
+        //----------------------------
+        public GetCountedStatusDto CountStatus()
+        {
+            var status = _overtimeRepository.GetAll();
+            var overtime = new GetCountedStatusDto();
+            foreach (var item in status)
+            {
+                if (item.Status == StatusLevel.Accepted)
+                {
+                    overtime.CountAccepted++;
+                }
+                else if (item.Status == StatusLevel.Rejected)
+                {
+                    overtime.CountRejected++;
+                }
+                else
+                {
+                    overtime.CountWaiting++;
+                }
+
+            }
+
+            return overtime;
+        }
+        //--------------------------------------
+        //tutup
+        //--------------------------------------
 
         public IEnumerable<GetOvertimeDto> GetOvertime()
         {
