@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Client.ViewModels.Overtimes.RequestOvertimeViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "GetManager";
 }
 
-<h1>Index</h1>
+<h1>GetManager</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -51,15 +51,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-                @{
-                    var culture = new System.Globalization.CultureInfo("id-ID");
-                }
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-@*            <td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Guid)
-            </td>*@
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StartOvertimeDate)
             </td>
@@ -69,28 +63,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Remarks)
             </td>
-                <td>
-                    @if (item.Status == server.Utilities.Enums.StatusLevel.Accepted)
-                    {
-                        <label class="badge badge-info">Accepted</label>
-                    }
-                    else if (item.Status == server.Utilities.Enums.StatusLevel.Rejected)
-                    {
-                        <label class="badge badge-danger">Rejected</label>
-                    }
-                    else if (item.Status == server.Utilities.Enums.StatusLevel.Waiting)
-                    {
-                        <label class="badge badge-warning">Pending</label>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.Status)
-                    }
-                    @*@Html.DisplayFor(modelItem => item.Status)*@
-                </td>
-     @*       <td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.EmployeeGuid)
-            </td>*@
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OvertimeId)
             </td>
@@ -100,7 +78,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.OvertimeRemaining)
             </td>
-      
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>

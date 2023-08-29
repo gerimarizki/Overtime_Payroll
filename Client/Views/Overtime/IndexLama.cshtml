@@ -1,0 +1,240 @@
+﻿@model IEnumerable<server.Models.Overtime>
+
+@{
+    ViewData["Title"] = "IndexLama";
+}
+
+<link rel="stylesheet" href="~/css/site.css">
+<h1>Index</h1>
+
+<p>
+    <a href="Create/">
+        <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Create New Overtime">
+            <i class="mdi mdi-library-plus menu-icon">Create New</i>
+        </button>
+    </a>
+</p>
+
+<table id="Table" class="table-hover table-responsive table-secondary">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OvertimeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartOvertimeDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndOvertimeDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaidOvertime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OvertimeRemaining)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeGuid)
+            </th>
+            @* <th>
+            @Html.DisplayNameFor(model => model.Guid)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OvertimeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartOvertimeDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndOvertimeDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remarks)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaidOvertime)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.OvertimeRemaining)
+            </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.OvertimeRemaining)
+                    <div class="progress custom-progress-bar">
+                        <div class="progress-bar custom-progress-bar-inner" role="progressbar" style="width: @item.OvertimeRemaining%;" aria-valuenow="@item.OvertimeRemaining" aria-valuemin="0" aria-valuemax="40"></div>
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeGuid)
+                </td>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Guid)
+            </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td>
+                    @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+
+
+                    <div class="buttonAction">
+                        <a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Overtime">
+                            <i class="mdi mdi-border-color menu-icon"></i>
+                        </a>
+
+                        @*  <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
+                    <i class="fa fa-info-circle"></i>
+                    </a>*@
+
+                        <form action="/Overtime/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
+                            <input type="hidden" value="@item.Guid" name="guid" />
+                            <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Data Overtime">
+                                <i class="mdi mdi-delete menu-icon"></i>
+                            </button>
+                        </form>
+
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <a onclick="showUpdate('@item.Guid')" class="btn btn-xs btn-primary" data-bs-toggle="modal" data-bs-placement="top" title="Update Status Overtime" data-bs-target="#modalUpdate">
+                                <i class="mdi mdi-table-edit"></i>
+                            </a>
+                        }
+                        
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*-----------------------------------
+modal update status overtime
+-----------------------------------*@
+<div class="modal" id="modalUpdate" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="guidUpdate">
+                <div class="mb-3">
+                    <label for="status" class="col-form-label">Status:</label>
+                    <select class="form-control" id="statusUpdate" required>
+                        <option value="2">Waiting</option>
+                        <option value="1">Rejected</option>
+                        <option value="0">Accepted</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="UpdateStatus()" class="btn btn-primary d-inline-block" data-bs-dismiss="modal">Update Status</button>
+                <button type="button" class="btn btn-secondary d-inline-block" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        $(function () {
+            $('#Table').DataTable({
+                "dom":
+                    "<'row'<'col-md-8'B><'col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" + // Tabel
+                    "<'row'<'col-md-5'i><'col-md-3 mt-2 mx-auto'l><'col-md-4'p>>",
+                "buttons": [
+                    'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
+                ],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "pageLength": 25
+            });
+        });
+
+        function showUpdate(guid) {
+            $.ajax({
+                url: "https://localhost:7128/api/overtimes/" + guid,
+                type: "GET",
+                dataType: "json"
+            }).done((result) => {
+                console.log(result)
+                $("#guidUpdate").val(result.data.guid);
+                $("#statusUpdate").val(result.data.status);
+              
+            }).fail((error) => {
+                alert("Failed to fetch employee data. Please try again.");
+                console.log(error)
+            });
+
+        }
+
+        function UpdateStatus() {
+
+            let data = {
+                guid: $("#guidUpdate").val(),
+                status: parseInt($("#statusUpdate").val()),
+            };
+            $.ajax({
+                url: "https://localhost:7128/api/overtimes/update-employee-status",
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(data)
+            }).done((result) => {
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Data has been successfully updated',
+                    icon: 'success'
+                }).then(function () {
+                    location.reload();
+                });
+            }).fail((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to insert data! Please try again.'
+                })
+                console.log(error)
+            })
+        }
+    </script>
+}
+
+
+
+   
+

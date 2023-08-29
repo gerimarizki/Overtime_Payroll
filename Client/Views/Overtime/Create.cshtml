@@ -1,53 +1,253 @@
-﻿@model TestOvertimeDto
+﻿@using Client.ViewModels.Overtimes;
+@model Client.ViewModels.Overtimes.RequestOvertimeViewModel
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "layoutnya yg mana iniiii";///////////////////////
+    var guid = User.Claims.FirstOrDefault(x => x.Type == "Guid")?.Value;
+    var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+    var manager = User.Claims.FirstOrDefault(x => x.Type == "Manager")?.Value;
+    var overtimeremaining = User.Claims.FirstOrDefault(x => x.Type == "OvertimeRemaining")?.Value;
 }
 
-<h1>Create</h1>
-
-<h4>TestOvertimeDto</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form action="/overtime/Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="StartOvertimeDate" class="control-label"></label>
-                <input asp-for="StartOvertimeDate" class="form-control" />
-                <span asp-validation-for="StartOvertimeDate" class="text-danger"></span>
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-av-timer"></i>
+            </span> Request Overtime
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form id="create-form" action="Create" method="POST">
+                        <input asp-for="EmployeeGuid" class="form-control" hidden value="@guid" />
+                        <input asp-for="Status" class="form-control" value="0" hidden />
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h6>Full Name  &nbsp  &nbsp:</h6>
+                                </div>
+                                <div class="col-5">
+                                    <p>@fullName    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h6>Manager  &nbsp  &nbsp  &nbsp:</h6>
+                                </div>
+                                <div class="col-5">
+                                    <p>@manager</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h6>Overtime Remaining &nbsp  &nbsp:</h6>
+                                </div>
+                                <div class="col-5">
+                                    <p>@overtimeremaining</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h6 asp-for="StartOvertimeDate" class="control-label">Start Overtime Date:</h6>
+                            <input asp-for="StartOvertimeDate" type="datetime-local" class="form-control" oninput="checkDateValidity()" />
+                            <span asp-validation-for="StartOvertimeDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="EndOvertimeDate" class="control-label">End Overtime Date:</label>
+                            <input asp-for="EndOvertimeDate" type="datetime-local" class="form-control" oninput="checkDateValidity()" />
+                            <span asp-validation-for="EndOvertimeDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Remarks" class="control-label">Remarks</label>
+                            <textarea asp-for="Remarks" class="form-control"></textarea>
+                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-3">
+                            <button class="btn btn-primary  " type="submit">Create</button>
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="EndOvertimeDate" class="control-label"></label>
-                <input asp-for="EndOvertimeDate" class="form-control" />
-                <span asp-validation-for="EndOvertimeDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Remarks" class="control-label"></label>
-                <input asp-for="Remarks" class="form-control" />
-                <span asp-validation-for="Remarks" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <label asp-for="EmployeeGuid" class="control-label"></label>
-                <input asp-for="EmployeeGuid" class="form-control" />
-                <span asp-validation-for="EmployeeGuid" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@*scripting js validasi*@
+@section Scripts{
+    <script>
+        function checkDateValidity() {
+            var now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            var startOvertimeDateInput = document.getElementById('StartOvertimeDate');
+            var endOvertimeDateInput = document.getElementById('EndOvertimeDate');
+
+            var maxAllowedDate = new Date(now);
+            maxAllowedDate.setDate(maxAllowedDate.getDate() - 2);
+
+            var maxAllowedDatePlus = new Date(now);
+            maxAllowedDatePlus.setDate(maxAllowedDatePlus.getDate() + 3);
+
+            var startOvertimeDate = new Date(startOvertimeDateInput.value);
+            var endOvertimeDate = new Date(endOvertimeDateInput.value);
+
+            if (startOvertimeDate < maxAllowedDate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid StartOvertimeDate',
+                    text: 'tidak bisa input tanggal yang sudah lewat',
+                    onClose: function () {
+                        startOvertimeDateInput.value = '';
+                    }
+                });
+                startOvertimeDateInput.value = '';
+                return;
+            }
+            if (endOvertimeDate < maxAllowedDate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid EndOvertimeDate',
+                    text: 'tidak bisa input tanggal yang sudah lewat',
+                    onClose: function () {
+                        endOvertimeDateInput.value = '';
+                    }
+                });
+                endOvertimeDateInput.value = '';
+                return;
+            }
+
+            if (startOvertimeDate > maxAllowedDatePlus) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid StartOvertimeDate',
+                    text: 'tidak dapat input 2 hari setelah hari ini',
+                    onClose: function () {
+                        startOvertimeDateInput.value = '';
+                    }
+                });
+                startOvertimeDateInput.value = '';
+                return;
+            }
+
+            if (endOvertimeDate > maxAllowedDatePlus) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid EndOvertimeDate',
+                    text: 'tidak dapat input 2 hari setelah hari ini',
+                    onClose: function () {
+                        endOvertimeDateInput.value = '';
+                    }
+                });
+                endOvertimeDateInput.value = '';
+                return;
+            }
+
+            if (endOvertimeDate.getDate() < startOvertimeDate.getDate() && endOvertimeDate.getHours() <= startOvertimeDate.getHours()) {
+                endOvertimeDate.setCustomValidity('End overtime date tidak bisa kurang dari Start overtime date');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Dates',
+                    text: 'End overtime date tidak bisa kurang dari Start overtime date'
+                });
+            } else {
+                endOvertimeDateInput.setCustomValidity('');
+            }
+
+            if (endOvertimeDate.toDateString() === startOvertimeDate.toDateString()) {
+                endOvertimeDateInput.setCustomValidity('');
+            }
+        }
+
+        document.getElementById('StartOvertimeDate').addEventListener('input', checkDateValidity);
+        document.getElementById('EndOvertimeDate').addEventListener('input', checkDateValidity);
+    </script>
+
+
+    <script>
+        function checkFormValidity() {
+            var startOvertimeDateInput = document.getElementById('StartOvertimeDate');
+            var endOvertimeDateInput = document.getElementById('EndOvertimeDate');
+            var remarksInput = document.getElementById('Remarks');
+
+            if (startOvertimeDateInput.value.trim() === '' || endOvertimeDateInput.value.trim() === '' || remarksInput.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Form',
+                    text: 'Isi Field yang wajib di isi!.'
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        document.getElementById('create-form').addEventListener('submit', function (event) {
+            if (!checkFormValidity()) {
+                event.preventDefault();
+            }
+        });
+    </script>
 }
+
+@*styling nanti pindah ke CSS*@
+<style>
+    form h6 {
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .col-5 p {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+        .col-5 p.overtimeremaining {
+            color: red;
+            font-weight: bold;
+        }
+
+    input[type="datetime-local"],
+    textarea {
+        outline: none;
+    }
+
+        input[type="datetime-local"]:focus,
+        textarea:focus {
+            border-color: green;
+        }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+        margin-right: 10px;
+        transition: background-color 0.2s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .form-container {
+        margin-top: 20px;
+    }
+
+    .success-message {
+        color: yellow;
+        font-weight: bold;
+    }
+</style>

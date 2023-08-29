@@ -1,0 +1,131 @@
+﻿@model Client.ViewModels.Overtimes.RequestOvertimeViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "Taro mana ini";
+}
+
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-av-timer"></i>
+            </span> Request Overtime
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form action="~/overtime/approvalmanager" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group" hidden>
+                            <label asp-for="Guid" class="control-label"></label>
+                            <input asp-for="Guid" class="form-control" />
+                            <span asp-validation-for="Guid" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FullName" class="control-label"></label>
+                            <input asp-for="FullName" class="form-control" disabled />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="OvertimeId" class="control-label"></label>
+                            <input asp-for="OvertimeId" class="form-control" disabled />
+                            <span asp-validation-for="OvertimeId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CreatedDate" class="control-label"></label>
+                            <input asp-for="CreatedDate" class="form-control" disabled />
+                            <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label asp-for="StartOvertimeDate" class="control-label"></label>
+                                    <input asp-for="StartOvertimeDate" class="form-control" disabled />
+                                    <span asp-validation-for="StartOvertimeDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label asp-for="EndOvertimeDate" class="control-label"></label>
+                                    <input asp-for="EndOvertimeDate" class="form-control" disabled />
+                                    <span asp-validation-for="EndOvertimeDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Remarks" class="control-label"></label>
+                            <textarea asp-for="Remarks" class="form-control" disabled></textarea>
+                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                        </div>
+
+
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <div class="row">
+
+                                <div class="col-8">
+
+                                    <div class="form-group">
+                                        <label asp-for="Status" class="control-label"></label>
+                                        <select asp-for="Status" class="form-control">
+                                            <option value="0">Accepted</option>
+                                            <option value="1">Rejected</option>
+                                            <option value="2">Waiting</option>
+                                        </select>
+                                        <span asp-validation-for="Status" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label asp-for="OvertimeRemaining" class="control-label"></label>
+                                        <input asp-for="OvertimeRemaining" class="form-control" disabled />
+                                        <span asp-validation-for="OvertimeRemaining" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                        @if (User.IsInRole("Employee") || User.IsInRole("Finance"))
+                        {
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="OvertimeRemaining" class="control-label"></label>
+                                        <input asp-for="OvertimeRemaining" class="form-control" disabled />
+                                        <span asp-validation-for="OvertimeRemaining" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="PaidOvertime" class="control-label"></label>
+                                        <input asp-for="PaidOvertime" class="form-control" disabled />
+                                        <span asp-validation-for="PaidOvertime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="form-group">
+                            @*<input type="submit" value="Save" class="btn btn-primary" />*@
+                            @if (User.IsInRole("Manager"))
+                            {
+                                <button class="btn btn-primary" type="submit">Update</button>
+                                <a asp-controller="Overtime" asp-action="GetManager" class="btn btn-secondary">Back to List</a>
+                            }
+                            @if (User.IsInRole("Employee") || User.IsInRole("Finance"))
+                            {
+                                <a asp-controller="Overtime" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                            }
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
