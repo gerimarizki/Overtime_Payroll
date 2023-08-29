@@ -17,7 +17,7 @@ namespace server.Services
         }
 
         //----------------------------
-        //Tambahan data 29/08/2023
+        //Tambahan data 29/08/2023 count status
         //----------------------------
         public GetCountedStatusDto CountStatus()
         {
