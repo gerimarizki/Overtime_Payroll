@@ -12,6 +12,8 @@ namespace server.Contracts
         public IEnumerable<AllRemainingOvertimeDto> RemainingOvertimeList(Guid id);
         public IEnumerable<AllRemainingOvertimeDto> RemainingOvertimeByManagerGuidList(Guid managerGuid);
         public AllRemainingOvertimeDto RemainingOvertimeByEmployeeGuid(Guid id);
+        public IEnumerable<Overtime>? GetOvertimeByEmployeeGuid(Guid employeeGuid);
+        public Overtime? GetOvertimeByOvertimeId(string id);
     }
 
 }

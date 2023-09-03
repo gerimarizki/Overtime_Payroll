@@ -1,0 +1,112 @@
+
+/* Card styles */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-img-top {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+    .btn-secondary:hover {
+        background-color: #555e66;
+        border-color: #555e66;
+    }
+
+/* Additional styles for specific cards */
+.custom-card-chart {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card-header-chart {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.custom-card-body-chart {
+    padding: 20px;
+}
+
+/* CSS untuk komponen profil karyawan */
+/*.container {
+    margin-top: 3rem;
+}
+
+.card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: linear-gradient(to bottom, #007bff, #0056b3);
+    color: #fff;
+}
+
+.card-title {
+    margin: 0;
+}
+
+.details {
+    padding: 1rem;
+}
+
+.details-column {
+    font-weight: bold;
+}*/
+
+.progress {
+    margin-top: 1rem;
+}
+
+.progress-text {
+    font-weight: bold;
+}
+
+.progress-bar {
+    border-radius: 0;
+    height: 20px;
+    transition: width 0.5s;
+    color: blue;
+}
+
+/* CSS untuk tombol kembali */
+/*.btn-secondary {
+    margin-top: 1rem;
+}*/
+
+/* CSS untuk Quill Editor */
+/*.custom-quill-editor {
+    border: 1px solid #ddd;
+    width: 200px;
+    min-height: 150px;
+    margin-top: 1rem;
+}*/
+
+/* Tampilan Overtime Remaining Kurang dari Maksimal */
+.less-than-max {
+    background-color: blue;
+}

@@ -17,7 +17,7 @@ public class TestOvertimeDto
             StartOvertimeDate = newOver.StartOvertimeDate,
             EndOvertimeDate = newOver.EndOvertimeDate,
             Remarks = newOver.Remarks,
-            Status = StatusLevel.Waiting,
+            //Status = StatusLevel.Waiting,
             EmployeeGuid = newOver.EmployeeGuid
         };
     }

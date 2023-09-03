@@ -14,16 +14,17 @@ namespace server.DTOs.Payrolls
         public Guid EmployeeGuid { get; set; }
         public string FullName { get; set; }
 
+        public string OvertimeRemaining { get; set; }
+
         public static implicit operator Payroll(GetAllPayrollDto payrollDto)
         {
             return new()
             {
                 Guid = payrollDto.Guid,
-                PayDate = DateTime.Now,
+                PayDate = new DateTime(25 / 08 / 2023),
                 Salary = payrollDto.Salary,
                 Allowance = payrollDto.Salary * 3 / 100,
-                EmployeeGuid = payrollDto.EmployeeGuid,
-                
+                EmployeeGuid = payrollDto.EmployeeGuid,   
             };
         }
 
@@ -31,11 +32,12 @@ namespace server.DTOs.Payrolls
         {
             return new()
             {
-                Guid = payroll.Guid,
-                PayDate = DateTime.Now,
+                Guid = payroll.Guid,               
+                PayDate = new DateTime(25/08/2023),
                 Salary = payroll.Salary,
                 Allowance = payroll.Salary * 3 / 100,
                 EmployeeGuid = payroll.EmployeeGuid,
+
             };
         }
 

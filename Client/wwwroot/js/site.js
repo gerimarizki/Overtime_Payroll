@@ -68,7 +68,13 @@ $(document).ready(function () {
     });
 });
 
-
+$.ajax({
+    url:"https://localhost:7128/api/overtimes/CountStatus"
+}).done((result) => {
+    $("#countAccepted").html(`${result.data.countAccepted}`)
+    $("#countRejected").html(`${result.data.countRejected}`)
+    $("#countWaiting").html(`${result.data.countWaiting}`)
+})
 
 function updateDateTime() {
     var now = new Date();
@@ -77,6 +83,99 @@ function updateDateTime() {
 
     document.getElementById('currentDateTime').textContent = formattedDateTime;
 }
+
+
+
+
+
+//@* ----------------------------------------
+//    AJAX UNTUK REGISTER
+//----------------------------------------*@
+function register() {
+    var registerData = {
+        firstName: $("#firstName").val(),
+        lastName: $("#lastName").val(),
+        birthDate: $("#birthDate").val(),
+        gender: parseInt($("#gender").val()),
+        hiringDate: $("#hiringDate").val(),
+        email: $("#email").val(),
+        phoneNumber: $("#phoneNumber").val(),
+        managerGuid: $("#managerGuid").val(),
+        password: $("#password").val(),
+        confirmPassword: $("#confirmPassword").val(),
+        salary: parseInt($("#salary").val())
+    };
+
+    $.ajax({
+        url: "https://localhost:7128/api/accounts/Register",
+        type: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(registerData),
+        success: function (result) {
+            Swal.fire({
+                title: 'Success',
+                text: 'Data has been registered',
+                icon: 'success'
+            }).then(function () {
+                location.reload();
+            });
+        },
+        error: function (error) {
+            Swal.fire({
+                title: 'Oops',
+                text: 'Failed to register. Please try again.',
+                icon: 'error'
+            });
+            console.log(error);
+        }
+    });
+}
+
+
+
+    $(document).ready(() => {
+        $.ajax({
+            url: "https://localhost:7128/api/overtimes"
+        }).done((result) => {
+            const overtimeData = result.data.filter(overtime => overtime.EmployeeGuid === "@User.FindFirstValue(ClaimTypes.NameIdentifier)");
+
+            // Buat grafik batang
+            const overtimeRemainingValues = overtimeData.map(overtime => overtime.OvertimeRemaining);
+            const overtimeLabels = overtimeData.map(overtime => overtime.OvertimeId.toString());
+
+            new Chart("myBar", {
+                type: "bar",
+                data: {
+                    labels: overtimeLabels,
+                    datasets: [{
+                        label: "Overtime Remaining",
+                        data: overtimeRemainingValues,
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Grafik Overtime Remaining"
+                        }
+                    }
+                }
+            });
+        });
+    });
+
+
+
 
 // Memanggil fungsi updateDateTime() setiap detik
 setInterval(updateDateTime, 1000);

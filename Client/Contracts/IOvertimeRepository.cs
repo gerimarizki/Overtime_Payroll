@@ -1,16 +1,12 @@
-﻿using Client.Controllers;
-using Client.ViewModels.Overtimes;
+﻿using Client.ViewModels.Overtimes;
+using server.DTOs.Overtimes;
 using server.Models;
-using server.Utilities;
 using server.Utilities.Handlers;
 
 namespace Client.Contracts
 {
-    public interface IOvertimeRepository : IRepository<RequestOvertimeViewModel, Guid>
+    public interface IOvertimeRepository : IRepository<Overtime, Guid>
     {
-        Task<HandlerForResponse<IEnumerable<RequestOvertimeViewModel>>> GetOvertimeByManager(Guid guid);
-
-        public Task<HandlerForResponse<ApprovalByManager>> GetApproval(ApprovalByManager entity);
-
+        public Task<HandlerForResponse<AllRemainingOvertimeDto>> PostOvertime(TestOvertimeDto entity);
     }
 }

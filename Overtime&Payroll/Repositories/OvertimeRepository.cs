@@ -3,6 +3,7 @@ using server.Data;
 using server.DTOs.Overtimes;
 using server.Models;
 using server.Utilities;
+using server.Utilities.Enums;
 using server.Utilities.Handlers;
 
 namespace server.Repositories
@@ -15,7 +16,10 @@ namespace server.Repositories
         {
             return _context.Set<Overtime>().ToList().Select(over => over.OvertimeId).LastOrDefault();
         }
-
+        public IEnumerable<Overtime>? GetOvertimeByEmployeeGuid(Guid employeeGuid)
+        {
+            return _context.Set<Overtime>().ToList().Where(ovt =>ovt.EmployeeGuid.Equals(employeeGuid));
+        }
 
         public Overtime? CreateOvertime(Overtime overtime)
         {
@@ -23,6 +27,7 @@ namespace server.Repositories
             {
                 var remainingOvertime = RemainingOvertimeByEmployeeGuid(overtime.EmployeeGuid);
                 var exitingOvertime = _context.Overtimes.FirstOrDefault(o => o.StartOvertimeDate.Day == overtime.StartOvertimeDate.Day);
+                
                if (remainingOvertime.OvertimeRemaining > 0 && remainingOvertime.EndOvertimeDate <= remainingOvertime.StartOvertimeDate)
                 {
                     var emp = _context.Employees.Where(e => e.Guid == overtime.EmployeeGuid)
@@ -35,6 +40,7 @@ namespace server.Repositories
                     var salaryPerHours = emp.Payroll.Salary * 1 / 173;
                     var totalHours = Convert.ToInt32((overtime.EndOvertimeDate - overtime.StartOvertimeDate).TotalHours);
                     var today = overtime.StartOvertimeDate.DayOfWeek;
+      
                     if (today == DayOfWeek.Saturday || today == DayOfWeek.Sunday)
                     {
                         if (totalHours > 11)
@@ -50,7 +56,7 @@ namespace server.Repositories
                             totalHours = 4;
                         }
                         for (int i = 0; i < totalHours; i++)
-                        {
+                        {                         
                             if (i < 1)
                             {
                                 overtime.PaidOvertime += Convert.ToInt32(1.5 * salaryPerHours);
@@ -171,6 +177,11 @@ namespace server.Repositories
                 return null;
             }
 
+        }
+
+        Overtime? IOvertimeRepository.GetOvertimeByOvertimeId(string id)
+        {
+            return _context.Set<Overtime>().SingleOrDefault(ovt=>ovt.OvertimeId == id);
         }
     }
 }

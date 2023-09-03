@@ -150,50 +150,6 @@ MODAL UNTUK CHANGE PASSWORD
         //var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         //var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         //    return new bootstrap.Tooltip(tooltipTriggerEl)
-        @*----------------------------------------
-        AJAX UNTUK REGISTER
-        ----------------------------------------*@
-        function register() {
-            var registerData = {
-                firstName: $("#firstName").val(),
-                lastName: $("#lastName").val(),
-                birthDate: $("#birthDate").val(),
-                gender: parseInt($("#gender").val()),
-                hiringDate: $("#hiringDate").val(),
-                email: $("#email").val(),
-                phoneNumber: $("#phoneNumber").val(),
-                managerGuid: $("#managerGuid").val(),
-                password: $("#password").val(),
-                confirmPassword: $("#confirmPassword").val(),
-                salary: parseInt($("#salary").val())
-            };
-
-            $.ajax({
-                url: "https://localhost:7128/api/accounts/Register",
-                type: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify(registerData),
-                success: function (result) {
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Data has been registered',
-                        icon: 'success'
-                    }).then(function () {
-                        location.reload();
-                    });
-                },
-                error: function (error) {
-                    Swal.fire({
-                        title: 'Oops',
-                        text: 'Failed to register. Please try again.',
-                        icon: 'error'
-                    });
-                    console.log(error);
-                }
-            });
-        }
 
         @*----------------------------------------
         AJAX UNTUK FORGOT PASSWORD

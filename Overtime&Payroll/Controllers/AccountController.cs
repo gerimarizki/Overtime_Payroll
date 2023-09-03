@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs.Accounts;
+using server.DTOs.Payrolls;
 using server.Services;
 using server.Utilities.Handlers;
 using System.Net;
@@ -16,6 +17,47 @@ namespace server.Controllers
         public AccountController(AccountService service)
         {
             _service = service;
+        }
+
+        [HttpGet("Profilall/{guid}")]
+        public IActionResult GetAllDetailProfil(Guid guid)
+        {
+            var profil = _service.GetAllDetailProfil(guid);
+            if (profil == null)
+                return NotFound(new HandlerForResponse<string>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Profil not found"
+                });
+            return Ok(new HandlerForResponse<IEnumerable<GetDetailProfilDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Profil Retrieved",
+                Data = profil
+
+            }) ;
+        }
+        [HttpGet("Profil/{guid}")]
+        public IActionResult GetDetailProfil(Guid guid)
+        {
+            var profil = _service.GetDetailProfil(guid);
+            if (profil == null)
+                return NotFound(new HandlerForResponse<string>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Profil not found"
+                });
+            return Ok(new HandlerForResponse<GetDetailProfilDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Profil Retrieved",
+                Data = profil
+
+            }) ;
         }
 
         // Register

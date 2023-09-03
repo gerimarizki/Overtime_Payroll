@@ -1,5 +1,6 @@
 ﻿using server.Contracts;
 using server.DTOs.Overtimes;
+using server.Models;
 using server.Utilities.Enums;
 using server.Utilities.Handlers;
 
@@ -9,11 +10,13 @@ namespace server.Services
     {
         private readonly IOvertimeRepository _overtimeRepository;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IPayrollRepository _payrollRepository;
 
-        public OvertimeService(IOvertimeRepository overtimeRepository, IEmployeeRepository employeeRepository)
+        public OvertimeService(IOvertimeRepository overtimeRepository, IEmployeeRepository employeeRepository, IPayrollRepository payrollRepository)
         {
             _overtimeRepository = overtimeRepository;
             _employeeRepository = employeeRepository;
+            _payrollRepository = payrollRepository;
         }
 
         //----------------------------
@@ -89,6 +92,8 @@ namespace server.Services
             overtime.OvertimeId = HandlerGenerator.OvertimeId(_overtimeRepository.GetLastOvertimeId());
             overtime.StartOvertimeDate = ovt.StartOvertimeDate;
             overtime.EndOvertimeDate = ovt.EndOvertimeDate;
+            overtime.Status = StatusLevel.Waiting;
+            overtime.CreatedDate = DateTime.Now;
             var createdOver = _overtimeRepository.CreateOvertime(overtime);
             if (createdOver is null) return null;
 
@@ -116,6 +121,8 @@ namespace server.Services
                           }).ToList();
             return master;
 
+
+
         }
 
         //tutup
@@ -130,45 +137,45 @@ namespace server.Services
         }
 
 
-        //public GetOvertimeDto? CreateOvertime(CreateOvertimeDto newOvertime)
-        //{
-        //    Models.Overtime overtime = newOvertime;
-        //    overtime.OvertimeId = HandlerGenerator.OvertimeId(_overtimeRepository.GetLastOvertimeId());
-        //    var createdOvertime = _overtimeRepository.Create(overtime);
-        //    if (createdOvertime is null) return null;
-
-        //    return (GetOvertimeDto)createdOvertime;
-        //}
-
         public GetOvertimeDto? CreateOvertime(CreateOvertimeDto newOvertime)
         {
             Models.Overtime overtime = newOvertime;
             overtime.OvertimeId = HandlerGenerator.OvertimeId(_overtimeRepository.GetLastOvertimeId());
-            overtime.Guid = new Guid();
             var createdOvertime = _overtimeRepository.Create(overtime);
             if (createdOvertime is null) return null;
 
-            
-            var overtimeDetails = (from e in _employeeRepository.GetAll()
-                                   join o in _overtimeRepository.GetAll() on e.Guid equals createdOvertime.EmployeeGuid
-                                   where e.Guid == createdOvertime.EmployeeGuid
-                                   select new GetOvertimeDto
-                                   {
-                                       Guid = o.Guid,
-                                       OvertimeId = createdOvertime.OvertimeId,
-                                       StartOvertimeDate = createdOvertime.StartOvertimeDate,
-                                       EndOvertimeDate = createdOvertime.EndOvertimeDate,
-                                       Remarks = createdOvertime.Remarks,
-                                       Status = createdOvertime.Status,
-                                       EmployeeGuid = createdOvertime.EmployeeGuid,
-                                       FullName = e.FirstName + " " + e.LastName,
-                                       Remaining = createdOvertime.OvertimeRemaining,
-                                       Paid = createdOvertime.PaidOvertime,
-                                       CreatedDate = createdOvertime.CreatedDate
-                                   }).FirstOrDefault();
-
-            return overtimeDetails;
+            return (GetOvertimeDto)createdOvertime;
         }
+
+        //public GetOvertimeDto? CreateOvertime(CreateOvertimeDto newOvertime)
+        //{
+        //    Models.Overtime overtime = newOvertime;
+        //    overtime.OvertimeId = HandlerGenerator.OvertimeId(_overtimeRepository.GetLastOvertimeId());
+        //    overtime.Guid = new Guid();
+        //    var createdOvertime = _overtimeRepository.Create(overtime);
+        //    if (createdOvertime is null) return null;
+
+
+        //    var overtimeDetails = (from e in _employeeRepository.GetAll()
+        //                           join o in _overtimeRepository.GetAll() on e.Guid equals createdOvertime.EmployeeGuid
+        //                           where e.Guid == createdOvertime.EmployeeGuid
+        //                           select new GetOvertimeDto
+        //                           {
+        //                               Guid = o.Guid,
+        //                               OvertimeId = createdOvertime.OvertimeId,
+        //                               StartOvertimeDate = createdOvertime.StartOvertimeDate,
+        //                               EndOvertimeDate = createdOvertime.EndOvertimeDate,
+        //                               Remarks = createdOvertime.Remarks,
+        //                               Status = createdOvertime.Status,
+        //                               EmployeeGuid = createdOvertime.EmployeeGuid,
+        //                               FullName = e.FirstName + " " + e.LastName,
+        //                               Remaining = createdOvertime.OvertimeRemaining,
+        //                               Paid = createdOvertime.PaidOvertime,
+        //                               CreatedDate = createdOvertime.CreatedDate
+        //                           }).FirstOrDefault();
+
+        //    return overtimeDetails;
+        //}
 
 
         public int UpdateOvertime(UpdateOvertimeDto updateOvertime)
@@ -176,6 +183,8 @@ namespace server.Services
             var getOvertime = _overtimeRepository.GetByGuid(updateOvertime.Guid);
             if (getOvertime is null) return -1;
 
+            Overtime updateovertime = updateOvertime;
+            updateovertime.CreatedDate = getOvertime.CreatedDate;
             var isUpdate = _overtimeRepository.Update(updateOvertime);
             return !isUpdate ? 0 : 1;
         }
@@ -197,6 +206,8 @@ namespace server.Services
 
             return overtime;
         }
+
+
         public IEnumerable<AllRemainingOvertimeDto>? GetAllByGuidManager(Guid guid)
         {
             var manager = _employeeRepository.GetByGuid(guid);
@@ -210,6 +221,7 @@ namespace server.Services
             if (over is null) return -1;
             over.Guid = overtime.Guid;
             over.Status = overtime.Status;
+            over.CreatedDate = over.CreatedDate;
             if (over.Status == Utilities.Enums.StatusLevel.Rejected)
             {
                 over.OvertimeRemaining += Convert.ToInt32((over.EndOvertimeDate - over.StartOvertimeDate).TotalHours);
@@ -217,6 +229,7 @@ namespace server.Services
             }
             else if (over.Status == Utilities.Enums.StatusLevel.Accepted || over.Status == Utilities.Enums.StatusLevel.Waiting)
             {
+
                 over.OvertimeRemaining += 0;
             }
             var isUpdate = _overtimeRepository.Update(over);

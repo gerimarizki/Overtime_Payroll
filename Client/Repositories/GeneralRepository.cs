@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Client.Repositories
 {
-    public class GeneralRepository<TEntity, TId> : IRepository<TEntity, TId>
-       where TEntity : class
+    public class GeneralRepository<Entity, TId> : IRepository<Entity, TId>
+       where Entity : class
     {
         protected readonly string request;
         protected readonly HttpClient httpClient;
@@ -24,62 +24,62 @@ namespace Client.Repositories
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWToken"));
         }
 
-        public async Task<HandlerForResponse<TEntity>> Delete(TId id)
+        public async Task<HandlerForResponse<Entity>> Delete(TId id)
         {
-            HandlerForResponse<TEntity> entityVM = null;
+            HandlerForResponse<Entity> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(id), Encoding.UTF8, "application/json");
 
             using (var response = httpClient.DeleteAsync(request + "?guid=" + id).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<TEntity>>(apiResponse);
+                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<Entity>>(apiResponse);
             }
             return entityVM;
         }
 
-        public async Task<HandlerForResponse<IEnumerable<TEntity>>> Get()
+        public async Task<HandlerForResponse<IEnumerable<Entity>>> Get()
         {
-            HandlerForResponse<IEnumerable<TEntity>> entityVM = null;
+            HandlerForResponse<IEnumerable<Entity>> entityVM = null;
             using (var response = await httpClient.GetAsync(request))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<IEnumerable<TEntity>>>(apiResponse);
+                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<IEnumerable<Entity>>>(apiResponse);
             }
             return entityVM;
         }
 
-        public async Task<HandlerForResponse<TEntity>> Get(TId id)
+        public async Task<HandlerForResponse<Entity>> Get(TId id)
         {
-            HandlerForResponse<TEntity> entity = null;
+            HandlerForResponse<Entity> entity = null;
 
             using (var response = await httpClient.GetAsync(request + id))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entity = JsonConvert.DeserializeObject<HandlerForResponse<TEntity>>(apiResponse);
+                entity = JsonConvert.DeserializeObject<HandlerForResponse<Entity>>(apiResponse);
             }
             return entity;
         }
 
-        public async Task<HandlerForResponse<TEntity>> Post(TEntity entity)
+        public async Task<HandlerForResponse<Entity>> Post(Entity entity)
         {
-            HandlerForResponse<TEntity> entityVM = null;
+            HandlerForResponse<Entity> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
             using (var response = httpClient.PostAsync(request, content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<TEntity>>(apiResponse);
+                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<Entity>>(apiResponse);
             }
             return entityVM;
         }
 
-        public async Task<HandlerForResponse<TEntity>> Put(TId id, TEntity entity)
+        public async Task<HandlerForResponse<Entity>> Put(TId id, Entity entity)
         {
-            HandlerForResponse<TEntity> entityVM = null;
+            HandlerForResponse<Entity> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
             using (var response = httpClient.PutAsync(request, content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<TEntity>>(apiResponse);
+                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<Entity>>(apiResponse);
             }
             return entityVM;
         }

@@ -6,14 +6,19 @@
 
 <h1>Index</h1>
 
-<p>
-    <a href="Create/" title="Create New Employee"> @*bisa menambahkan button class="btn btn-primary"*@
-        @*<button type="submit" class="btn btn-xs btn-danger">*@
-        <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Create New Employee">
-            <i class="mdi mdi-library-plus menu-icon">Create New</i>
-        </button>
-    </a>
-</p>
+@if (User.IsInRole("Finance") || (User.IsInRole("Manager")))
+{
+    <p>
+        <a href="Create/" title="Create New Employee">
+            @*bisa menambahkan button class="btn btn-primary"*@
+            @*<button type="submit" class="btn btn-xs btn-danger">*@
+            <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Create New Employee">
+                <i class="mdi mdi-library-plus menu-icon">Create New</i>
+            </button>
+        </a>
+    </p>
+}
+
 
 
 <table id="Table" class="table-hover">
@@ -108,12 +113,42 @@
                     "<'row'<'col-sm-12'tr>>" + // Tabel
                     "<'row'<'col-md-5'i><'col-md-3 mt-2 mx-auto'l><'col-md-4'p>>",
                 "buttons": [
-                    'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
+                    {
+                        extend: 'copy',
+                        text: 'Salin',
+                        className: 'btn btn-primary'
+                    },
+                    {
+                        extend: 'csv',
+                        text: 'CSV',
+                        className: 'btn btn-secondary'
+                    },
+                    {
+                        extend: 'excel',
+                        text: 'Excel',
+                        className: 'btn btn-ubah btn-success'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: 'PDF',
+                        className: 'btn btn-ubah btn-info'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Cetak',
+                        className: 'btn btn-ubah btn-warning'
+                    },
+                    {
+                        extend: 'colvis',
+                        text: 'Sembunyikan Kolom',
+                        className: 'btn btn-ubah btn-dark'
+                    }
                 ],
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 "pageLength": 25
             });
         });
+
     </script>
 }
 

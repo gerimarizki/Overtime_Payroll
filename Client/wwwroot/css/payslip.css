@@ -1,0 +1,69 @@
+.card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+.card-img-top {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.btn-primary {
+    background-color: blue;
+    border-color: #007bff;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+    .btn-secondary:hover {
+        background-color: #555e66;
+        border-color: #555e66;
+    }
+
+.card-body .row.details {
+    display: none;
+}
+
+.card.active .details {
+    display: flex;
+}
+
+.details-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    padding: 5px;
+    font-size: 12px;
+    border: none;
+    background-color: cornflowerblue;
+}
+
+/* Tambahkan gaya untuk header card */
+.card-header {
+    background: linear-gradient(to right, #00a8ff, #3f51b5); /* Latar belakang gradasi */
+    color: white;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Garis pembatas */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.container {
+    margin-top: 30px;
+}

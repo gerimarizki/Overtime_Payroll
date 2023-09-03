@@ -50,8 +50,52 @@ body {
     padding: 20px;
 }
 
+.form-control option[value="0"] {
+    background-color: green;
+    color: white;
+}
 
+.form-control option[value="1"] {
+    background-color: red;
+    color: white;
+}
 
+.form-control option[value="2"] {
+    background-color: blue;
+    color: white;
+}
+
+.btn btn-primary{
+    background:none;
+    background-color:none;
+    border-radius:50px;
+}
+
+/* CSS untuk mengatur radius sudut dan warna latar belakang tombol-tombol DataTables */
+div.dt-buttons > .dt-button, div.dt-buttons > div.dt-button-split .dt-button {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    margin-left: .167em;
+    margin-right: .167em;
+    margin-bottom: .333em;
+    padding: .5em 1em;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px; 
+    cursor: pointer;
+    font-size: .88em;
+    line-height: 1.6em;
+    color: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-decoration: none;
+    outline: none;
+    text-overflow: ellipsis;
+}
 
 
 

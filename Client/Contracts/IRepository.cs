@@ -2,13 +2,13 @@
 
 namespace Client.Contracts
 {
-    public interface IRepository<TEntity, TId>
-       where TEntity : class
+    public interface IRepository<T, X>
+       where T : class
     {
-        Task<HandlerForResponse<IEnumerable<TEntity>>> Get();
-        Task<HandlerForResponse<TEntity>> Get(TId id);
-        Task<HandlerForResponse<TEntity>> Post(TEntity entity);
-        Task<HandlerForResponse<TEntity>> Put(TId id, TEntity entity);
-        Task<HandlerForResponse<TEntity>> Delete(TId id);
+        Task<HandlerForResponse<IEnumerable<T>>> Get();
+        Task<HandlerForResponse<T>> Get(X id);
+        Task<HandlerForResponse<T>> Post(T entity);
+        Task<HandlerForResponse<T>> Put(X id, T entity);
+        Task<HandlerForResponse<T>> Delete(X id);
     }
 }

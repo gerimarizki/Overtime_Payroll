@@ -1,0 +1,94 @@
+
+.custom-card {
+    background: linear-gradient(to bottom, #69a7f0, #6dd5fa, #ffffff);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.custom-card-body {
+    display: flex;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: none;
+    background-color: white;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-form {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.custom-image {
+    max-width: 300px;
+    flex: 1;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    width: 600px;
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    width: 150px;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    width: 150px;
+}
+
+    .btn-secondary:hover {
+        background-color: #555e66;
+        border-color: #555e66;
+    }
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 0px;
+    margin-left: -200px;
+}
+
+img.img-create {
+    width: auto;
+    margin: auto;
+    border-radius: 20px;
+}
+/*img, svg {
+        
+    }*/
+
+/* Custom styles for Quill toolbar */
+.ql-toolbar.ql-snow {
+    width: 600px;
+}
+
+/* Custom styles for Quill Editor */
+.custom-quill-editor {
+    border: 1px solid #ddd;
+    min-height: 600px;
+    margin-top: 10px;
+}
+
+form.custom-form {
+    width: 850px;
+}

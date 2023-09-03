@@ -2,7 +2,10 @@
 using server.Contracts;
 using server.Data;
 using server.DTOs.Accounts;
+using server.DTOs.Payrolls;
 using server.Models;
+using server.Repositories;
+using server.Utilities.Enums;
 using server.Utilities.Handlers;
 using System.Security.Claims;
 
@@ -28,7 +31,9 @@ namespace server.Services
 
         private readonly ITokenHandler _tokenHandler;
 
-        public AccountService(IAccountRepository accountRepository, OvertimeDbContext context, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, IOvertimeRepository overtimeRepository, IEmailHandler emailHandler, ITokenHandler tokenHandler, IPayrollRepository payrollRepository)
+        private readonly PayrollService _payrollService;
+
+        public AccountService(IAccountRepository accountRepository, OvertimeDbContext context, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, IOvertimeRepository overtimeRepository, IEmailHandler emailHandler, ITokenHandler tokenHandler, IPayrollRepository payrollRepository, PayrollService payrollService)
         {
             _accountRepository = accountRepository;
             _context = context;
@@ -39,6 +44,7 @@ namespace server.Services
             _emailHandler = emailHandler;
             _tokenHandler = tokenHandler;
             _payrollRepository = payrollRepository;
+            _payrollService = payrollService;
         }
 
         public bool RegistrationAccount(RegisterAccountDto registerDto)
@@ -279,5 +285,153 @@ namespace server.Services
             return !isDelete ? 0 :
                 1;
         }
+
+        public IEnumerable<GetDetailProfilDto>? GetAllDetailProfil(Guid guid)
+        {
+
+            /*var payover = _payrollService.GetAllPayrollOverbyEmpGuid(guid);*/
+            var profil = (from p in _payrollRepository.GetAll()
+                          join e in _employeeRepository.GetAll() on p.EmployeeGuid equals e.Guid
+                          join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
+                          join a in _accountRepository.GetAll() on e.Guid equals a.Guid
+                          join ar in _accountRoleRepository.GetAll() on a.Guid equals ar.AccountGuid
+                          join r in _roleRepository.GetAll() on ar.RoleGuid equals r.Guid
+                          /*join pay in payover on p.EmployeeGuid equals pay.EmployeeGuid*/
+                          where e.Guid == guid
+                          select new GetDetailProfilDto
+                          {
+                              FullName = e.FirstName + " " + e.LastName,
+                              Email = a.Email,
+                              Nik = e.NIK,
+                              PhoneNumber = e.PhoneNumber,
+                              RoleName = r.Name,
+                              Allowance = p.Allowance,
+                              Salary = p.Salary,
+                              //                   OvertimeRemaining = o.OvertimeRemaining,
+                              //                   TotalSalary = pay.Salary + pay.PaidOvertime - p.Allowance,
+                              //               });
+
+                              //return profil.LastOrDefault();
+
+                              OvertimeRemaining = o.OvertimeRemaining,
+                              PaidOvertime = o.PaidOvertime, // Nilai awal Paid Overtime                             
+                              TotalSalary = p.Salary - p.Allowance, // Nilai awal Total Salary
+                              Status = o.Status,
+                              OvertimeId = o.OvertimeId
+                          });
+            return profil;
+        }
+        public GetDetailProfilDto? GetDetailProfil(Guid guid)
+        {
+
+            /*var payover = _payrollService.GetAllPayrollOverbyEmpGuid(guid);*/
+            var profil = from p in _payrollRepository.GetAll()
+                         join e in _employeeRepository.GetAll() on p.EmployeeGuid equals e.Guid
+                         join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
+                         join a in _accountRepository.GetAll() on e.Guid equals a.Guid
+                         join ar in _accountRoleRepository.GetAll() on a.Guid equals ar.AccountGuid
+                         join r in _roleRepository.GetAll() on ar.RoleGuid equals r.Guid
+                         /*join pay in payover on p.EmployeeGuid equals pay.EmployeeGuid*/
+                         where e.Guid == guid
+                         select new GetDetailProfilDto
+                         {
+                             FullName = e.FirstName + " " + e.LastName,
+                             Email = a.Email,
+                             Nik = e.NIK,
+                             PhoneNumber = e.PhoneNumber,
+                             RoleName = r.Name,
+                             Allowance = p.Allowance,
+                             Salary = p.Salary,
+                             OvertimeRemaining = o.OvertimeRemaining,
+                             PaidOvertime = o.PaidOvertime, // Nilai awal Paid Overtime                             
+                             TotalSalary = p.Salary - p.Allowance, // Nilai awal Total Salary
+                             Status = o.Status,
+                             OvertimeId = o.OvertimeId,
+                             Counter = 0
+                         };
+            var newovertime = new GetDetailProfilDto();
+            newovertime = profil.LastOrDefault();
+            var counterprofil = profil.Count();
+            newovertime.Counter = counterprofil;
+
+            //var newovertime = new GetDetailProfilDto();
+            //newovertime = profil.Where(lp => lp.EmployeeGuid.Equals(guid)).LastOrDefault();
+            //newovertime = profil.LastOrDefault();
+            var newprofil = profil.OrderByDescending(profil => profil.PaidOvertime).FirstOrDefault();
+            newprofil.PaidOvertime = 0;
+            foreach (var item in profil)
+            {
+                if (newovertime.Counter > 1)
+                {
+                    newprofil.PaidOvertime += item.PaidOvertime;
+                }
+                newovertime.Counter--;
+            }
+                /*var overtime = _overtimeRepository.GetOvertimeByOvertimeId(item.OvertimeId);
+                if (overtime == null && overtime.Status == StatusLevel.Waiting)
+                {
+                    newovertime.PaidOvertime = 0;
+                }
+                else if (overtime.Status == StatusLevel.Accepted)
+                {
+                    newovertime.PaidOvertime += item.PaidOvertime;
+                }*/
+                newovertime.Counter = counterprofil;
+                foreach (var item2 in profil)
+                {
+                    if (newovertime.Status == StatusLevel.Waiting)
+                    {
+                        newovertime = newprofil;
+                        break;
+                    }
+                    else if (newovertime.Status == StatusLevel.Accepted && newovertime.Counter > 1)
+                    {
+                        newovertime.PaidOvertime += item2.PaidOvertime;
+                    }
+                    newovertime.Counter--;
+                }
+                newovertime.TotalSalary = newovertime.Salary + newovertime.PaidOvertime - newovertime.Allowance;
+                return newovertime;
+
+            }
+        //newovertime.TotalSalary = newovertime.Salary + newovertime.PaidOvertime - newovertime.Allowance;
+        //return newovertime;
+        //var lastProfil = profil.LastOrDefault();
+        //var newovertime = new GetDetailProfilDto();
+        //newovertime = lastProfil;
+        //foreach (var item in profil)
+        //{
+        //    var overtime = _overtimeRepository.GetOvertimeByOvertimeId(item.OvertimeId);
+        //    if(overtime == null && overtime.Status == StatusLevel.Waiting)
+        //    {
+        //        newovertime.PaidOvertime = 0;
+        //    }
+        //    else if(overtime.Status == StatusLevel.Accepted)
+        //    {
+        //        newovertime.PaidOvertime += item.PaidOvertime;
+        //    }
+
+        //}
+        //newovertime.TotalSalary = newovertime.Salary + newovertime.PaidOvertime - newovertime.Allowance;
+        //return newovertime;
+        /* // Cek status Paid Overtime
+         if (lastProfil != null && lastProfil.Status  == StatusLevel.Waiting && lastProfil.OvertimeId != null)
+         {
+             // Jika status "Waiting", maka Paid Overtime tetap 0
+             lastProfil.PaidOvertime = 0;
+         }
+         else if (lastProfil != null && lastProfil.Status == StatusLevel.Accepted )
+         {
+             // Jika status "Accepted", maka ambil nilai Paid Overtime dari data
+             lastProfil.PaidOvertime = payover.LastOrDefault().PaidOvertime;
+         }
+
+         // Hitung Total Salary
+         lastProfil.TotalSalary = lastProfil.Salary + lastProfil.PaidOvertime - lastProfil.Allowance;*/
+
+
+        /*
+                    return lastProfil;*/
     }
+
 }

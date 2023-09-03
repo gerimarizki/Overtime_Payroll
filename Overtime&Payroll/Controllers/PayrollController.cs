@@ -17,6 +17,72 @@ namespace server.Controllers
             _payrollService = payrollService;
         }
 
+        /*[HttpGet("detailpayroll/{guid}")]
+        public IActionResult DetailpayrollbyGuid(Guid guid)
+        {
+            var payroll = _payrollService.GetDetailbyGuid(guid);
+            if (!payroll.Any())
+            {
+                return NotFound(new HandlerForResponse<GetPayrollDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+
+            return Ok(new HandlerForResponse<IEnumerable<GetPayslipDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data Found",
+                Data = payroll
+            });
+        }*/
+        [HttpGet("detailAllPayroll/{guid}")]
+        public IActionResult DetailAllpayroll(Guid guid)
+        {
+            var payroll = _payrollService.GetAllDetail(guid);
+            if (payroll == null)
+            {
+                return NotFound(new HandlerForResponse<GetPayrollDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+
+            return Ok(new HandlerForResponse <IEnumerable<GetPayslipDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data Found",
+                Data = payroll
+            });
+        }
+        [HttpGet("detailpayroll/{guid}")]
+        public IActionResult Detailpayroll(Guid guid)
+        {
+            var payroll = _payrollService.GetDetail(guid);
+            if (payroll == null)
+            {
+                return NotFound(new HandlerForResponse<GetPayrollDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+
+            return Ok(new HandlerForResponse<GetPayslipDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data Found",
+                Data = payroll
+            });
+        }
         [HttpGet]
         public IActionResult Getpayroll()
         {
@@ -178,30 +244,30 @@ namespace server.Controllers
             });
         }
 
-        //[HttpGet("payroll-overtime/{payroll-guid}")]
-        //public IActionResult GetpayrollOver(Guid guid)
-        //{
-        //    var payroll = _payrollService.GetAllMasterOverbyGuid(guid);
-        //    if (!payroll.Any())
-        //    {
-        //        return NotFound(new HandlerForResponse<GetAllPayrollDto>
-        //        {
-        //            Code = StatusCodes.Status404NotFound,
-        //            Status = HttpStatusCode.NotFound.ToString(),
-        //            Message = "Data Not Found"
-        //        });
-        //    }
+        [HttpGet("payroll-guid-overtime/{guid}")]
+        public IActionResult GetpayrollOver(Guid guid)
+        {
+            var payroll = _payrollService.GetAllMasterOverbyGuid(guid);
+            if (!payroll.Any())
+            {
+                return NotFound(new HandlerForResponse<GetAllPayrollDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
 
-        //    return Ok(new HandlerForResponse<IEnumerable<GetAllPayrollDto>>
-        //    {
-        //        Code = StatusCodes.Status200OK,
-        //        Status = HttpStatusCode.OK.ToString(),
-        //        Message = "Data Found",
-        //        Data = payroll
-        //    });
-        //}
+            return Ok(new HandlerForResponse<IEnumerable<GetAllPayrollDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data Found",
+                Data = payroll
+            });
+        }
 
-        [HttpGet("get-payroll-overtime-by-employeeguid{guid}")]
+        [HttpGet("get-payroll-overtime-by-employeeguid/{guid}")]
         public IActionResult GetpayrollOverEmp(Guid guid)
         {
             var payroll = _payrollService.GetAllPayrollOverbyEmpGuid(guid);
@@ -281,5 +347,29 @@ namespace server.Controllers
             });
         }
 
+
+        //nambahin payslip
+        [HttpGet("payslip/{guid}")]
+        public IActionResult GetPayslip(Guid guid)
+        {
+            var payslip = _payrollService.GetPayslip(guid);
+            if (payslip == null)
+            {
+                return NotFound(new HandlerForResponse<GetPayslipDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+
+            return Ok(new HandlerForResponse<GetPayslipDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data Found",
+                Data = payslip
+            });
+        }
     }
 }

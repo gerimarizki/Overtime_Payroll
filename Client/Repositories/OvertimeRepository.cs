@@ -1,41 +1,40 @@
 ﻿
 using Client.Contracts;
-using Client.Controllers;
 using Client.ViewModels.Overtimes;
 using Newtonsoft.Json;
+using server.DTOs.Overtimes;
 using server.Models;
 using server.Utilities.Handlers;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Client.Repositories
 {
-    public class OvertimeRepository : GeneralRepository<RequestOvertimeViewModel, Guid>, IOvertimeRepository
+    public class OvertimeRepository : GeneralRepository<Overtime, Guid>, IOvertimeRepository
     {
-        public OvertimeRepository(string request = "overtimes/testing/") : base(request)
-        {
-        }
 
-        public async Task<HandlerForResponse<IEnumerable<RequestOvertimeViewModel>>> GetOvertimeByManager(Guid guid)
+        private readonly string request;
+        private readonly HttpClient httpClient;
+        private readonly IHttpContextAccessor contextAccessor;
+        public OvertimeRepository(string request = "overtimes/") : base(request)
         {
-
-            HandlerForResponse<IEnumerable<RequestOvertimeViewModel>> entityVM = null;
-            using (var response = await httpClient.GetAsync(request + "manager/" + guid))
+            this.request = request;
+            contextAccessor = new HttpContextAccessor();
+            httpClient = new HttpClient
             {
-                string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<IEnumerable<RequestOvertimeViewModel>>>(apiResponse);
+                BaseAddress = new Uri("https://localhost:7128/api/")
             };
-            return entityVM;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWToken"));
         }
-
-        public async Task<HandlerForResponse<ApprovalByManager>> GetApproval(ApprovalByManager entity)
+        public async Task<HandlerForResponse<AllRemainingOvertimeDto>> PostOvertime(TestOvertimeDto entity)
         {
-            HandlerForResponse<ApprovalByManager> entityVM = null;
+            HandlerForResponse<AllRemainingOvertimeDto> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-            using (var response = httpClient.PutAsync(request + "update", content).Result)
+            using (var response = httpClient.PostAsync(request + "create-overtime-to-employee-testing", content).Result) //ditambahkan 30/08/2023
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<ApprovalByManager>>(apiResponse);
+                entityVM = JsonConvert.DeserializeObject<HandlerForResponse<AllRemainingOvertimeDto>>(apiResponse);
             }
             return entityVM;
         }

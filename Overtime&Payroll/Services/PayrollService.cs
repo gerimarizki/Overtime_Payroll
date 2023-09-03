@@ -2,6 +2,8 @@
 using server.DTOs.Payrolls;
 using server.Models;
 using server.Repositories;
+using server.Utilities.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace server.Services
 {
@@ -26,7 +28,7 @@ namespace server.Services
                            select new GetPayrollDto
                            {
                                Guid = p.Guid,
-                               PayDate = DateTime.Now,
+                               PayDate = new DateTime(2023, 8, 25),
                                EmployeeGuid = e.Guid,
                                Allowance = p.Allowance,
                                Salary = p.Salary,
@@ -127,7 +129,9 @@ namespace server.Services
                            }).ToList().GroupBy(a => a.guid).Select(b => new GetAllPayrollDto()
                            {
                                EmployeeGuid = b.Key,
-                               PaidOvertime = b.Sum(c => c.totalOver)
+                               PaidOvertime = b.Sum(c => c.totalOver),
+                    
+                               
                            }).ToList();
             return Payroll;
         }
@@ -167,13 +171,14 @@ namespace server.Services
                             select new GetAllPayrollDto
                             {
                                 Guid = p.Guid,
+                                FullName = e.FirstName + " " + e.LastName,
                                 Salary = p.Salary,
                                 Allowance = p.Allowance,
-                                PayDate = DateTime.Now,
+                                PayDate = new DateTime(2023, 8, 25),
                                 PaidOvertime = o.PaidOvertime,
                                 TotalSalary = p.Salary + o.PaidOvertime - p.Allowance,
                                 EmployeeGuid = e.Guid,
-                                FullName = e.FirstName + " " + e.LastName,
+                                OvertimeRemaining= o.OvertimeRemaining.ToString()
                             }).ToList();
             return employee;
         }
@@ -192,6 +197,7 @@ namespace server.Services
                                 PaidOvertime = pay.PaidOvertime,
                                 TotalSalary = p.Salary + pay.PaidOvertime - p.Allowance,
                                 EmployeeGuid = pay.EmployeeGuid,
+                                OvertimeRemaining = pay.OvertimeRemaining.ToString()
                             }).ToList();
             return employee;
         }
@@ -200,22 +206,27 @@ namespace server.Services
         {
             var Payroll = GetAllOverEmpGuid(guid);
             var employee = (from p in _PayrollRepository.GetAll()
+                            join e in _employeeRepository.GetAll() on p.EmployeeGuid equals e.Guid
+                            join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
                             join pay in Payroll on p.EmployeeGuid equals pay.EmployeeGuid
                             select new GetAllPayrollDto
                             {
-                                Guid = p.Guid,
+                                Guid = o.Guid,                                
                                 Salary = p.Salary,
                                 Allowance = p.Allowance,
-                                PayDate = pay.PayDate,
+                                PayDate = new DateTime(25/08/2023),
                                 PaidOvertime = pay.PaidOvertime,
                                 TotalSalary = p.Salary + pay.PaidOvertime - p.Allowance,
                                 EmployeeGuid = pay.EmployeeGuid,
-                                FullName = pay.FullName,
+                                FullName = e.FirstName + " " + e.LastName,
+                                OvertimeRemaining = o.OvertimeRemaining.ToString()
                                 //TotalPaidOvertime = GetTotalOvertime(pay.EmployeeGuid) // Menghitung total paid overtime
                             }).ToList();
             return employee;
 
         }
+
+
 
         //public double GetTotalSalary()
         //{
@@ -244,6 +255,135 @@ namespace server.Services
             double totalOvertime = Payrolls.Sum(p => p.PaidOvertime);
             return totalOvertime;
         }
+
+
+        public GetPayslipDto? GetPayslip(Guid guid)
+        {
+            var payover = GetAllPayrollOverbyEmpGuid(guid);
+            var payslip = (from p in _PayrollRepository.GetAll()
+                           join e in _employeeRepository.GetAll() on p.EmployeeGuid equals e.Guid
+                           join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
+                           join pay in payover on p.EmployeeGuid equals pay.EmployeeGuid
+                           select new GetPayslipDto
+                           {
+                               FullName = e.FirstName + " " + e.LastName,
+                               Allowance = p.Allowance,
+                               PayDate = new DateTime(2023, 8, 25),
+                               Salary = pay.Salary,
+                               PaidOvertime = pay.PaidOvertime,
+                               TotalSalary = pay.Salary - p.Allowance,
+                               Status = o.Status,
+                           });
+
+            var lastPaid = payslip.LastOrDefault();
+
+            // Cek status Paid Overtime
+            if (lastPaid != null && lastPaid.Status == StatusLevel.Waiting)
+            {
+                // Jika status "Waiting", maka Paid Overtime tetap 0
+                lastPaid.PaidOvertime = 0;
+            }
+            else if (lastPaid != null && lastPaid.Status == StatusLevel.Accepted)
+            {
+                // Jika status "Accepted", maka ambil nilai Paid Overtime dari data
+                lastPaid.PaidOvertime = payover.Last().PaidOvertime;
+            }
+
+            // Hitung Total Salary
+            lastPaid.TotalSalary = lastPaid.Salary + lastPaid.PaidOvertime - lastPaid.Allowance;
+
+            return lastPaid;
+        }
+        public IEnumerable<GetPayslipDto>? GetAllDetail(Guid guid)
+        {
+            var payslip = from payroll in _PayrollRepository.GetAll()
+                          join employee in _employeeRepository.GetAll() on payroll.EmployeeGuid equals employee.Guid
+                          join overtime in _overtimeRepository.GetAll() on employee.Guid equals overtime.EmployeeGuid
+                          where employee.Guid == guid
+                          select new GetPayslipDto
+                          {
+                              EmployeeGuid = employee.Guid,
+                              OvertimeId = overtime.OvertimeId,
+                              FullName = employee.FirstName + " " + employee.LastName,
+                              Allowance = payroll.Allowance,
+                              PayDate = new DateTime(2023, 8, 25),
+                              Salary = payroll.Salary,
+                              PaidOvertime = overtime.PaidOvertime,
+                              TotalSalary = payroll.Salary + overtime.PaidOvertime - payroll.Allowance,
+                              Status = overtime.Status,
+                              Counter = 0
+                          };
+            return payslip;
+        }
+        public GetPayslipDto? GetDetail(Guid guid)
+        {
+            var payslip = from payroll in _PayrollRepository.GetAll()
+                          join employee in _employeeRepository.GetAll() on payroll.EmployeeGuid equals employee.Guid
+                          join overtime in _overtimeRepository.GetAll() on employee.Guid equals overtime.EmployeeGuid
+                          where employee.Guid == guid
+                          select new GetPayslipDto
+                          {
+                              EmployeeGuid = employee.Guid,
+                              OvertimeId = overtime.OvertimeId,
+                              FullName = employee.FirstName + " " + employee.LastName,
+                              Allowance = payroll.Allowance,
+                              PayDate = new DateTime(2023, 8, 25),
+                              Salary = payroll.Salary,
+                              PaidOvertime = overtime.PaidOvertime,
+                              TotalSalary = payroll.Salary + overtime.PaidOvertime - payroll.Allowance,
+                              Status = overtime.Status,
+                              CreatedDate = overtime.CreatedDate,
+                              Counter = 0
+                          };
+            /*var lastPaid = payslip.Where(lp=>lp.EmployeeGuid.Equals(guid));*/
+            /*var lastovertime = _overtimeRepository.GetOvertimeByOvertimeId(payslip.LastOrDefault().OvertimeId);*/
+            var newovertime = new GetPayslipDto();
+            newovertime = payslip.LastOrDefault();
+            var counterpayslip = payslip.Count();
+            newovertime.Counter = counterpayslip;
+            
+            var newpayslip = payslip.OrderByDescending(payslip => payslip.PaidOvertime).FirstOrDefault();
+            newpayslip.PaidOvertime = 0;
+            foreach(var item1 in payslip)
+            {
+                if(newovertime.Counter>1)
+                {
+                    newpayslip.PaidOvertime += item1.PaidOvertime;
+                }
+                newovertime.Counter--;
+            }/*
+            newovertime.Counter = 1;
+            foreach (var item1 in payslip)
+            {
+                if(newovertime.Counter < payslip.Count())
+                {
+                    newpayslip.PaidOvertime += item1.PaidOvertime;
+                }
+                newovertime.Counter++;
+            }*/
+            newovertime.Counter = counterpayslip;
+            foreach (var item in payslip)
+            {
+                if (newovertime.Status == StatusLevel.Waiting)
+                {
+                    newovertime = newpayslip;
+                    break;
+                }
+                else if(newovertime.Status == StatusLevel.Accepted && newovertime.Counter>1)
+                {
+
+                    newovertime.PaidOvertime += item.PaidOvertime;
+                }
+                newovertime.Counter--;
+            }
+
+            newovertime.TotalSalary = newovertime.Salary + newovertime.PaidOvertime - newovertime.Allowance;
+            return newovertime;
+        }
+       /* public IEnumerable<GetPayslipDto>? GetDetailbyGuid(Guid id)
+        {
+            return GetDetail().Where(pay => pay.EmployeeGuid.Equals(id));
+        }*/
 
     }
 }

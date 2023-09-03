@@ -1,5 +1,6 @@
 ﻿using Client.Contracts;
 using Client.Models;
+using Client.ViewModels.Payroll;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs.AccountRoles;
 using server.DTOs.Employees;
@@ -99,5 +100,7 @@ namespace Client.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult PayslipDetail() { return View(); }
     }
 }
