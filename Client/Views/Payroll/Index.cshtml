@@ -4,7 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<link rel="stylesheet" href="~/css/site.css">
+
+<h1>Payroll</h1>
 
 <p>
     <a href="Create/">
@@ -65,6 +67,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ModifiedDate)
             </td>
+
+
             <td>
                @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
@@ -75,7 +79,7 @@
                             <i class="mdi mdi-border-color menu-icon"></i>
                         </a>
 
-                        @*  <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
+                  @*        <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
                     <i class="fa fa-info-circle"></i>
                     </a>*@
 

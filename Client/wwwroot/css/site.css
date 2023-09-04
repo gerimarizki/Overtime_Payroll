@@ -97,6 +97,22 @@ div.dt-buttons > .dt-button, div.dt-buttons > div.dt-button-split .dt-button {
     text-overflow: ellipsis;
 }
 
+/* Warna latar belakang untuk badge Accepted */
+.btn-success .badge.bg-success {
+    background-color: #28a745;
+}
+
+/* Warna latar belakang untuk badge Waiting */
+.btn-warning .badge.bg-warning {
+    background-color: #ffc107;
+}
+
+/* Warna latar belakang untuk badge Rejected */
+.btn-danger .badge.bg-danger {
+    background-color: #dc3545;
+}
+
+
 
 
 

@@ -43,10 +43,6 @@ $(document).ready(() => {
 $(document).ready(function () {
     $.ajax({
         url: "https://localhost:7128/api/employees",
-        //headers:
-        //{
-        //    "Authorization": "Bearer " + Token
-        //}
     }).done(function (result) {
         var totalEmployee = result.data.length;
         $("#total-employee").text(totalEmployee);

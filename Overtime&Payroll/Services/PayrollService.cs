@@ -228,15 +228,15 @@ namespace server.Services
 
 
 
-        //public double GetTotalSalary()
-        //{
-        //    var Payrolls = _PayrollRepository.GetAll();
+        public double GetAllTotalSalary()
+        {
+            var Payrolls = _PayrollRepository.GetAll();
 
 
-        //    double totalExpense = Payrolls.Sum(p => p.Salary - p.Allowance);
+            double totalExpense = Payrolls.Sum(p => p.Salary - p.Allowance);
 
-        //    return totalExpense;
-        //}
+            return totalExpense;
+        }
 
         public double GetTotalSalary(Guid employeeGuid)
         {

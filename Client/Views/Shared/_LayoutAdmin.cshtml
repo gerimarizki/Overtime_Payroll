@@ -45,7 +45,7 @@
                 <span></span>
             </li>
                
-                            @if (User.IsInRole("Finance") || (User.IsInRole("Manager")))
+                            @if (User.IsInRole("Finance"))
                             {
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="Index">
@@ -59,12 +59,12 @@
                             <span class="menu-title">Role</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="HistoryOvertime" asp-action="Index">
                             <i class="mdi mdi-archive menu-icon"></i>
                             <span class="menu-title">HistoryOvertime</span>
                         </a>
-                    </li>
+                    </li>*@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Overtime" asp-action="Index">
                             <i class="mdi mdi-book-plus menu-icon"></i>
@@ -84,12 +84,12 @@
                             <span class="menu-title">Account</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                   @* <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="AccountRole" asp-action="Index">
                             <i class="mdi mdi-account-card-details menu-icon"></i>
                             <span class="menu-title">AccountRole</span>
                         </a>
-                    </li>
+                    </li>*@
                             }
                 <li class="nav-item">
                      @if (User.IsInRole("Employee"))
@@ -102,11 +102,25 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Payroll" asp-action="PayslipDetail">
-                        <i class="mdi mdi-cash-multiple menu-icon"></i>
-                        <span class="menu-title">Payslip</span>
-                    </a>
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <a class="nav-link" asp-area="" asp-controller="Overtime" asp-action="Index">
+                            <i class="mdi mdi-book-plus menu-icon"></i>
+                            <span class="menu-title">Overtime</span>
+                        </a>
+                    }
                 </li>
+
+                @if (User.IsInRole("Employee"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Payroll" asp-action="PayslipDetail">
+                            <i class="mdi mdi-cash-multiple menu-icon"></i>
+                            <span class="menu-title">Payslip</span>
+                        </a>
+                    </li>
+                }
+               
                           
         </ul>
     </nav>
@@ -388,6 +402,8 @@
 <!-- endinject -->
 <!-- Plugin js for this page-->
 <script src="~/Layout/vendors/chart.js/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <!-- End plugin js for this page-->
 <script src="~/js/site.js" asp-append-version="true"></script>
 <!-- inject:js -->

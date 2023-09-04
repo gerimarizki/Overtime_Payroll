@@ -4,17 +4,19 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<link rel="stylesheet" href="~/css/site.css">
+
+<h1>Account</h1>
 
 <p>
-    <a href="Create/" title="Create New Account">
-        <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Create New Account">
-            <i class="mdi mdi-library-plus menu-icon">Create New</i>
+@*    <a href="create/" title="create new account">
+        <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="create new account">
+            <i class="mdi mdi-library-plus menu-icon">create new</i>
         </button>
-    </a>
+    </a>*@
 </p>
 
-    <table id="Table" class="table-hover table-responsive">
+    <table id="Table" class="table-hover">
         <thead>
             <tr>
                 <th>
@@ -32,7 +34,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.IsActive)
                 </th>
-                <th>
+               @* <th>
                     @Html.DisplayNameFor(model => model.ExpiredTime)
                 </th>
                 <th>
@@ -43,8 +45,8 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ModifiedDate)
-                </th>
-                <th>Action</th>
+                </th>*@
+               @* <th>Action</th>*@
             </tr>
         </thead>
         <tbody>
@@ -79,7 +81,7 @@
                         <i class="mdi mdi-close-box" style="color:red"></i>
                     }
                 </td>
-                <td>
+               @* <td>
                     @Html.DisplayFor(modelItem => item.ExpiredTime)
                 </td>
                 <td>
@@ -90,29 +92,29 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ModifiedDate)
-                </td>
-                <td>
+                </td>*@
+               @* <td>*@
                     @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
 
-                        <div class="buttonAction">
+                       @* <div class="buttonAction">
                             <a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Account">
                                 <i class="mdi mdi-border-color menu-icon"></i>
-                            </a>
+                            </a>*@
 
                           @*  <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
                                 <i class="fa fa-info-circle"></i>
                             </a>*@
 
-                            <form action="/Account/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
+                            @*<form action="/Account/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
                                 <input type="hidden" value="@item.Guid" name="guid" />
                                 <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Data Account">
                                     <i class="mdi mdi-delete menu-icon"></i>
                                 </button>
                             </form>
-                        </div>
-                </td>
+                        </div>*@
+                @*</td>*@
             </tr>
     }
         </tbody>

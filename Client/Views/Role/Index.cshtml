@@ -4,7 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<link rel="stylesheet" href="~/css/site.css">
+
+<h1>Role</h1>
 
 <p>
     <a href="Create/">
@@ -23,12 +25,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Guid)
             </th>
-            <th>
+          @*  <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
+            </th>*@
             <th>Action</th>
         </tr>
     </thead>
@@ -41,12 +43,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Guid)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
+            </td>*@
             <td>
                @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |

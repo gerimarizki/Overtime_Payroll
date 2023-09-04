@@ -5,150 +5,286 @@
 }
 
 <link rel="stylesheet" href="~/css/site.css">
-<h1>Index</h1>
+<h1>Overtime</h1>
 
-<p>
-    <a href="Create/">
-        <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Create New Overtime">
-            <i class="mdi mdi-library-plus menu-icon">Create New</i>
-        </button>
-    </a>
-</p>
-
-<table id="Table" class="table-hover table-responsive table-secondary">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OvertimeId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartOvertimeDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndOvertimeDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaidOvertime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OvertimeRemaining)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
+@if (User.IsInRole("Manager"))
+{
+    <table id="Table" class="table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OvertimeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartOvertimeDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndOvertimeDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaidOvertime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OvertimeRemaining)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                @* <th>
                 @Html.DisplayNameFor(model => model.EmployeeGuid)
-            </th>
-            @* <th>
+            </th>*@
+                @* <th>
             @Html.DisplayNameFor(model => model.Guid)
             </th>*@
-            <th>
+                @*  <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                @{
-                    var culture = new System.Globalization.CultureInfo("id-ID");
-                }
-                <td>
-                    @Html.DisplayFor(modelItem => item.OvertimeId)
-                </td>
-                <td>
+            </th>*@
+
+                <th>Action</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
                     @{
-                        var formatStartOvertimeDate = item.StartOvertimeDate.ToString("dd MMMM yyyy HH:mm:ss", culture);
+                        var culture = new System.Globalization.CultureInfo("id-ID");
                     }
-                    @Html.DisplayFor(modelItem => formatStartOvertimeDate)
-                </td>
-                <td>
-                    @{
-                        var formatEndOvertimeDate = item.EndOvertimeDate.ToString("dd MMMM yyyy HH:mm:ss", culture);
-                    }
-                    @Html.DisplayFor(modelItem => formatEndOvertimeDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Remarks)
-                </td>
-                <td>
-                    @string.Format(new System.Globalization.CultureInfo("id-ID"), "{0:C}", item.PaidOvertime)
-                </td>
-                @* <td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OvertimeId)
+                    </td>
+                    <td>
+                        @{
+                            var formatStartOvertimeDate = item.StartOvertimeDate.ToString("dd MMMM yyyy HH:mm:ss", culture);
+                        }
+                        @Html.DisplayFor(modelItem => formatStartOvertimeDate)
+                    </td>
+                    <td>
+                        @{
+                            var formatEndOvertimeDate = item.EndOvertimeDate.ToString("dd MMMM yyyy HH:mm:ss", culture);
+                        }
+                        @Html.DisplayFor(modelItem => formatEndOvertimeDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        @string.Format(new System.Globalization.CultureInfo("id-ID"), "{0:C}", item.PaidOvertime)
+                    </td>
+                    @* <td>
             @Html.DisplayFor(modelItem => item.OvertimeRemaining)
             </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.OvertimeRemaining)
-                   @* <div class="progress custom-progress-bar">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OvertimeRemaining)
+                        @* <div class="progress custom-progress-bar">
                         <div class="progress-bar custom-progress-bar-inner" role="progressbar" style="width: @item.OvertimeRemaining%;" aria-valuenow="@item.OvertimeRemaining" aria-valuemin="0" aria-valuemax="40"></div>
                     </div>*@
-                </td>
+                    </td>
 
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-
-                <td>
+                    @* <td>
                     @Html.DisplayFor(modelItem => item.EmployeeGuid)
                 </td>
-                @*<td>
-            @Html.DisplayFor(modelItem => item.Guid)
-            </td>*@
+
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ModifiedDate)
-                </td>
-                <td>
-                    @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                </td>*@
+                    <td>
+                        @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
 
 
-                    <div class="buttonAction" id="buttonGaming">
-                        @*<a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Overtime">
+                        <div class="buttonAction" id="buttonGaming">
+                            @*<a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Overtime">
                             <i class="mdi mdi-border-color menu-icon"></i>
                         </a>*@
 
-                        @*  <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
+                            @*  <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
                     <i class="fa fa-info-circle"></i>
                     </a>*@
 
-                       @* <form action="/Overtime/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
+                            @* <form action="/Overtime/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
                             <input type="hidden" value="@item.Guid" name="guid" />
                             <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Data Overtime">
                                 <i class="mdi mdi-delete menu-icon"></i>
                             </button>
                         </form>*@
 
-                        @if (User.IsInRole("Manager"))
-                        {
-                            <button onclick="acceptedOvertime('@item.Guid')" class="btn btn-xs btn-success" id="accepted">
-                                <i class="mdi mdi-checkbox-marked"></i>
-                            </button>
-                            <a onclick="rejectedOvertime('@item.Guid')" class="btn btn-xs btn-danger" id="rejected">
-                                <i class="mdi mdi-close-box"></i>
-                            </a>
-                        }
+                            @if (User.IsInRole("Manager"))
+                            {
+                                <button onclick="acceptedOvertime('@item.Guid')" class="btn btn-xs btn-success" id="accepted">
+                                    <i class="mdi mdi-checkbox-marked"></i>
+                                </button>
+                                <a onclick="rejectedOvertime('@item.Guid')" class="btn btn-xs btn-danger" id="rejected">
+                                    <i class="mdi mdi-close-box"></i>
+                                </a>
+                            }
 
 
-                        
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
 </table>
+}
+
+@if (User.IsInRole("Finance"))
+{
+    <table id="Table" class="table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OvertimeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartOvertimeDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndOvertimeDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaidOvertime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OvertimeRemaining)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                @* <th>
+            @Html.DisplayNameFor(model => model.EmployeeGuid)
+            </th>*@
+                @* <th>
+            @Html.DisplayNameFor(model => model.Guid)
+            </th>*@
+                @*  <th>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>*@
+
+                <th hidden>Action</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @{
+                        var culture = new System.Globalization.CultureInfo("id-ID");
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OvertimeId)
+                    </td>
+                    <td>
+                        @{
+                            var formatStartOvertimeDate = item.StartOvertimeDate.ToString("dd MMMM yyyy HH:mm:ss", culture);
+                        }
+                        @Html.DisplayFor(modelItem => formatStartOvertimeDate)
+                    </td>
+                    <td>
+                        @{
+                            var formatEndOvertimeDate = item.EndOvertimeDate.ToString("dd MMMM yyyy HH:mm:ss", culture);
+                        }
+                        @Html.DisplayFor(modelItem => formatEndOvertimeDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        @string.Format(new System.Globalization.CultureInfo("id-ID"), "{0:C}", item.PaidOvertime)
+                    </td>
+                    @* <td>
+            @Html.DisplayFor(modelItem => item.OvertimeRemaining)
+            </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OvertimeRemaining)
+                        @* <div class="progress custom-progress-bar">
+                <div class="progress-bar custom-progress-bar-inner" role="progressbar" style="width: @item.OvertimeRemaining%;" aria-valuenow="@item.OvertimeRemaining" aria-valuemin="0" aria-valuemax="40"></div>
+                </div>*@
+                    </td>
+
+
+                    <td>
+                        @if (item.Status == server.Utilities.Enums.StatusLevel.Accepted)
+                        {
+                            <span class="badge badge-success">Accepted</span>
+                        }
+                        else if (item.Status == server.Utilities.Enums.StatusLevel.Rejected)
+                        {
+                            <span class="badge badge-danger">Rejected</span>
+                        }
+                        else if (item.Status == server.Utilities.Enums.StatusLevel.Waiting)
+                        {
+                            <span class="badge badge-warning">Waiting</span>
+                        }
+                    </td>
+
+
+                    @* <td>
+            @Html.DisplayFor(modelItem => item.EmployeeGuid)
+            </td>
+
+            <td>
+            @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>*@
+                    <td>
+                        <div class="buttonAction" id="buttonGaming">
+                            @if (User.IsInRole("Manager"))
+                            {
+                                if (item.Status == server.Utilities.Enums.StatusLevel.Accepted || item.Status == server.Utilities.Enums.StatusLevel.Rejected)
+                                {
+                                    <button disabled class="btn btn-xs btn-success" id="accepted_@item.Guid">
+                                        <i class="mdi mdi-checkbox-marked"></i>
+                                    </button>
+                                    <button disabled class="btn btn-xs btn-danger" id="rejected_@item.Guid">
+                                        <i class="mdi mdi-close-box"></i>
+                                    </button>
+                                }
+                                else if (item.Status == server.Utilities.Enums.StatusLevel.Waiting)
+                                {
+                                    <button onclick="processOvertime('@item.Guid', 'accepted')" class="btn btn-xs btn-success" id="accepted_@item.Guid">
+                                        <i class="mdi mdi-checkbox-marked"></i>
+                                    </button>
+                                    <a onclick="processOvertime('@item.Guid', 'rejected')" class="btn btn-xs btn-danger" id="rejected_@item.Guid">
+                                        <i class="mdi mdi-close-box"></i>
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @*-----------------------------------
 modal update status overtime
@@ -183,161 +319,185 @@ modal update status overtime
 
 
 @section Scripts {
-    <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
+   <script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 
-        $(function () {
-            $('#Table').DataTable({
-                "dom":
-                    "<'row'<'col-md-8'B><'col-md-4'f>>" +
-                    "<'row'<'col-sm-12'tr>>" + // Tabel
-                    "<'row'<'col-md-5'i><'col-md-3 mt-2 mx-auto'l><'col-md-4'p>>",
-                "buttons": [
-                    {
-                        extend: 'copy',
-                        text: 'Salin',
-                        className: 'btn btn-primary'
-                    },
-                    {
-                        extend: 'csv',
-                        text: 'CSV',
-                        className: 'btn btn-secondary'
-                    },
-                    {
-                        extend: 'excel',
-                        text: 'Excel',
-                        className: 'btn btn-success'
-                    },
-                    {
-                        extend: 'pdf',
-                        text: 'PDF',
-                        className: 'btn btn-info'
-                    },
-                    {
-                        extend: 'print',
-                        text: 'Cetak',
-                        className: 'btn btn-warning'
-                    },
-                    {
-                        extend: 'colvis',
-                        text: 'Sembunyikan Kolom',
-                        className: 'btn btn-dark'
-                    }
-                ],
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                "pageLength": 25
-            });
+    var status = {};
+
+    $(function () {
+        $('#Table').DataTable({
+            "dom":
+                "<'row'<'col-md-8'B><'col-md-4'f>>" +
+                "<'row'<'col-sm-12'tr>>" + // Tabel
+                "<'row'<'col-md-5'i><'col-md-3 mt-2 mx-auto'l><'col-md-4'p>>",
+            "buttons": [
+                {
+                    extend: 'copy',
+                    text: 'Salin',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'csv',
+                    text: 'CSV',
+                    className: 'btn btn-secondary'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-success'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'PDF',
+                    className: 'btn btn-info'
+                },
+                {
+                    extend: 'print',
+                    text: 'Cetak',
+                    className: 'btn btn-warning'
+                },
+                {
+                    extend: 'colvis',
+                    text: 'Sembunyikan Kolom',
+                    className: 'btn btn-dark'
+                }
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "pageLength": 25
         });
+    });
 
+    function showUpdate(guid) {
+        $.ajax({
+            url: "https://localhost:7128/api/overtimes/" + guid,
+            type: "GET",
+            dataType: "json"
+        }).done((result) => {
+            console.log(result)
+            $("#guidUpdate").val(result.data.guid);
+            $("#statusUpdate").val(result.data.status);
+        }).fail((error) => {
+            alert("Failed to fetch employee data. Please try again.");
+            console.log(error)
+        });
+    }
 
-        function showUpdate(guid) {
-            $.ajax({
-                url: "https://localhost:7128/api/overtimes/" + guid,
-                type: "GET",
-                dataType: "json"
-            }).done((result) => {
-                console.log(result)
-                $("#guidUpdate").val(result.data.guid);
-                $("#statusUpdate").val(result.data.status);
-              
-            }).fail((error) => {
-                alert("Failed to fetch employee data. Please try again.");
-                console.log(error)
+    function UpdateStatus() {
+        let data = {
+            guid: $("#guidUpdate").val(),
+            status: parseInt($("#statusUpdate").val()),
+        };
+        $.ajax({
+            url: "https://localhost:7128/api/overtimes/update-employee-status",
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(data)
+        }).done((result) => {
+            Swal.fire({
+                title: 'Success',
+                text: 'Data has been successfully updated',
+                icon: 'success'
+            }).then(function () {
+                location.reload();
             });
-
-        }
-
-        function UpdateStatus() {
-
-            let data = {
-                guid: $("#guidUpdate").val(),
-                status: parseInt($("#statusUpdate").val()),
-            };
-            $.ajax({
-                url: "https://localhost:7128/api/overtimes/update-employee-status",
-                type: "PUT",
-                contentType: "application/json",
-                data: JSON.stringify(data)
-            }).done((result) => {
-                Swal.fire({
-                    title: 'Success',
-                    text: 'Data has been successfully updated',
-                    icon: 'success'
-                }).then(function () {
-                    location.reload();
-                });
-            }).fail((error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Failed to insert data! Please try again.'
-                })
-                console.log(error)
+        }).fail((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to insert data! Please try again.'
             })
-        }
-        function acceptedOvertime(guidEmployee)
-        {
-            let data = {
-                guid : guidEmployee,
-                status : 0
-            }
-            $.ajax({
-                    url: "https://localhost:7128/api/overtimes/update-employee-status",
-                    type: "PUT",
-                    contentType: "application/json",
-                    data: JSON.stringify(data)
-            }).done((result) => {
-                Swal.fire({
-                    title: 'Success',
-                    text: 'Data has been successfully updated',
-                    icon: 'success'
-                }).then(function () {
-                    
-                    location.reload();
-                    $("#buttonGaming").hide();
-                });
-            }).fail((error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Failed to insert data! Please try again.'
-                })
-                console.log(error)
-            })
-        }
-        function rejectedOvertime(guidEmployee) {
-            let data = {
-                guid : guidEmployee,
-                status : 1
-            }
-            $.ajax({
-                    url: "https://localhost:7128/api/overtimes/update-employee-status",
-                    type: "PUT",
-                    contentType: "application/json",
-                    data: JSON.stringify(data)
-            }).done((result) => {
-                Swal.fire({
-                    title: 'Success',
-                    text: 'Data has been successfully updated',
-                    icon: 'success'
-                }).then(function () {
-                    location.reload();
+            console.log(error)
+        })
+    }
 
-                    $("#buttonGaming").hide();
-                });
-            }).fail((error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Failed to insert data! Please try again.'
-                })
-                console.log(error)
-            })
+    function updateButtonState(guid, buttonId, disable) {
+        // Menonaktifkan dan menyembunyikan tombol berdasarkan parameter disable
+        if (disable) {
+            $(`#${buttonId}`).prop('disabled', true);
+            $(`#${buttonId}`).hide();
+        } else {
+            $(`#${buttonId}`).prop('disabled', false);
+            $(`#${buttonId}`).show();
         }
-    </script>
+        // Set status ke true agar tombol tidak bisa ditekan lagi
+        status[guid] = disable;
+    }
+
+    function acceptedOvertime(guidEmployee, buttonId) {
+        // Periksa apakah tombol sudah ditekan sebelumnya
+        if (status[guidEmployee] === true) {
+            return;
+        }
+
+        let data = {
+            guid: guidEmployee,
+            status: 0
+        };
+
+        $.ajax({
+            url: "https://localhost:7128/api/overtimes/update-employee-status",
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(data)
+        }).done((result) => {
+            console.log(result);
+            Swal.fire({
+                title: 'Success',
+                text: 'Data has been successfully updated',
+                icon: 'success'
+            }).then(function () {
+                // Memanggil fungsi untuk menonaktifkan tombol
+                updateButtonState(guidEmployee, buttonId, true);
+            });
+        }).fail((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to update data! Please try again.'
+            });
+            console.log(error);
+        });
+    }
+
+    function rejectedOvertime(guidEmployee, buttonId) {
+        // Periksa apakah tombol sudah ditekan sebelumnya
+        if (status[guidEmployee] === true) {
+            return;
+        }
+
+        let data = {
+            guid: guidEmployee,
+            status: 1
+        };
+
+        $.ajax({
+            url: "https://localhost:7128/api/overtimes/update-employee-status",
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(data)
+        }).done((result) => {
+            Swal.fire({
+                title: 'Success',
+                text: 'Data has been successfully updated',
+                icon: 'success'
+            }).then(function () {
+                // Memanggil fungsi untuk menonaktifkan tombol
+                updateButtonState(guidEmployee, buttonId, true);
+            });
+        }).fail((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to update data! Please try again.'
+            });
+            console.log(error);
+        });
+    }
+</script>
+
 }
 
 

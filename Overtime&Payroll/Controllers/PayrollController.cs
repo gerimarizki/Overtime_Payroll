@@ -61,6 +61,8 @@ namespace server.Controllers
                 Data = payroll
             });
         }
+
+
         [HttpGet("detailpayroll/{guid}")]
         public IActionResult Detailpayroll(Guid guid)
         {
@@ -83,6 +85,7 @@ namespace server.Controllers
                 Data = payroll
             });
         }
+
         [HttpGet]
         public IActionResult Getpayroll()
         {
@@ -105,7 +108,6 @@ namespace server.Controllers
                 Data = payroll
             });
         }
-
 
 
         [HttpPost]
@@ -290,19 +292,20 @@ namespace server.Controllers
             });
         }
 
-        //[HttpGet("total-salary")]
-        //public IActionResult GetTotalSalaryExpense()
-        //{
-        //    double totalExpense = _payrollService.GetTotalSalary();
 
-        //    return Ok(new HandlerForResponse<double>
-        //    {
-        //        Code = StatusCodes.Status200OK,
-        //        Status = HttpStatusCode.OK.ToString(),
-        //        Message = "Total Salary Expense Calculated",
-        //        Data = totalExpense
-        //    });
-        //}
+        [HttpGet("total-salary")]
+        public IActionResult GetTotalSalaryExpense()
+        {
+            double totalExpense = _payrollService.GetAllTotalSalary();
+
+            return Ok(new HandlerForResponse<double>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Total Salary Expense Calculated",
+                Data = totalExpense
+            });
+        }
 
         [HttpGet("total-salary/{employeeGuid}")]
         public IActionResult GetTotalSalaryExpense(Guid employeeGuid)
@@ -333,7 +336,7 @@ namespace server.Controllers
         //    });
         //}
 
-        [HttpGet("total-paid-overtime")]
+        [HttpGet("total-paid-overtime/{guid}")]
         public IActionResult GetTotalPaidOvertime(Guid guid)
         {
             double totalPaidOvertime = _payrollService.GetTotalOvertime(guid);

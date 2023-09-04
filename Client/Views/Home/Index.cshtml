@@ -41,17 +41,17 @@
 </div>*@
 
 <div class="content-wrapper">
-    <div class="page-header">
+   @* <div class="page-header">
         <h3 class="page-title">
             <span class="page-title-icon bg-gradient-primary text-white me-2">
                 <i class="mdi mdi-home"></i>
             </span> Dashboard
         </h3>
-    </div>
+    </div>*@
     <div class="row">
         @if (User.IsInRole("Finance"))
         {
-            <div class="col-md-6 stretch-card grid-margin">
+           @* <div class="col-md-6 stretch-card grid-margin">
                 <div class="card bg-gradient-danger card-img-holder text-white">
                     <div class="card-body">
 
@@ -63,10 +63,10 @@
                             <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                         </h4>
 
-                        <h2 class="mb-5">Rp. @string.Format("{0:N}",ViewData["statistic"])</h2>
+                        <h2 class="mb-5" id="totalSalary">Total Salary</h2>
                     </div>
                 </div>
-            </div>
+            </div>*@
             <div class="col-md-6 stretch-card grid-margin">
                 <div class="card bg-gradient-success card-img-holder text-white">
                     <div class="card-body">
@@ -77,7 +77,7 @@
                             Total Employees
                             <i class="mdi mdi-diamond mdi-24px float-right"></i>
                         </h4>
-                        <h2 class="mb-5">@ViewData["countEmployee"] Employee</h2>
+                        <h2 class="mb-5" id="totalEmployee">Total Employee</h2>
                     </div>
                 </div>
             </div>
@@ -88,33 +88,42 @@
             <div class="col-md-6 stretch-card grid-margin">
                 <div class="card bg-gradient-danger card-img-holder text-white">
                     <div class="card-body">
-
-                        <img src="~/NewImages/images/dashboard/circle.svg"
-                             class="card-img-absolute"
-                             alt="circle-image" />
                         <h4 class="font-weight-normal mb-3">
                             Paid Overtime
                             <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                         </h4>
 
-                        <h2 class="mb-5">Rp. @string.Format("{0:N}",ViewData["countOvertime"])</h2>
+                        <h2 class="mb-5" id="paidOver">Total Paid Overtime</h2>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 stretch-card grid-margin">
                 <div class="card bg-gradient-success card-img-holder text-white">
                     <div class="card-body">
-                        <img src="~/NewImages/images/dashboard/circle.svg"
-                             class="card-img-absolute"
-                             alt="circle-image" />
                         <h4 class="font-weight-normal mb-3">
                             Remaining
                             <i class="mdi mdi-clock-alert mdi-24px float-right"></i>
                         </h4>
-                        <h2 class="mb-5">@ViewData["remaining"] Hours Remaining</h2>
+                        <h2 class="mb-5" id="overRemaining">Overtime Remaining</h2>
                     </div>
                 </div>
             </div>
+
+
+
+            @*<div class="container">
+                <div class="col-md-6 stretch-card grid-margin">
+                    <div class="card bg-gradient-danger card-img-holder text-white">
+                        <div class="card-body">
+                            <h4 class="font-weight-normal mb-3">
+                                Paid Overtime (in Millions)
+                                <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                            </h4>
+                            <canvas id="lineChart" width="400" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
         }
 
         @if (User.IsInRole("Manager"))
@@ -122,7 +131,6 @@
             <div class="col-md-6 stretch-card grid-margin">
                 <div class="card bg-gradient-danger card-img-holder text-white">
                     <div class="card-body">
-
                         <img src="~/NewImages/images/dashboard/circle.svg"
                              class="card-img-absolute"
                              alt="circle-image" />
@@ -131,11 +139,12 @@
                             <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                         </h4>
 
-                        <h2 class="mb-5">Rp. @string.Format("{0:N}",ViewData["salary"])</h2>
+                        <canvas id="salaryLineChart" width="400" height="200"></canvas> <!-- Tambahkan elemen canvas untuk line chart -->
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 stretch-card grid-margin">
+
+            @*<div class="col-md-6 stretch-card grid-margin">
                 <div class="card bg-gradient-success card-img-holder text-white">
                     <div class="card-body">
                         <img src="~/NewImages/images/dashboard/circle.svg"
@@ -148,12 +157,12 @@
                         <h2 class="mb-5">@ViewData["countWaiting"] Waiting</h2>
                     </div>
                 </div>
-            </div>
+            </div>*@
         }
     </div>
 </div>
 
-@if (User.IsInRole("Finance")|| User.IsInRole("Manager"))
+@if (User.IsInRole("Finance") || User.IsInRole("Manager"))
 {
     <div class="row">
         <div class="col-md-6 grid-margin stretch-card">
@@ -200,53 +209,56 @@
 
 
 
-
-    <div class="row">
-        <!-- Total Accepted Card -->
-        <div class="col-lg-4">
-            <div class="card bg-gradient-success d-flex align-items-center">
-                <div class="card-body py-5 text-center">
-                    <i class="mdi mdi-checkbox-multiple-marked-circle text-white icon-lg mb-3"></i>
-                    <h1 class="text-white font-weight-bold">Total Accepted</h1>
-                    <h3 class="mt-2 text-white card-text" id="countAccepted"></h3>
-                    @if (User.IsInRole("Finance") || User.IsInRole("Manager"))
-                    {
-                        <a href="/overtime/index" class="nav-link"><i class="mdi mdi-checkbox-multiple-marked-circle text-white icon-sm"></i></a>
-                    }
+    @if (User.IsInRole("Manager"))
+    {
+        <div class="row">
+            <!-- Total Accepted Card -->
+            <div class="col-lg-4">
+                <div class="card bg-gradient-success d-flex align-items-center">
+                    <div class="card-body py-5 text-center">
+                        <i class="mdi mdi-checkbox-multiple-marked-circle text-white icon-lg mb-3"></i>
+                        <h1 class="text-white font-weight-bold">Total Accepted</h1>
+                        <h3 class="mt-2 text-white card-text" id="countAccepted"></h3>
+                        @if (User.IsInRole("Finance") || User.IsInRole("Manager"))
+                        {
+                            <a href="/overtime/index" class="nav-link"><i class="mdi mdi-checkbox-multiple-marked-circle text-white icon-sm"></i></a>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Total Rejected Card -->
-        <div class="col-lg-4">
-            <div class="card bg-gradient-danger d-flex align-items-center">
-                <div class="card-body py-5 text-center">
-                    <i class="mdi mdi-close-circle text-white icon-lg mb-3"></i>
-                    <h1 class="text-white font-weight-bold">Total Rejected</h1>
-                    <h3 class="mt-2 text-white card-text" id="countRejected"></h3>
-                    @if (User.IsInRole("Finance") || User.IsInRole("Manager"))
-                    {
-                        <a href="/overtime/index" class="nav-link"><i class="mdi mdi-close-circle text-white icon-sm"></i></a>
-                    }
+            <!-- Total Rejected Card -->
+            <div class="col-lg-4">
+                <div class="card bg-gradient-danger d-flex align-items-center">
+                    <div class="card-body py-5 text-center">
+                        <i class="mdi mdi-close-circle text-white icon-lg mb-3"></i>
+                        <h1 class="text-white font-weight-bold">Total Rejected</h1>
+                        <h3 class="mt-2 text-white card-text" id="countRejected"></h3>
+                        @if (User.IsInRole("Finance") || User.IsInRole("Manager"))
+                        {
+                            <a href="/overtime/index" class="nav-link"><i class="mdi mdi-close-circle text-white icon-sm"></i></a>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Total Waiting Card -->
-        <div class="col-lg-4">
-            <div class="card bg-behance d-flex align-items-center">
-                <div class="card-body py-5 text-center">
-                    <i class="mdi mdi-message-processing text-white icon-lg mb-3"></i>
-                    <h1 class="text-white font-weight-bold">Total Waiting</h1>
-                    <h3 class="mt-2 text-white card-text" id="countWaiting"></h3>
-                    @if (User.IsInRole("Finance") || User.IsInRole("Manager"))
-                    {
-                        <a href="/overtime/index" class="nav-link"><i class="mdi mdi-message-processing text-white icon-sm"></i></a>
-                    }
+            <!-- Total Waiting Card -->
+            <div class="col-lg-4">
+                <div class="card bg-behance d-flex align-items-center">
+                    <div class="card-body py-5 text-center">
+                        <i class="mdi mdi-message-processing text-white icon-lg mb-3"></i>
+                        <h1 class="text-white font-weight-bold">Total Waiting</h1>
+                        <h3 class="mt-2 text-white card-text" id="countWaiting"></h3>
+                        @if (User.IsInRole("Finance") || User.IsInRole("Manager"))
+                        {
+                            <a href="/overtime/index" class="nav-link"><i class="mdi mdi-message-processing text-white icon-sm"></i></a>
+                        }
                 </div>
             </div>
         </div>
     </div>
+    }
+
 
 }
 
@@ -318,17 +330,7 @@
 
 
 
-<style>
-    /* Warna biru untuk Overtime Remaining kurang dari 40 */
-    .less-than-max .progress-bar {
-        background-color: #007bff; /* Warna biru */
-    }
 
-    /* Warna hijau untuk Overtime Remaining 40/40 */
-    .max-value .progress-bar {
-        background-color: #28a745; /* Warna hijau */
-    }
-</style>
 
 @section Scripts{
     <script>
@@ -374,15 +376,132 @@
             });
         });
 
-        //$(document).ready(function ()) {
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://localhost:7128/api/accounts/Profil/@User.FindFirst("Guid").Value"
+            }).done((result) => {
+                $("#paidOver").html(formatCurrency(result.data.paidOvertime));
+            });
+        });
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://localhost:7128/api/accounts/Profil/@User.FindFirst("Guid").Value"
+            }).done((result) => {
+               
+                $("#overRemaining").html(result.data.overtimeRemaining);
+            });
+        });
+
+        //var paidOvertimeData = {
+        //    labels: ['Paid Overtime', 'Overtime Remaining'],
+        //    datasets: [{
+        //        data: [5000, 3000], // Ganti dengan data yang sesuai
+        //        backgroundColor: ['#FF5733', '#33FF57'],
+        //        borderWidth: 0
+        //    }]
+        //};
+
+        // Konfigurasi pie chart
+        var options = {
+            responsive: true,
+            maintainAspectRatio: false
+        };
+
+        // Dapatkan elemen canvas dan buat pie chart di dalamnya untuk Paid Overtime
+        var paidOvertimeCtx = document.getElementById('paidOvertimeChart').getContext('2d');
+        var paidOvertimeChart = new Chart(paidOvertimeCtx, {
+            type: 'pie',
+            data: paidOvertimeData,
+            options: options
+        });
+
+        // Dapatkan elemen canvas dan buat pie chart di dalamnya untuk Overtime Remaining
+        var overtimeRemainingCtx = document.getElementById('overtimeRemainingChart').getContext('2d');
+        var overtimeRemainingChart = new Chart(overtimeRemainingCtx, {
+            type: 'pie',
+            data: paidOvertimeData, // Gunakan data yang sesuai
+            options: options
+        });
+
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://localhost:7128/api/employees",
+            }).done(function (result) {
+                var totalEmployee = result.data.length;
+                $("#totalEmployee").text(totalEmployee);
+            }).fail(function (error) {
+                $("#totalEmployee").text("Failed to fetch data");
+                console.log(error)
+            });
+        });
+
+        //$(document).ready(function () {
         //    $.ajax({
-        //        url: ""
+        //        url: "https://localhost:7128/api/payrolls/total-salary/@User.FindFirst("Guid").Value"
+        //    }).done((result) => {
+
+        //        $("#totalSalary").html(result.data.Salary);
+        //    });
+        //});
+
+        //$(document).ready(function () {
+        //    $.ajax({
+        //        url: "https://localhost:7128/api/payrolls/total-salary",
+        //        method: "GET",
+        //        dataType: "json",
         //    })
-        //}
+        //        .done(function (result) {
+        //            var totalSalary = result.data;
+        //            $("#totalSalary").text(totalSalary);
+        //        })
+        //        .fail(function (error) {
+        //            $("#totalSalary").text("Failed to fetch data");
+        //            console.log(error);
+        //        });
+        //});
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://localhost:7128/api/accounts/Profil/@User.FindFirst("Guid").Value"
+            }).done((result) => {
+                const paidOvertime = result.data.paidOvertime;
+
+                // Menghitung perbandingan nilai dengan 1 juta, 2 juta, dan 3 juta (dibagi 1.000.000)
+                const paidOvertimeInMillions = paidOvertime / 1000000;
+                const paidOvertimeInMillions2 = paidOvertime / 2000000;
+                const paidOvertimeInMillions3 = paidOvertime / 3000000;
+
+                const lineData = {
+                    labels: ["Paid Overtime (1M)", "Paid Overtime (2M)", "Paid Overtime (3M)"],
+                    datasets: [{
+                        label: 'Paid Overtime',
+                        data: [paidOvertimeInMillions, paidOvertimeInMillions2, paidOvertimeInMillions3],
+                        borderColor: '#FF5733',
+                        fill: false
+                    }]
+                };
+
+                // Mendapatkan elemen canvas dan menginisialisasi chart
+                const lineCanvas = document.getElementById("lineChart");
+                const lineCtx = lineCanvas.getContext('2d');
+                new Chart(lineCtx, {
+                    type: 'line',
+                    data: lineData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        });
     </script>
 }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 @*<div class="text-center">

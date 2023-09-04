@@ -4,19 +4,20 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+
+<link rel="stylesheet" href="~/css/site.css">
+
+<h1>Employee</h1>
 
 @if (User.IsInRole("Finance") || (User.IsInRole("Manager")))
 {
-    <p>
+    @*<p>
         <a href="Create/" title="Create New Employee">
-            @*bisa menambahkan button class="btn btn-primary"*@
-            @*<button type="submit" class="btn btn-xs btn-danger">*@
             <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Create New Employee">
                 <i class="mdi mdi-library-plus menu-icon">Create New</i>
             </button>
         </a>
-    </p>
+    </p>*@
 }
 
 
@@ -45,9 +46,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.ManagerGuid)
-            </th>
+            </th>*@
             <th>Action</th>
         </tr>
     </thead>
@@ -76,9 +77,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
-                <td>
+               @* <td>
                     @Html.DisplayFor(modelItem => item.ManagerGuid)
-                </td>
+                </td>*@
                 <td>
                     <div class="buttonAction" >
                         <a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Employee">
