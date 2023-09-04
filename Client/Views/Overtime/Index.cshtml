@@ -89,8 +89,23 @@
                     </div>*@
                     </td>
 
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Status)
+                    </td>*@
+
+                    <td>
+                        @if (item.Status == server.Utilities.Enums.StatusLevel.Accepted)
+                        {
+                            <span class="badge badge-success">Accepted</span>
+                        }
+                        else if (item.Status == server.Utilities.Enums.StatusLevel.Rejected)
+                        {
+                            <span class="badge badge-danger">Rejected</span>
+                        }
+                        else if (item.Status == server.Utilities.Enums.StatusLevel.Waiting)
+                        {
+                            <span class="badge badge-warning">Waiting</span>
+                        }
                     </td>
 
                     @* <td>
@@ -104,41 +119,31 @@
                     @Html.DisplayFor(modelItem => item.ModifiedDate)
                 </td>*@
                     <td>
-                        @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-
-
                         <div class="buttonAction" id="buttonGaming">
-                            @*<a asp-action="Edit" asp-route-id="@item.Guid" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Overtime">
-                            <i class="mdi mdi-border-color menu-icon"></i>
-                        </a>*@
-
-                            @*  <a asp-action="Details" asp-route-id="@item.Guid" class="btn btn-xs btn-info">
-                    <i class="fa fa-info-circle"></i>
-                    </a>*@
-
-                            @* <form action="/Overtime/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')" class="d-inline">
-                            <input type="hidden" value="@item.Guid" name="guid" />
-                            <button type="submit" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Data Overtime">
-                                <i class="mdi mdi-delete menu-icon"></i>
-                            </button>
-                        </form>*@
-
                             @if (User.IsInRole("Manager"))
                             {
-                                <button onclick="acceptedOvertime('@item.Guid')" class="btn btn-xs btn-success" id="accepted">
-                                    <i class="mdi mdi-checkbox-marked"></i>
-                                </button>
-                                <a onclick="rejectedOvertime('@item.Guid')" class="btn btn-xs btn-danger" id="rejected">
-                                    <i class="mdi mdi-close-box"></i>
-                                </a>
+                                if (item.Status == server.Utilities.Enums.StatusLevel.Accepted || item.Status == server.Utilities.Enums.StatusLevel.Rejected)
+                                {
+                                    <button class="btn btn-xs btn-success disabled" aria-disabled="true" id="accepted_@item.Guid">
+                                        <i class="mdi mdi-checkbox-marked"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-danger disabled" aria-disabled="true" id="rejected_@item.Guid">
+                                        <i class="mdi mdi-close-box"></i>
+                                    </button>
+                                }
+                                else if (item.Status == server.Utilities.Enums.StatusLevel.Waiting)
+                                {
+                                    <button onclick="acceptedOvertime('@item.Guid')" class="btn btn-xs btn-success" id="accepted_@item.Guid">
+                                        <i class="mdi mdi-checkbox-marked"></i>
+                                    </button>
+                                    <a onclick="rejectedOvertime('@item.Guid')" class="btn btn-xs btn-danger" id="rejected_@item.Guid">
+                                        <i class="mdi mdi-close-box"></i>
+                                    </a>
+                                }
                             }
-
-
-
                         </div>
                     </td>
+
                 </tr>
             }
         </tbody>
@@ -258,18 +263,18 @@
                         <div class="buttonAction" id="buttonGaming">
                             @if (User.IsInRole("Manager"))
                             {
-                                if (item.Status == server.Utilities.Enums.StatusLevel.Accepted || item.Status == server.Utilities.Enums.StatusLevel.Rejected)
+                                @if (item.Status == server.Utilities.Enums.StatusLevel.Accepted || item.Status == server.Utilities.Enums.StatusLevel.Rejected)
                                 {
-                                    <button disabled class="btn btn-xs btn-success" id="accepted_@item.Guid">
+                                    <button class="btn btn-xs btn-success disabled" aria-disabled="true" id="accepted_@item.Guid">
                                         <i class="mdi mdi-checkbox-marked"></i>
                                     </button>
-                                    <button disabled class="btn btn-xs btn-danger" id="rejected_@item.Guid">
+                                    <button class="btn btn-xs btn-danger disabled" aria-disabled="true" id="rejected_@item.Guid">
                                         <i class="mdi mdi-close-box"></i>
                                     </button>
                                 }
                                 else if (item.Status == server.Utilities.Enums.StatusLevel.Waiting)
                                 {
-                                    <button onclick="processOvertime('@item.Guid', 'accepted')" class="btn btn-xs btn-success" id="accepted_@item.Guid">
+                                    <button onclick="processOvertime('@item.Guid', 'accepted')" class="btn btn-xs btn-success" aria-disabled="true" id="accepted_@item.Guid">
                                         <i class="mdi mdi-checkbox-marked"></i>
                                     </button>
                                     <a onclick="processOvertime('@item.Guid', 'rejected')" class="btn btn-xs btn-danger" id="rejected_@item.Guid">
@@ -370,21 +375,6 @@ modal update status overtime
         });
     });
 
-    function showUpdate(guid) {
-        $.ajax({
-            url: "https://localhost:7128/api/overtimes/" + guid,
-            type: "GET",
-            dataType: "json"
-        }).done((result) => {
-            console.log(result)
-            $("#guidUpdate").val(result.data.guid);
-            $("#statusUpdate").val(result.data.status);
-        }).fail((error) => {
-            alert("Failed to fetch employee data. Please try again.");
-            console.log(error)
-        });
-    }
-
     function UpdateStatus() {
         let data = {
             guid: $("#guidUpdate").val(),
@@ -413,24 +403,24 @@ modal update status overtime
         })
     }
 
-    function updateButtonState(guid, buttonId, disable) {
-        // Menonaktifkan dan menyembunyikan tombol berdasarkan parameter disable
-        if (disable) {
-            $(`#${buttonId}`).prop('disabled', true);
-            $(`#${buttonId}`).hide();
-        } else {
-            $(`#${buttonId}`).prop('disabled', false);
-            $(`#${buttonId}`).show();
-        }
-        // Set status ke true agar tombol tidak bisa ditekan lagi
-        status[guid] = disable;
-    }
 
-    function acceptedOvertime(guidEmployee, buttonId) {
+
+    //function updateButtonState(guid, buttonId, disable) {
+    //    // Menonaktifkan dan menyembunyikan tombol berdasarkan parameter disable
+    //    if (disable) {
+    //        $(`#${buttonId}`).prop('disabled', true);
+    //        $(`#${buttonId}`).hide();
+    //    } else {
+    //        $(`#${buttonId}`).prop('disabled', false);
+    //        $(`#${buttonId}`).show();
+    //    }
+    //    // Set status ke true agar tombol tidak bisa ditekan lagi
+    //    status[guid] = disable;
+    //}
+
+    function acceptedOvertime(guidEmployee) {
         // Periksa apakah tombol sudah ditekan sebelumnya
-        if (status[guidEmployee] === true) {
-            return;
-        }
+      
 
         let data = {
             guid: guidEmployee,
@@ -449,8 +439,8 @@ modal update status overtime
                 text: 'Data has been successfully updated',
                 icon: 'success'
             }).then(function () {
-                // Memanggil fungsi untuk menonaktifkan tombol
-                updateButtonState(guidEmployee, buttonId, true);
+               location.reload()
+               
             });
         }).fail((error) => {
             Swal.fire({
@@ -462,11 +452,8 @@ modal update status overtime
         });
     }
 
-    function rejectedOvertime(guidEmployee, buttonId) {
-        // Periksa apakah tombol sudah ditekan sebelumnya
-        if (status[guidEmployee] === true) {
-            return;
-        }
+    function rejectedOvertime(guidEmployee) {
+       
 
         let data = {
             guid: guidEmployee,
@@ -484,8 +471,8 @@ modal update status overtime
                 text: 'Data has been successfully updated',
                 icon: 'success'
             }).then(function () {
-                // Memanggil fungsi untuk menonaktifkan tombol
-                updateButtonState(guidEmployee, buttonId, true);
+               location.reload()
+               
             });
         }).fail((error) => {
             Swal.fire({
