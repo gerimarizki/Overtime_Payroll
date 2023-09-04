@@ -25,6 +25,10 @@ namespace server.Services
             _roleRepository = roleRepository;
         }
 
+        public EmployeeService(IEmployeeRepository employeeRepository)
+        {
+            _employeeRepository = employeeRepository;
+        }
 
         public IEnumerable<GetAllEmoployeeDto> GetManager()
         {
@@ -132,7 +136,7 @@ namespace server.Services
         public GetEmployeeDto? CreateEmployee(CreateEmployeeDto newEmployeeDto)
         {
             Employee employee = newEmployeeDto;
-            employee.NIK = HandlerGenerator.NIK(_employeeRepository.GetLastEmployeeNIK());
+            employee.NIK = GenerateNikByService();
 
             var createdEmployee = _employeeRepository.Create(employee);
             if (createdEmployee is null) return null; // gagal
@@ -204,5 +208,22 @@ namespace server.Services
 
             return totalEmployeeCount;
         }
+
+        //generate nik by employee service
+        public string GenerateNikByService()
+        {
+            int Nik = 111111;
+            var employee = GetEmployee();
+            if (employee is null)
+            {
+                Convert.ToString(Nik);
+                return Convert.ToString(Nik);
+            }
+            var lastEmployee = employee.OrderByDescending(e => e.NIK).FirstOrDefault();
+            int newNik = Int32.Parse(lastEmployee.NIK) + 1;
+            string lastNik = Convert.ToString(newNik);
+            return lastNik;
+        }
+
     }
 }

@@ -52,7 +52,9 @@ namespace server.Services
             using var transaction = _context.Database.BeginTransaction();
             try
             {
-                var NIK = HandlerGenerator.NIK(_employeeRepository.GetLastEmployeeNIK());
+
+                var employeeService = new EmployeeService(_employeeRepository);
+
                 var employeeGuid = Guid.NewGuid();
                 var employee = new Employee
                 {
@@ -61,7 +63,7 @@ namespace server.Services
                     LastName = registerDto.LastName,
                     BirthDate = registerDto.BirthDate,
                     Gender = registerDto.Gender,
-                    NIK = NIK,
+                    NIK = employeeService.GenerateNikByService(),
                     HiringDate = registerDto.HiringDate,
                     PhoneNumber = registerDto.PhoneNumber,
                     ManagerGuid = registerDto.ManagerGuid,
