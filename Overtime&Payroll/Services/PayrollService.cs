@@ -369,7 +369,7 @@ namespace server.Services
                     newovertime = newpayslip;
                     break;
                 }
-                else if(newovertime.Status == StatusLevel.Accepted && newovertime.Counter>1)
+                else if(newovertime.Status == StatusLevel.Accepted && newovertime.Counter > 1)
                 {
 
                     newovertime.PaidOvertime += item.PaidOvertime;

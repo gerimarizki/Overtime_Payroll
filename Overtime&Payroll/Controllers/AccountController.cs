@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs.Accounts;
 using server.DTOs.Payrolls;
@@ -10,6 +11,8 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("api/accounts")]
+    [Authorize]
+    [EnableCors]
     public class AccountController : ControllerBase
     {
         private readonly AccountService _service;
@@ -19,6 +22,7 @@ namespace server.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         [HttpGet("Profilall/{guid}")]
         public IActionResult GetAllDetailProfil(Guid guid)
         {
@@ -37,8 +41,10 @@ namespace server.Controllers
                 Message = "Profil Retrieved",
                 Data = profil
 
-            }) ;
+            });
         }
+
+        [AllowAnonymous]
         [HttpGet("Profil/{guid}")]
         public IActionResult GetDetailProfil(Guid guid)
         {
@@ -62,6 +68,7 @@ namespace server.Controllers
 
         // Register
         [HttpPost("Register")]
+        [AllowAnonymous]
         public IActionResult Register(RegisterAccountDto register)
         {
             var isCreated = _service.RegistrationAccount(register);
@@ -83,6 +90,7 @@ namespace server.Controllers
 
         // Login
         [HttpPost("Login")]
+        [AllowAnonymous]
         public IActionResult Login(LoginAccountDto login)
         {
             var loginResult = _service.LoginAccount(login);
@@ -152,6 +160,7 @@ namespace server.Controllers
 
 
         [HttpPost("change-password")]
+        [AllowAnonymous]
         public IActionResult ChangePassword(ChangePasswordAccountDto changePasswordDto)
         {
             var isUpdated = _service.ChangePassword(changePasswordDto);

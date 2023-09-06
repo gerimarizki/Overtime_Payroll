@@ -1,4 +1,5 @@
-﻿@*
+﻿@using System.Net.Http
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -44,13 +45,17 @@
 
 @section Scripts{
     <script>
+        const Token = '@Context.Session.GetString("JWToken")'
         $(document).ready(function () {
             $(".show-details-btn").click(function () {
                 $(this).parents(".card").toggleClass("active");
             });
 
             $.ajax({
-                url: "https://localhost:7128/api/payrolls/detailpayroll/@User.FindFirst("Guid").Value"
+                url: "https://localhost:7128/api/payrolls/detailpayroll/@User.FindFirst("Guid").Value",
+                headers: {
+                    'Authorization': 'Bearer ' + Token
+                }
             }).done((result) => {
                 $("#fullName").html(result.data.fullName);
                 $("#payDate").html(moment(result.data.payDate).format("D MMMM YYYY")); // Format the date

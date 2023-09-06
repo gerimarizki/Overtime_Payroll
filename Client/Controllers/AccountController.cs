@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
 {
-    //[Authorize(Roles = "Manager")]
+   
     public class AccountController : Controller
     {
 
@@ -32,6 +32,7 @@ namespace Client.Controllers
         //[AllowAnonymous]
         public async Task<IActionResult> Login()
         {
+            HttpContext.Session.Remove("JWToken");
             return View();
         }
 

@@ -359,15 +359,21 @@ namespace server.Services
             //var newovertime = new GetDetailProfilDto();
             //newovertime = profil.Where(lp => lp.EmployeeGuid.Equals(guid)).LastOrDefault();
             //newovertime = profil.LastOrDefault();
-            var newprofil = profil.OrderByDescending(profil => profil.PaidOvertime).FirstOrDefault();
+            var newprofil = profil.OrderByDescending(profil => profil.OvertimeRemaining).LastOrDefault();
             newprofil.PaidOvertime = 0;
+            newprofil.OvertimeRemaining = 0;
             foreach (var item in profil)
             {
                 if (newovertime.Counter > 1)
                 {
                     newprofil.PaidOvertime += item.PaidOvertime;
                 }
+                if (newovertime.Counter == 2)
+                {
+                    newprofil.OvertimeRemaining = item.OvertimeRemaining;
+                }
                 newovertime.Counter--;
+
             }
                 /*var overtime = _overtimeRepository.GetOvertimeByOvertimeId(item.OvertimeId);
                 if (overtime == null && overtime.Status == StatusLevel.Waiting)

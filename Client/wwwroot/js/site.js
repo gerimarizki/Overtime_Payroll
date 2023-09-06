@@ -4,7 +4,10 @@
 // Write your JavaScript code.
 $(document).ready(() => {
     $.ajax({
-        url: "https://localhost:7128/api/employees"
+        url: "https://localhost:7128/api/employees", 
+        headers: {
+            'Authorization': 'Bearer ' + Token
+        }
     }).done((result) => {
         let female = 0;
         let male = 0;
@@ -43,6 +46,9 @@ $(document).ready(() => {
 $(document).ready(function () {
     $.ajax({
         url: "https://localhost:7128/api/employees",
+        headers: {
+            'Authorization': 'Bearer ' + Token
+        }
     }).done(function (result) {
         var totalEmployee = result.data.length;
         $("#total-employee").text(totalEmployee);
@@ -55,6 +61,9 @@ $(document).ready(function () {
 $(document).ready(function () {
     $.ajax({
         url: "https://localhost:7128/api/overtimes",
+        headers: {
+            'Authorization': 'Bearer ' + Token
+        }
     }).done(function (result) {
         var totalOvertime = result.data.length;
         $("#total-overtime").text(totalOvertime);
@@ -65,7 +74,10 @@ $(document).ready(function () {
 });
 
 $.ajax({
-    url:"https://localhost:7128/api/overtimes/CountStatus"
+    url: "https://localhost:7128/api/overtimes/CountStatus",
+    headers: {
+        'Authorization': 'Bearer ' + Token
+    }
 }).done((result) => {
     $("#countAccepted").html(`${result.data.countAccepted}`)
     $("#countRejected").html(`${result.data.countRejected}`)
@@ -106,7 +118,8 @@ function register() {
         url: "https://localhost:7128/api/accounts/Register",
         type: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + Token
         },
         data: JSON.stringify(registerData),
         success: function (result) {
@@ -129,11 +142,25 @@ function register() {
     });
 }
 
-
+$.ajax({
+    url: "https://localhost:7128/api/employees/get-manager-employee",
+    headers: {
+        'Authorization': 'Bearer ' + Token
+    }
+}).done((result) => {
+    let selectManager = ""
+    $.each(result.data, (key, val) => {
+        selectManager = `<option value="${val.guid}"> ${val.fullName}</option>`
+    })
+    $("#managerGuid").append(selectManager)
+})
 
     $(document).ready(() => {
         $.ajax({
-            url: "https://localhost:7128/api/overtimes"
+            url: "https://localhost:7128/api/overtimes",
+            headers: {
+                'Authorization': 'Bearer ' + Token
+            }
         }).done((result) => {
             const overtimeData = result.data.filter(overtime => overtime.EmployeeGuid === "@User.FindFirstValue(ClaimTypes.NameIdentifier)");
 

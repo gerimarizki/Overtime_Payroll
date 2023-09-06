@@ -1,4 +1,5 @@
 ﻿using server.Contracts;
+using server.DTOs.HistoriesOvertime;
 using server.DTOs.Overtimes;
 using server.Models;
 using server.Utilities.Enums;
@@ -11,12 +12,14 @@ namespace server.Services
         private readonly IOvertimeRepository _overtimeRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IPayrollRepository _payrollRepository;
+        private readonly IHistoryOvertimeRepository _historyOvertimeRepository;
 
-        public OvertimeService(IOvertimeRepository overtimeRepository, IEmployeeRepository employeeRepository, IPayrollRepository payrollRepository)
+        public OvertimeService(IOvertimeRepository overtimeRepository, IEmployeeRepository employeeRepository, IPayrollRepository payrollRepository, IHistoryOvertimeRepository historyOvertimeRepository)
         {
             _overtimeRepository = overtimeRepository;
             _employeeRepository = employeeRepository;
             _payrollRepository = payrollRepository;
+            _historyOvertimeRepository = historyOvertimeRepository;
         }
 
         //----------------------------
@@ -95,9 +98,17 @@ namespace server.Services
             overtime.Status = StatusLevel.Waiting;
             overtime.CreatedDate = DateTime.Now;
             var createdOver = _overtimeRepository.CreateOvertime(overtime);
+            var createHistory = _historyOvertimeRepository.Create(new HistoryOvertime
+            {
+                OvertimeGuid = createdOver.Guid,
+                Guid = new Guid(),
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,
+            }) ;
             if (createdOver is null) return null;
 
             return (AllRemainingOvertimeDto)createdOver;
+
         }
 
         public IEnumerable<AllRemainingOvertimeDto>? GetAllTestOvertimeToEmployee()
@@ -120,9 +131,6 @@ namespace server.Services
                               CreatedDate = o.StartOvertimeDate,
                           }).ToList();
             return master;
-
-
-
         }
 
         //tutup

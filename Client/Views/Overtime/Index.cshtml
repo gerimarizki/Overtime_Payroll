@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<server.Models.Overtime>
+@using System.Net.Http
 
 @{
     ViewData["Title"] = "Index";
@@ -149,6 +150,9 @@
         </tbody>
 </table>
 }
+
+
+
 
 @if (User.IsInRole("Finance"))
 {
@@ -324,7 +328,9 @@ modal update status overtime
 
 
 @section Scripts {
+    <script>const Token = '@Context.Session.GetString("JWToken")'</script>
    <script>
+     
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
@@ -373,6 +379,8 @@ modal update status overtime
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "pageLength": 25
         });
+            var dataTableButtons = $('.dt-button');
+            dataTableButtons.removeClass('dt-button');
     });
 
     function UpdateStatus() {
@@ -382,6 +390,9 @@ modal update status overtime
         };
         $.ajax({
             url: "https://localhost:7128/api/overtimes/update-employee-status",
+                headers: {
+                    'Authorization': 'Bearer ' + Token
+                },
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(data)
@@ -403,21 +414,6 @@ modal update status overtime
         })
     }
 
-
-
-    //function updateButtonState(guid, buttonId, disable) {
-    //    // Menonaktifkan dan menyembunyikan tombol berdasarkan parameter disable
-    //    if (disable) {
-    //        $(`#${buttonId}`).prop('disabled', true);
-    //        $(`#${buttonId}`).hide();
-    //    } else {
-    //        $(`#${buttonId}`).prop('disabled', false);
-    //        $(`#${buttonId}`).show();
-    //    }
-    //    // Set status ke true agar tombol tidak bisa ditekan lagi
-    //    status[guid] = disable;
-    //}
-
     function acceptedOvertime(guidEmployee) {
         // Periksa apakah tombol sudah ditekan sebelumnya
       
@@ -429,6 +425,9 @@ modal update status overtime
 
         $.ajax({
             url: "https://localhost:7128/api/overtimes/update-employee-status",
+                headers: {
+                    'Authorization': 'Bearer ' + Token
+                },
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(data)
@@ -462,6 +461,9 @@ modal update status overtime
 
         $.ajax({
             url: "https://localhost:7128/api/overtimes/update-employee-status",
+                headers: {
+                    'Authorization': 'Bearer ' + Token
+                },
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(data)

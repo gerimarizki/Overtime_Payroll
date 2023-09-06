@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using server.DTOs.AccountRoles;
 using server.Services;
 using server.Utilities.Handlers;
@@ -9,6 +11,8 @@ namespace server.Controllers
 
     [ApiController]
     [Route("api/account-roles")]
+    [Authorize]
+    [EnableCors]
     public class AccountRoleController : ControllerBase
     {
         private readonly AccountRoleService _service;

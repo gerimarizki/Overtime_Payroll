@@ -35,8 +35,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="EmployeeGuid" class="control-label"></label>
-                        <input asp-for="EmployeeGuid" class="form-control" value="@User.FindFirst("Guid").Value" readonly/>
+                       
+                        <input asp-for="EmployeeGuid" type="hidden" class="form-control" value="@User.FindFirst("Guid").Value" readonly/>
                         <span asp-validation-for="EmployeeGuid" class="text-danger"></span>
                     </div>
                     
@@ -74,13 +74,38 @@
 
     <script>
         // Inisialisasi editor Quill
+        //var quill = new Quill('#quill-editor', {
+        //    theme: 'snow'
+        //});
+
+        //// Menangkap pengiriman formulir untuk memperbarui nilai input tersembunyi
+        //var form = document.querySelector('.custom-form');
+        //form.onsubmit = function () {
+        //    // Dapatkan konten Quill dalam format delta
+        //    var delta = quill.getContents();
+
+        //    // Konversi delta ke HTML
+        //    var tempContainer = document.createElement('div');
+        //    new Quill(tempContainer).setContents(delta);
+        //    var htmlContent = tempContainer.getElementsByClassName('ql-editor')[0].innerHTML;
+
+        //    // Hapus tag <p></p> saat menginput ke database
+        //    htmlContent = htmlContent.replace(/<p><br><\/p>/g, ''); 
+        //    htmlContent = htmlContent.replace(/<p><\/p>/g, ''); 
+
+        //    // Set nilai input tersembunyi dengan konten yang sudah dibersihkan
+        //    document.getElementById('remarks-input').value = htmlContent;
+        //};
+        // Inisialisasi editor Quill
         var quill = new Quill('#quill-editor', {
             theme: 'snow'
         });
 
         // Menangkap pengiriman formulir untuk memperbarui nilai input tersembunyi
         var form = document.querySelector('.custom-form');
-        form.onsubmit = function () {
+        form.onsubmit = function (event) {
+            event.preventDefault(); // Mencegah pengiriman formulir secara default
+
             // Dapatkan konten Quill dalam format delta
             var delta = quill.getContents();
 
@@ -89,13 +114,17 @@
             new Quill(tempContainer).setContents(delta);
             var htmlContent = tempContainer.getElementsByClassName('ql-editor')[0].innerHTML;
 
-            // Hapus tag <p></p> saat menginput ke database
-            htmlContent = htmlContent.replace(/<p><br><\/p>/g, ''); // Menghapus tag <p><br></p>
-            htmlContent = htmlContent.replace(/<p><\/p>/g, ''); // Menghapus tag <p></p>
+            // Hapus semua tag <p> dari hasil input
+            htmlContent = htmlContent.replace(/<p[^>]*>/g, '');
+            htmlContent = htmlContent.replace(/<\/p>/g, '');
 
             // Set nilai input tersembunyi dengan konten yang sudah dibersihkan
             document.getElementById('remarks-input').value = htmlContent;
+
+            // Lanjutkan dengan pengiriman formulir (jika diperlukan)
+            form.submit();
         };
+
 
 
         $(".custom-date").flatpickr({
@@ -107,7 +136,7 @@
             altFormat: "F j, Y H:i",
             dateFormat: "Y-m-dTH:i",
             minDate: "2023-07-26T17:00", // Tanggal minimum di bulan Juli
-            maxDate: "2023-08-25T00:00", // Tanggal maksimum di bulan Agustus
+            maxDate: "2023-08-25T21:00", // Tanggal maksimum di bulan Agustus
             disable: [
                 function (date) {
                     return (date.getDay() === 0 || date.getDay() === 6); //ini 0 untuk minggu dan 6 untuk sabtu

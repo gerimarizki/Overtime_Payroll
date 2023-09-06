@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using server.DTOs.Employees;
 using server.Services;
 using server.Utilities.Handlers;
@@ -9,6 +11,8 @@ namespace server.Controllers
 
     [ApiController]
     [Route("api/employees")]
+    [Authorize]
+    [EnableCors]
     public class EmployeeController : ControllerBase
     {
         private readonly EmployeeService _service;
@@ -18,6 +22,7 @@ namespace server.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         [HttpGet("get-manager-employee")]
         public IActionResult GetManagers()
         {
@@ -42,6 +47,7 @@ namespace server.Controllers
             });
         }
 
+        [AllowAnonymous]
         [HttpGet("get-all-employee")]
         public IActionResult GetAllEmployee()
         {

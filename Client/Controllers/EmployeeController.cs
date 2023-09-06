@@ -1,5 +1,6 @@
 ﻿using Client.Contracts;
 using Client.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs.Employees;
 using server.Models;
@@ -10,6 +11,7 @@ using System.Net;
 
 namespace Client.Controllers
 {
+    [Authorize(Roles = "Finance")]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository repository;
@@ -31,12 +33,14 @@ namespace Client.Controllers
             return View(ListEmployee);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Create() 
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Create(CreateEmployeeDto newEmploye)
         {
@@ -55,6 +59,7 @@ namespace Client.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)

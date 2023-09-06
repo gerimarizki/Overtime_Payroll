@@ -1,6 +1,7 @@
 ﻿using Client.Contracts;
 using Client.Models;
 using Client.ViewModels.Payroll;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs.AccountRoles;
 using server.DTOs.Employees;
@@ -9,11 +10,13 @@ using server.DTOs.Payrolls;
 using server.Models;
 using server.Services;
 using server.Utilities.Handlers;
+using System.Data;
 using System.Diagnostics;
 using System.Net;
 
 namespace Client.Controllers
 {
+    [Authorize(Roles = "Finance, Employee")]
     public class PayrollController : Controller
     {
         private readonly IPayrollRepository repository;

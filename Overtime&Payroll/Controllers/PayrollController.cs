@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using server.DTOs.Payrolls;
 using server.Services;
 using server.Utilities.Handlers;
@@ -8,6 +10,8 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("api/payrolls")]
+    [Authorize]
+    [EnableCors]
     public class PayrollController : ControllerBase
     {
         private readonly PayrollService _payrollService;

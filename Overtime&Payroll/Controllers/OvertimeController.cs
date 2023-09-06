@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using server.DTOs.AccountRoles;
 using server.DTOs.Overtimes;
 using server.Services;
@@ -9,6 +11,8 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("api/overtimes")]
+    [Authorize]
+    [EnableCors]
     public class OvertimeController : ControllerBase
     {
         private readonly OvertimeService _service;
@@ -18,7 +22,7 @@ namespace server.Controllers
             _service = service;
         }
 
-
+        [AllowAnonymous]
         [HttpGet("CountStatus")]
         public IActionResult GetAllStatus()
         {

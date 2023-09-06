@@ -1,5 +1,6 @@
 ﻿using Client.Contracts;
 using Client.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs.AccountRoles;
 using server.DTOs.Employees;
@@ -7,11 +8,13 @@ using server.DTOs.Roles;
 using server.Models;
 using server.Services;
 using server.Utilities.Handlers;
+using System.Data;
 using System.Diagnostics;
 using System.Net;
 
 namespace Client.Controllers
 {
+    [Authorize(Roles = "Finance")]
     public class RoleController : Controller
     {
         private readonly IRoleRepository repository;

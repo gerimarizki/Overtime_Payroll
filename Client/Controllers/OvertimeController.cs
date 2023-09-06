@@ -1,6 +1,7 @@
 ﻿using Client.Contracts;
 using Client.Models;
 using Client.ViewModels.Overtimes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs.AccountRoles;
 using server.DTOs.Employees;
@@ -8,11 +9,13 @@ using server.DTOs.Overtimes;
 using server.Models;
 using server.Services;
 using server.Utilities.Handlers;
+using System.Data;
 using System.Diagnostics;
 using System.Net;
 
 namespace Client.Controllers
 {
+    [Authorize(Roles = "Finance, Manager, Employee")]
     public class OvertimeController : Controller
     {
         private readonly IOvertimeRepository repository;
