@@ -46,7 +46,7 @@ namespace server.Controllers
                 Data = status
             });
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -70,7 +70,7 @@ namespace server.Controllers
                 Data = over
             });
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Create(CreateOvertimeDto newOvertime)
         {
@@ -93,7 +93,7 @@ namespace server.Controllers
                 Data = over
             });
         }
-
+        [AllowAnonymous]
         [HttpPut]
         public IActionResult Update(UpdateOvertimeDto updateOvertime)
         {
@@ -127,7 +127,7 @@ namespace server.Controllers
             }
 
         }
-
+        [AllowAnonymous]
         [HttpDelete]
         public IActionResult Delete(Guid guid)
         {
@@ -158,7 +158,7 @@ namespace server.Controllers
             });
 
         }
-
+        [AllowAnonymous]
         [HttpGet("{guid}")]
         public IActionResult GetOvertimeByGuid(Guid guid)
         {
@@ -179,7 +179,7 @@ namespace server.Controllers
                 Data = getOvertimeByGuid
             });
         }
-
+        [AllowAnonymous]
         [HttpGet("employee-overtime{guid}")]
         public IActionResult GetAllByGuidEmp(Guid guid)
         {
@@ -201,7 +201,7 @@ namespace server.Controllers
                 Data = over
             });
         }
-
+        [AllowAnonymous]
         [HttpGet("manager/{guid}")]
         public IActionResult GetAllByGuidManager(Guid guid)
         {
@@ -223,7 +223,7 @@ namespace server.Controllers
                 Data = over
             });
         }
-
+        [AllowAnonymous]
         [HttpPut("update-employee-status")]
         public IActionResult UpdateOvertime(UpdateOvertimeStatus updateOvertime)
         {
@@ -259,6 +259,7 @@ namespace server.Controllers
         }
 
         //Tambahan baru 24/08/2023
+        [AllowAnonymous]
         [HttpGet("get-all-overtime-employee")]
         public IActionResult GetAllOvertimeEmployee()
         {
@@ -283,6 +284,7 @@ namespace server.Controllers
             });
         }
 
+        [AllowAnonymous]
         [HttpPost("create-overtime-to-employee-testing")]
         public IActionResult CreateOvertimeEmployeeTesting(TestOvertimeDto newOvertime)
         {

@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace server.Services
 {
+    //PayrollService By Ahlul
     public class PayrollService
     {
         private readonly IPayrollRepository _PayrollRepository;
@@ -102,11 +103,11 @@ namespace server.Services
             var Payroll = (from p in _PayrollRepository.GetAll()
                            join o in _overtimeRepository.GetAll() on p.EmployeeGuid equals o.EmployeeGuid into joined
                            from o in joined.DefaultIfEmpty()
-                           where o == null // This line will filter out the rows where there is no matching EmployeeGuid in the overtime table.
+                           where o == null 
                            select new
                            {
                                guid = p.EmployeeGuid,
-                               totalOver = 0 // Set the PaidOvertime to 0 since there is no matching overtime record.
+                               totalOver = 0 
                            }).ToList().GroupBy(a => a.guid).Select(b => new GetAllPayrollDto()
                            {
                                EmployeeGuid = b.Key,
@@ -167,7 +168,7 @@ namespace server.Services
             var employee = (from p in _PayrollRepository.GetAll()
                             join e in _employeeRepository.GetAll() on p.EmployeeGuid equals e.Guid
                             join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
-                            //join pay in Payrolls on p.EmployeeGuid equals pay.EmployeeGuid
+                            //join pay in Payrolls on p.EmployeeGuid equals pay.EmployeeGuid gajadi dipake --
                             select new GetAllPayrollDto
                             {
                                 Guid = p.Guid,
@@ -256,7 +257,7 @@ namespace server.Services
             return totalOvertime;
         }
 
-
+        //fix to front end by ahlul
         public GetPayslipDto? GetPayslip(Guid guid)
         {
             var payover = GetAllPayrollOverbyEmpGuid(guid);

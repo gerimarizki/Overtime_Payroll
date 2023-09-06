@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace server.Services
 {
+    //Account Service By Ahlul
     public class AccountService
     {
         private readonly IAccountRepository _accountRepository;
@@ -52,7 +53,7 @@ namespace server.Services
             using var transaction = _context.Database.BeginTransaction();
             try
             {
-
+                //fix NIK bug stuck 111113 infinite
                 var employeeService = new EmployeeService(_employeeRepository);
 
                 var employeeGuid = Guid.NewGuid();

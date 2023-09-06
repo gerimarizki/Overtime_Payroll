@@ -25,11 +25,13 @@ namespace server.Services
             _roleRepository = roleRepository;
         }
 
+        //contstructor to fix stuck NIK
         public EmployeeService(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
         }
 
+        //get manager
         public IEnumerable<GetAllEmoployeeDto> GetManager()
         {
             var allEmployee = GetAllEmployee();

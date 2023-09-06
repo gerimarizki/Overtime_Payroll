@@ -7,6 +7,8 @@ using server.Utilities.Handlers;
 
 namespace server.Services
 {
+
+    //Overtime Service by Geri
     public class OvertimeService
     {
         private readonly IOvertimeRepository _overtimeRepository;
@@ -52,25 +54,27 @@ namespace server.Services
         //tutup
         //--------------------------------------
 
-        public IEnumerable<GetOvertimeDto> GetOvertime()
-        {
-            var overtime = (from e in _employeeRepository.GetAll()
-                            join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
-                            where e.Guid == o.EmployeeGuid
-                            select new GetOvertimeDto
-                            {
-                                Guid = o.Guid,
-                                OvertimeId = o.OvertimeId,
-                                StartOvertimeDate = DateTime.Now,
-                                EndOvertimeDate= DateTime.Now,
-                                Remarks = o.Remarks,
-                                Status = o.Status,
-                                EmployeeGuid = o.EmployeeGuid,
-                                FullName = e.FirstName+ " "+e.LastName,
-                                Remaining = o.OvertimeRemaining,
-                                Paid = o.PaidOvertime,
-                                CreatedDate = DateTime.Now,
-                            }).ToList();
+
+        //gagal
+        //public IEnumerable<GetOvertimeDto> GetOvertime()
+        //{
+        //    var overtime = (from e in _employeeRepository.GetAll()
+        //                    join o in _overtimeRepository.GetAll() on e.Guid equals o.EmployeeGuid
+        //                    where e.Guid == o.EmployeeGuid
+        //                    select new GetOvertimeDto
+        //                    {
+        //                        Guid = o.Guid,
+        //                        OvertimeId = o.OvertimeId,
+        //                        StartOvertimeDate = DateTime.Now,
+        //                        EndOvertimeDate= DateTime.Now,
+        //                        Remarks = o.Remarks,
+        //                        Status = o.Status,
+        //                        EmployeeGuid = o.EmployeeGuid,
+        //                        FullName = e.FirstName+ " "+e.LastName,
+        //                        Remaining = o.OvertimeRemaining,
+        //                        Paid = o.PaidOvertime,
+        //                        CreatedDate = DateTime.Now,
+        //                    }).ToList();
             //var overtime = _overtimeRepository.GetAll().ToList();
             //if (!overtime.Any()) return Enumerable.Empty<GetOvertimeDto>();
             //List<GetOvertimeDto> overtimeDTO = new();
@@ -81,14 +85,14 @@ namespace server.Services
                             //}
 
                             //return overtimeDTO;
-             if (!overtime.Any())
-            {
-                return Enumerable.Empty<GetOvertimeDto>();
-            }
-            return overtime;
-        }
+        //     if (!overtime.Any())
+        //    {
+        //        return Enumerable.Empty<GetOvertimeDto>();
+        //    }
+        //    return overtime;
+        //}
 
-        //tambahan baru 24/08/2023
+        //tambahan baru 24/08/2023 dibuat karena create harus buat penambahan
         public AllRemainingOvertimeDto? CreateOvertimeToEmployee(TestOvertimeDto ovt)
         {
             Models.Overtime overtime = ovt;
@@ -111,6 +115,7 @@ namespace server.Services
 
         }
 
+        //get all data testing ger
         public IEnumerable<AllRemainingOvertimeDto>? GetAllTestOvertimeToEmployee()
         {
 
@@ -155,6 +160,7 @@ namespace server.Services
             return (GetOvertimeDto)createdOvertime;
         }
 
+        //gagal
         //public GetOvertimeDto? CreateOvertime(CreateOvertimeDto newOvertime)
         //{
         //    Models.Overtime overtime = newOvertime;
@@ -223,6 +229,8 @@ namespace server.Services
             if (overtime is null) return null;
             return overtime;
         }
+
+        // check status employee by manager to accepted/rejected ger 
         public int UpdateStatusRemaining(UpdateOvertimeStatus overtime)
         {
             var over = _overtimeRepository.GetByGuid(overtime.Guid);

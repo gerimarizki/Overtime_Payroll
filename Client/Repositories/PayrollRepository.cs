@@ -26,15 +26,6 @@ namespace Client.Repositories
         //    return entity;
         //}
 
-        //public async Task<HandlerForResponse<double>> GetStatistic(Guid guid)
-        //{
-        //    HandlerForResponse<double> entity = null;
-        //    using (var response = await httpClient.GetAsync(request + "/total-paid-overtime" + "?guid=" + guid))
-        //    {
-        //        string apiResponse = await response.Content.ReadAsStringAsync();
-        //        entity = JsonConvert.DeserializeObject<HandlerForResponse<double>>(apiResponse);
-        //    }
-        //    return entity;
-        //}
+      
     }
 }

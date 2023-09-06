@@ -40,7 +40,9 @@ namespace server.Repositories
                     var salaryPerHours = emp.Payroll.Salary * 1 / 173;
                     var totalHours = Convert.ToInt32((overtime.EndOvertimeDate - overtime.StartOvertimeDate).TotalHours);
                     var today = overtime.StartOvertimeDate.DayOfWeek;
-      
+                    
+                    // perhitungan by week
+                    //menentukan gaji di hari weekend dan hari biasa
                     if (today == DayOfWeek.Saturday || today == DayOfWeek.Sunday)
                     {
                         if (totalHours > 11)
@@ -84,6 +86,7 @@ namespace server.Repositories
             }
         }
 
+        //setting statis penggajian per tanggal 25, blm ubah logic ke per tanggal 10 cut off penggajian
         public IEnumerable<AllRemainingOvertimeDto> RemainingOvertimeList()
         {
             var today = DateTime.Today;
